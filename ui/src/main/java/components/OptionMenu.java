@@ -21,7 +21,6 @@ public class OptionMenu extends FlowPane {
 
     @Getter
     private OptionButton buttons[];
-    private OptionButton dummyButton;
     private String name;
     private static String[] TEXT;
     private static String[] HINT_TEXT;
@@ -48,6 +47,7 @@ public class OptionMenu extends FlowPane {
     private void init() {
         log.debug("TEXT length" + TEXT.length);
         for (int i = 0; i < TEXT.length; i++) {
+            log.debug("/buttons/" + this.name + "_button_" + i + ".png");
             buttons[i] = new OptionButton(
                 TEXT[i],
                 new ImageView(
