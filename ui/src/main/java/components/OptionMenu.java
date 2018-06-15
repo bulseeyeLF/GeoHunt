@@ -11,9 +11,9 @@ import javafx.scene.layout.FlowPane;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 
-import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class OptionMenu extends FlowPane {
 
@@ -76,7 +76,7 @@ public class OptionMenu extends FlowPane {
         this.setHgap(4);
         this.setPrefWrapLength(170); // preferred width allows for two columns
         this.setStyle("-fx-background-color: DAE6F3;");
-        log.debug("TEXT length" + TEXT.length);
+
         for (int i = 0; i < TEXT.length; i++) {
             buttons[i] = new OptionButton(
                 TEXT[i],
