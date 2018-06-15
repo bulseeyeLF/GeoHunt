@@ -13,9 +13,6 @@ public abstract class QuestionFrame extends BorderPane {
     QuestionFrame() {
     }
 
-    public String getInputFieldString() {
-        return this.inputField.getText().toString();
-    }
     public abstract QuestionFrame setQuestion(Question question);
     public abstract void init();
 }
