@@ -180,7 +180,6 @@ public class EditorApp extends Application {
     }
 
     public void save(boolean shouldResetCurrentlyOpenFile) {
-        int flag =0;
         JSONObject jsonObject = new JSONObject();
         ArrayList<JSONObject> jsonObjectArrayListOfQuestions= new ArrayList<>();
 
@@ -189,16 +188,14 @@ public class EditorApp extends Application {
             fileChooserNew.setTitle("Set name for new map");
             currentlyOpenFile= fileChooserNew.showSaveDialog(new Stage());
             currentlyOpenFile.setWritable(true);
-            flag=1;
 
         }
-        else{
-            JSONArray jsonArray = new JSONArray();
-            if (addScreen!=null) {
-                addScreen.getQuestions().stream().map(Question::save).forEach(jsonObjectArrayListOfQuestions::add);
-                jsonObjectArrayListOfQuestions.forEach(jsonArray::put);
-            }
+        JSONArray jsonArray = new JSONArray();
+        if (addScreen!=null) {
+            addScreen.getQuestions().stream().map(Question::save).forEach(jsonObjectArrayListOfQuestions::add);
+            jsonObjectArrayListOfQuestions.forEach(jsonArray::put);
         }
+
 
         try { jsonObject.put("backgroundSource", editScreen.getBackgroundPath())
                         .put("globalTimer", editScreen.getTimer())
@@ -365,14 +362,14 @@ public class EditorApp extends Application {
                 "Add Question",
                 "Set Global Timer",
                 "Import map",
-                "Back"
+                "Save and Back"
         };
 
         EDIT_MENU_HINT_TEXT = new String[]{
                 "(A)dd more one question",
                 "Set the (T)imer",
                 "(I)mport new map file",
-                "Go (B)ack"
+                "Save and Go (B)ack"
         };
         EDIT_MENU_TRIGGERS = new KeyCode[]{
                 KeyCode.A,
@@ -384,7 +381,7 @@ public class EditorApp extends Application {
                 "Add basic",
                 "Add next-lvl",
                 "Delete",
-                "Save"
+                "Save and Back"
         };
         ADD_MENU_HINT_TEXT = new String[]{
                 "(A)dd another question",
