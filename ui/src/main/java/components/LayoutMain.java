@@ -3,22 +3,28 @@ package components;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import org.apache.log4j.Logger;
 import utils.Utils;
 
 public class LayoutMain extends LayoutBase {
-
+    private static final Logger log = Logger.getLogger(LayoutMain.class);
     public LayoutMain(OptionMenu menu) {
         super(menu);
         Utils utils = Utils.getInstance();
-        menu.setVgap(5);
-        menu.setHgap(5);
-        menu.setPadding(new Insets(5, 5, 5, 5));
-        menu.setButtonSizes(50, 100);
-        utils.setPercentageWidth(menu, 100);
-        utils.setPercentageHeight(menu, 30);
+        menu.setHgap(50);
+        menu.setPadding(new Insets(5, 5, 100, 5));
+        log.debug(utils.getScreenHeight());
+        menu.setButtonSizes(utils.getScreenHeight()/10, utils.getScreenWidth()/9);
+        log.debug(menu.getWidth());
+        log.debug(menu.getWidth());
         menu.setAlignment(Pos.CENTER);
-        this.setBottom(menu);
+        ImageView logo = new ImageView (new Image(LayoutMain.class.getResourceAsStream("/logo.png")));
+        logo.setFitWidth(utils.getScreenWidth()/5);
+        logo.setFitHeight(utils.getScreenHeight()/5);
 
-        Image logo = new Image(LayoutMain.class.getResourceAsStream("logo.png"));
+        this.setStyle("-fx-background-image: url(/main_menu_background.jpg); -fx-background-repeat: fit;");
+        this.setCenter(logo);
+        this.setBottom(menu);
     }
 }

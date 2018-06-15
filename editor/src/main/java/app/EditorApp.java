@@ -86,15 +86,15 @@ public class EditorApp extends Application {
         initConstants();
         initActionsAndVariables();
         initMenus();
+        mainScreenRoot = new Group();
+        editScreenRoot = new Group();
+        addScreenRoot = new Group();
         initScreens();
     }
     
     @Override
     public void start(Stage editorStage) {
         initShortcuts(editorStage);
-        mainScreenRoot = new Group();
-        editScreenRoot = new Group();
-        addScreenRoot = new Group();
         mainScene = new Scene(mainScreenRoot);
         currentScreen = mainScreen;
         initScreen(editorStage);
@@ -105,7 +105,7 @@ public class EditorApp extends Application {
         editorStage.setScene(mainScene);
     }
 
-    public void addQuestions() {
+    /*public void addQuestions() {
         addScreenRoot.getChildren().clear();
         addScreen = initAddScreen();
         //addScreen.setPrefHeight(utils.getScreenHeight());
@@ -234,11 +234,6 @@ public class EditorApp extends Application {
         mainScene.setRoot(mainScreenRoot);
         currentMenu = mainMenu;
     }
-    
-    public void close() {
-        Platform.exit();
-        System.exit(0);
-    }
 
     public void editMap() {
         fileChooser.setTitle("Open Map");
@@ -258,6 +253,11 @@ public class EditorApp extends Application {
 
         mainScene.setRoot(editScreenRoot);
         currentMenu = editMenu;
+    }*/
+
+    private void close() {
+        Platform.exit();
+        System.exit(0);
     }
 
     private void initShortcuts(Stage parent) {
@@ -331,12 +331,12 @@ public class EditorApp extends Application {
         }
     }
 
-    private QuestionEditPane initAddScreen() {
-        QuestionEditPane addScreen = new QuestionEditPane(editScreen.getQuestions());
-        addScreen.setRight(this.addMenu);
-        this.addMenu.setAlignment(Pos.CENTER);
-        return addScreen;
-    }
+    // private QuestionEditPane initAddScreen() {
+    //     QuestionEditPane addScreen = new QuestionEditPane(editScreen.getQuestions());
+    //     addScreen.setRight(this.addMenu);
+    //     this.addMenu.setAlignment(Pos.CENTER);
+    //     return addScreen;
+    // }
     
     private  void initConstants(){
         MAIN_MENU_TEXT = new String[]{
@@ -428,23 +428,23 @@ public class EditorApp extends Application {
 
     private void initActionsAndVariables() {
         ADD_MENU_ACTIONS = new Selection[]{
-            this::addUserInputQuestion,
-            this::addMultipleChoiceQuestion,
-            this::deleteQuestion,
-            this::saveAndBackToEdit
+            () -> {}, //this::addUserInputQuestion,
+            () -> {}, //this::addMultipleChoiceQuestion,
+            () -> {}, //this::deleteQuestion,
+            () -> {}, //this::saveAndBackToEdit
         };
         
         MAIN_MENU_ACTIONS = new Selection[]{
-            this::newMap,
-            this::editMap,
+            () -> {}, //this::newMap,
+            () -> {}, //this::editMap,
             this::close
         };
         
         EDIT_MENU_ACTIONS = new Selection[]{
-            this::addQuestions,
-            this::setGlobalTimer,
-            this::importMap,
-            this::saveAndBackToMain
+            () -> {}, //this::addQuestions,
+            () -> {}, //this::setGlobalTimer,
+            () -> {}, //this::importMap,
+            () -> {}  //this::saveAndBackToMain
         };
 
         utils = Utils.getInstance();
@@ -454,10 +454,10 @@ public class EditorApp extends Application {
     }
 
     private void initScreens() {
-        mainScreen = new LayoutMain(mainScreenRoot, mainMenu);
+        mainScreen = new LayoutMain(mainMenu);
         mainScreenRoot.getChildren().add(mainScreen);
-        editScreen = new LayoutEdit(editScreenRoot, editMenu);
+        editScreen = new LayoutEdit(editMenu);
         editScreenRoot.getChildren().add(editScreen);
-        addScreen = new LayoutAdd(addScreenRoot, addMenu);
+        addScreen = new LayoutAdd(addMenu);
     }
 }

@@ -8,6 +8,7 @@ public class LayoutBase extends BorderPane {
     OptionMenu menu;
 
     public LayoutBase(OptionMenu menu) {
+        super();
         this.menu = menu;
     }
 }
