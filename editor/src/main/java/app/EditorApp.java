@@ -322,6 +322,7 @@ public class EditorApp extends Application {
                 }
             });
             editScreen.setQuestions(arrayListQuestion);
+            editScreen.setTimer(jsonObjectMap.optLong("Timer"));
 
         } catch (JSONException e) {
             editScreen.setBackground(defaultMap);
