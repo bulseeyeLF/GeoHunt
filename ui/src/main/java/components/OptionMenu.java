@@ -21,17 +21,19 @@ public class OptionMenu extends FlowPane {
 
     @Getter
     private OptionButton buttons[];
-    private HashMap<KeyCode, OptionButton> possibleActions;
+    private OptionButton dummyButton;
     private String name;
     private static String[] TEXT;
     private static String[] HINT_TEXT;
     private static Selection[] ACTIONS;
     private static KeyCode[] TRIGGER_KEYS;
+    private HashMap<KeyCode, OptionButton> possibleActions;
 
-    public OptionMenu(String name, OptionButton[] buttons, String[] text, String[] hint, Selection[] actions, KeyCode[] triggers) {
+
+    public OptionMenu(String name, String[] text, String[] hint, Selection[] actions, KeyCode[] triggers) {
         possibleActions = new HashMap<>();
         this.name = name;
-        this.buttons = buttons;
+        this.buttons = new OptionButton[text.length];
         TEXT = text;
         HINT_TEXT = hint;
         ACTIONS = actions;
@@ -43,46 +45,14 @@ public class OptionMenu extends FlowPane {
         possibleActions.put(KeyCode.ENTER, new OptionButton(null, null, this::selectSelectedButton, null));
     }
 
-    public OptionMenu(Orientation orientation) {
-        super(orientation);
-    }
-
-    public OptionMenu(double hgap, double vgap) {
-        super(hgap, vgap);
-    }
-
-    public OptionMenu(Orientation orientation, double hgap, double vgap) {
-        super(orientation, hgap, vgap);
-    }
-
-    public OptionMenu(Node... children) {
-        super(children);
-    }
-
-    public OptionMenu(Orientation orientation, Node... children) {
-        super(orientation, children);
-    }
-
-    public OptionMenu(double hgap, double vgap, Node... children) {
-        super(hgap, vgap, children);
-    }
-
-    public OptionMenu(Orientation orientation, double hgap, double vgap, Node... children) {
-        super(orientation, hgap, vgap, children);
-    }
     private void init() {
-        this.setPadding(new Insets(5, 0, 5, 0));
-        this.setVgap(4);
-        this.setHgap(4);
-        this.setPrefWrapLength(170); // preferred width allows for two columns
-        this.setStyle("-fx-background-color: DAE6F3;");
-
+        log.debug("TEXT length" + TEXT.length);
         for (int i = 0; i < TEXT.length; i++) {
             buttons[i] = new OptionButton(
                 TEXT[i],
                 new ImageView(
                     new Image(
-                        OptionMenu.class.getResourceAsStream(  "/"+this.name + "_button_" + i + ".png")
+                        OptionMenu.class.getResourceAsStream(  "/buttons/" + this.name + "_button_" + i + ".png")
                     )
                 ),
                 ACTIONS[i],
@@ -95,6 +65,11 @@ public class OptionMenu extends FlowPane {
         log.debug("init finished");
     }
 
+    public void setButtonSizes(double h, double w) {
+        for (OptionButton button: buttons) {
+            button.setSize(h, w);
+        }
+    }
     public void pressButon(KeyCode code) {
         possibleActions.getOrDefault(code, new OptionButton(null, null, ()->{}, null)).doAction();
         log.debug("Button pressed");
