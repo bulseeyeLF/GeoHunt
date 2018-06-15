@@ -1,0 +1,2 @@
+# GeoHunt
+Computer Graphics project
