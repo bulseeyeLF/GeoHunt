@@ -11,9 +11,9 @@ import javafx.scene.layout.FlowPane;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 
-import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class OptionMenu extends FlowPane {
 

@@ -20,20 +20,20 @@ public class MultipleChoiceQ extends Question {
         answers = new ArrayList<>();
         JSONArray answersJson = jsonQuestion.optJSONArray("answers");
         if (answersJson != null) {
-            for (int i = 0; i < 4; i++) {
-                JSONObject oneAnswer = answersJson.optJSONObject(i);
+            answersJson.forEach(i->{
+                JSONObject oneAnswer = (JSONObject)i;
                 if (oneAnswer != null) {
                     answers.add(new MultipleChoiceA(
-                        oneAnswer.optString("text", ""),
-                        oneAnswer.optBoolean("correct", false)
+                            oneAnswer.optString("text", ""),
+                            oneAnswer.optBoolean("correct", false)
                     ));
                 } else {
                     answers.add(new MultipleChoiceA(
-                        "",
-                        false
+                            "",
+                            false
                     ));
                 }
-            }
+            });
         } else {
             for (int i = 0; i < 4; i++) {
                 answers.add(new MultipleChoiceA("", false));

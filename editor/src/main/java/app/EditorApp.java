@@ -304,8 +304,8 @@ public class EditorApp extends Application {
             if (!backgroundPath.contains("/")) {
                 backgroundPath = "resources/maps/" + backgroundPath;
                 fileInputStream = GameFrame.class.getResourceAsStream(backgroundPath);
-            }else {
-                fileInputStream =new FileInputStream(backgroundPath);
+            } else {
+                fileInputStream = new FileInputStream(backgroundPath);
             }
 
             editScreen.setBackgroundPath(backgroundPath);
@@ -313,15 +313,14 @@ public class EditorApp extends Application {
 
             JSONArray jsonArray = jsonObjectMap.getJSONArray("questions");
             ArrayList<Question> arrayListQuestion = new ArrayList<>();
-
-            for (int i = 0 ; i < jsonArray.length(); i++){
-                int typeInt = jsonArray.optJSONObject(i).optInt("type");
-                if (typeInt == 0){
-                    arrayListQuestion.add(new UserInputQ(jsonArray.getJSONObject(i)));
-                } else if (typeInt == 1){
-                    arrayListQuestion.add(new MultipleChoiceQ(jsonArray.getJSONObject(i)));
+            jsonArray.forEach(i -> {
+                int typeInt = ((JSONObject) i).optInt("type");
+                if (typeInt == 0) {
+                    arrayListQuestion.add(new UserInputQ((JSONObject) i));
+                } else if (typeInt == 1) {
+                    arrayListQuestion.add(new MultipleChoiceQ((JSONObject) i));
                 }
-            }
+            });
             editScreen.setQuestions(arrayListQuestion);
 
         } catch (JSONException e) {
