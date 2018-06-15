@@ -62,9 +62,9 @@ public class EditorApp extends Application {
     private QuestionEditPane addScreen;
     private BorderPane mainScreen;
 
-    private static OptionMenu mainMenu ;
-    private static OptionMenu editMenu ;
-    private static OptionMenu addMenu ;
+    private  OptionMenu mainMenu ;
+    private  OptionMenu editMenu ;
+    private  OptionMenu addMenu ;
 
     public static void main(String[] argv) {
         launch(argv);
@@ -75,7 +75,7 @@ public class EditorApp extends Application {
         try {
             super.init();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);
         }
         initConstants();
         initActionsAndVariables();
@@ -117,7 +117,7 @@ public class EditorApp extends Application {
             editRoot.getChildren().add(editScreen);
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("HERE?",e);
+            log.error(e);
         }
         mainScene.setRoot(editRoot);
         currentMenu = editMenu;
@@ -149,6 +149,7 @@ public class EditorApp extends Application {
         try {
             newQuestion = new UserInputQ(new JSONObject("{\"type\":0}"));
         } catch (JSONException e) {
+            log.error(e);
             e.printStackTrace();
         }
         addScreen.addQuestion(newQuestion);
@@ -158,6 +159,7 @@ public class EditorApp extends Application {
         try {
             newQuestion = new MultipleChoiceQ(new JSONObject("{\"type\":1}"));
         } catch (JSONException e) {
+            log.error(e);
             e.printStackTrace();
         }
         addScreen.addQuestion(newQuestion);
@@ -172,11 +174,12 @@ public class EditorApp extends Application {
             fileWriter.write(content);
             fileWriter.close();
         } catch (IOException e) {
+            log.error(e);
             e.printStackTrace();
         }
     }
 
-    public void save() {
+    public void save(boolean shouldResetCurrentlyOpenFile) {
         int flag =0;
         JSONObject jsonObject = new JSONObject();
         ArrayList<JSONObject> jsonObjectArrayListOfQuestions= new ArrayList<>();
@@ -186,7 +189,7 @@ public class EditorApp extends Application {
             fileChooserNew.setTitle("Set name for new map");
             currentlyOpenFile= fileChooserNew.showSaveDialog(new Stage());
             currentlyOpenFile.setWritable(true);
-            flag = 1;
+            flag=1;
 
         }
         else{
@@ -203,19 +206,23 @@ public class EditorApp extends Application {
                         .put("shapes",new JSONArray());
 
             SaveFile(jsonObject.toString(4),currentlyOpenFile);
-            currentlyOpenFile= null;
+            if (shouldResetCurrentlyOpenFile){
+                currentlyOpenFile= null;
+            }
          }catch (JSONException e) {
+            log.error(e);
             e.printStackTrace();
         }
     }
 
     public void saveAndBackToEdit(){
+        save(false);
         mainScene.setRoot(editRoot);
         currentMenu = editMenu;
     }
 
     public void saveAndBackToMain(){
-        save();
+        save(true);
         mainScene.setRoot(mainRoot);
         currentMenu = mainMenu;
     }
@@ -233,11 +240,12 @@ public class EditorApp extends Application {
         );
         Stage currentStage = new Stage();
         currentlyOpenFile = fileChooser.showOpenDialog(currentStage);
-            editRoot.getChildren().clear();
+        editRoot.getChildren().clear();
         try {
             editScreen = initEditScreen(currentlyOpenFile.getCanonicalPath());
             editRoot.getChildren().add(editScreen);
         } catch (IOException e) {
+            log.error(e);
             e.printStackTrace();
         }
 
@@ -261,8 +269,8 @@ public class EditorApp extends Application {
 
     private BorderPane initMainScreen() {
         BorderPane mainScreen = new BorderPane();
-        mainScreen.setCenter(this.mainMenu);
-        this.mainMenu.setAlignment(Pos.CENTER);
+        mainScreen.setCenter(mainMenu);
+        mainMenu.setAlignment(Pos.CENTER);
         return mainScreen;
     }
 
@@ -321,6 +329,7 @@ public class EditorApp extends Application {
 
         } catch (JSONException e) {
             editScreen.setBackground(defaultMap);
+            log.error(e);
             e.printStackTrace();
         }
 

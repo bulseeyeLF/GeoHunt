@@ -52,6 +52,7 @@ public class MultipleChoiceQ extends Question {
                 try {
                     jsonArray.put(new JSONObject().put("text", a.getAnswerTextField().getText()).put("correct", a.isCorrect()));
                 } catch (JSONException e) {
+                    log.error(e);
                     e.printStackTrace();
                 }
             });
