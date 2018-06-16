@@ -1,0 +1,35 @@
+{
+    "backgroundSource": "maps/default.png",
+    "shapes": [],
+    "questions": [
+        {
+            "timer": 0,
+            "answers": [
+                {
+                    "correct": true,
+                    "text": "Comi"
+                },
+                {
+                    "correct": false,
+                    "text": "Ne comi"
+                },
+                {
+                    "correct": false,
+                    "text": "neko tamo"
+                },
+                {
+                    "correct": false,
+                    "text": "ne znam"
+                }
+            ],
+            "type": 1,
+            "questionText": "Novo pravilo? Ko je najveci bog?"
+        },
+        {
+            "timer": 0,
+            "text": "Pancevo",
+            "type": 0,
+            "questionText": "Glavni grad Srbije?????"
+        }
+    ]
+}

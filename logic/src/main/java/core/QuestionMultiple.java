@@ -50,16 +50,19 @@ public class MultipleChoiceQ extends Question {
             JSONArray jsonArray = new JSONArray();
             answers.forEach(a->{
                 try {
-                    jsonArray.put(new JSONObject().put("text", a.getAnswerTextField().getText()).put("correct", a.isCorrect()));
+                    jsonArray.put(new JSONObject()
+                        .put("text", a.getAnswerText().getText())
+                        .put("correct", a.isCorrect()));
                 } catch (JSONException e) {
                     log.error(e);
                     e.printStackTrace();
                 }
             });
-            jsonObject.put("questionText", this.questionTextArea.getText())
-                    .put("timer", this.timer)
-                    .put("type", this.type);
-            jsonObject.put("answers",jsonArray);
+            jsonObject
+                .put("questionText", this.questionField.getText())
+                .put("timer", this.timer)
+                .put("type", this.type)
+                .put("answers", jsonArray);
             log.debug("Save Multiple Question");
             return jsonObject;
         } catch (JSONException e) {

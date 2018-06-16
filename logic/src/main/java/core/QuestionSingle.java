@@ -21,10 +21,11 @@ public class UserInputQ extends Question {
     public JSONObject save() {
         try {
             log.debug("Save in UserInputQ");
-            return new JSONObject().put("questionText", this.questionTextArea.getText())
-                    .put("timer", this.timer)
-                    .put("text", answer.getAnswerTextField().getText())
-                    .put("type", this.getType());
+            return new JSONObject()
+                .put("questionText", this.questionField.getText())
+                .put("timer", this.timer)
+                .put("text", answer.getAnswerText().getText())
+                .put("type", this.getType());
         } catch (JSONException e) {
             log.error("Error in save UserInput Question",e);
             return null;
