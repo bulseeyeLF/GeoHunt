@@ -23,6 +23,9 @@ import org.json.JSONObject;
 import utils.Utils;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 
@@ -45,6 +48,7 @@ public class EditorApp extends Application {
 
     private Utils utils ;
     private Scene mainScene;
+    private File mapsFolder;
     private String defaultPath ;
     private FileChooser fileChooser ;
     private File currentlyOpenFile;
@@ -116,6 +120,8 @@ public class EditorApp extends Application {
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("All Files", "*.map")
         );
+        fileChooser.setInitialDirectory(mapsFolder);
+
         currentlyOpenFile = fileChooser.showOpenDialog(new Stage());
         try {
             mapLoader(currentlyOpenFile.getCanonicalPath(), editScreen);
@@ -138,7 +144,6 @@ public class EditorApp extends Application {
     }*/
     
     private void importMap() {
-        FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Import map");
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("All Files", "*.png")
@@ -191,9 +196,9 @@ public class EditorApp extends Application {
         ArrayList<JSONObject> jsonObjectArrayListOfQuestions= new ArrayList<>();
 
         if (currentlyOpenFile == null){
-            FileChooser fileChooserNew = new FileChooser();
-            fileChooserNew.setTitle("Set name for new map");
-            currentlyOpenFile = fileChooserNew.showSaveDialog(new Stage());
+            fileChooser.setTitle("Set name for new map");
+            fileChooser.setInitialDirectory(mapsFolder);
+            currentlyOpenFile = fileChooser.showSaveDialog(new Stage());
         }
 
         JSONArray jsonArray = new JSONArray();
@@ -406,6 +411,13 @@ public class EditorApp extends Application {
         defaultPath = "/maps/default.png";
         fileChooser = new FileChooser();
         currentlyOpenFile = null;
+        URL resource = EditorApp.class.getResource("/maps/");
+        mapsFolder = null;
+        try {
+            mapsFolder = Paths.get(resource.toURI()).toFile();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initScreens() {
