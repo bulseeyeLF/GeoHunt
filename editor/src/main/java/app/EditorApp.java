@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -16,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +29,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 public class EditorApp extends Application {
@@ -110,12 +113,14 @@ public class EditorApp extends Application {
     public void newMap() {
         currentlyOpenFile = null;
         editScreen.resetScreen();
-        editScreen.setBackgroundPath(defaultPath);
+
+        editScreen.setBackgroundPath(new Image(getClass().getResourceAsStream(defaultPath)), defaultPath);
         mainScene.setRoot(editScreenRoot);
     }
 
     public void editMap() {
         fileChooser.setTitle("Open Map");
+        fileChooser.getExtensionFilters().clear();
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("All Files", "*.map")
         );
@@ -130,26 +135,36 @@ public class EditorApp extends Application {
         }
         mainScene.setRoot(editScreenRoot);
     }
-    /*
+
     private void setGlobalTimer() {
-        TextInputDialog dialog = new TextInputDialog();
+        Long currentTimer = editScreen.getTimer() / 1000;
+        TextInputDialog dialog = new TextInputDialog(currentTimer.toString());
         dialog.setTitle("Timer");
-        dialog.setHeaderText("Set global timer for this map. Current time set to :" + editScreen.getTimer());
-        dialog.setContentText("Number in milisec:");
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(number ->{
-            editScreen.setTimer(Long.parseLong(number));
-        });
-    }*/
+        dialog.setHeaderText("Set global timer for this map");
+        dialog.setContentText("Timer for current map in seconds:");
+        Optional<String> result;
+        while (true) {
+            result = dialog.showAndWait();
+            if (!result.isPresent()) {
+                break;
+            }
+            if (Utils.isNumeric(result.get())) {
+                editScreen.setTimer(Long.parseLong(result.get()) * 1000);
+                break;
+            } else {
+                dialog.setContentText("Please input a number value:");
+            }
+        }
+    }
     
     private void importMap() {
         fileChooser.setTitle("Import map");
+        fileChooser.getExtensionFilters().clear();
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("All Files", "*.png")
         );
         File file = fileChooser.showOpenDialog(new Stage());
-        editScreen.setBackgroundPath(file.getAbsolutePath());
-        editScreen.setBackgroundPath(file.getAbsolutePath());
+        editScreen.setBackgroundPath(new Image("file:" + file.getAbsolutePath()), file.getAbsolutePath());
     }
     /*
     public void addUserInputQuestion() {
@@ -260,14 +275,17 @@ public class EditorApp extends Application {
             String myJsonFile = sb.toString();
             JSONObject jsonObjectMap = new JSONObject(myJsonFile);
             String backgroundPath = jsonObjectMap.optString("backgroundSource", "default.png");
-            log.debug(backgroundPath);
-            if (!backgroundPath.contains("/")) {
+            Image newMap;
+            if (!backgroundPath.contains("/")){
                 backgroundPath = "/maps/" + backgroundPath;
+                newMap = new Image(backgroundPath);
+            } else {
+                newMap = new Image(backgroundPath);
             }
-
-            editScreen.setBackgroundPath(backgroundPath);
+            editScreen.setBackgroundPath(newMap, backgroundPath);
 
             JSONArray jsonArray = jsonObjectMap.getJSONArray("questions");
+
             ArrayList<Question> arrayListQuestion = new ArrayList<>();
             jsonArray.forEach(i -> {
                 int typeInt = ((JSONObject) i).optInt("type");
@@ -278,10 +296,9 @@ public class EditorApp extends Application {
                 }
             });
             editScreen.setQuestions(arrayListQuestion);
-            editScreen.setTimer(jsonObjectMap.optLong("Timer"));
+            editScreen.setTimer(jsonObjectMap.optLong("globalTimer"));
 
         } catch (JSONException e) {
-            editScreen.setBackgroundPath(defaultPath);
             log.error(e);
             e.printStackTrace();
         }
@@ -397,14 +414,14 @@ public class EditorApp extends Application {
         };
         
         EDIT_MENU_ACTIONS = new Selection[]{
-            () -> {}, //this::addQuestions,
-            () -> {}, //this::setGlobalTimer,
+            () -> {},
+            this::setGlobalTimer,
             this::importMap,
             this::saveAndBackToMain
         };
 
         utils = Utils.getInstance();
-        defaultPath = "/maps/default.png";
+        defaultPath = "maps/default.png";
         fileChooser = new FileChooser();
         currentlyOpenFile = null;
         //mapsFolder = new File(EditorApp.class.getResource("/maps/").getFile());

@@ -1,6 +1,6 @@
 {
-    "backgroundSource": "/maps/notdefault.png",
-    "globalTimer": 0,
+    "backgroundSource": "notdefault.png",
+    "globalTimer": 40000,
     "shapes": [],
     "questions": [
         {

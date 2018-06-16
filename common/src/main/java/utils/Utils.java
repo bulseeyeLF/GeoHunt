@@ -44,4 +44,9 @@ public class Utils {
     public void setPercentageHeight(Region element, double percentage) {
         element.setPrefHeight(height * percentage / 100);
     }
+
+    public static boolean isNumeric(String str)
+    {
+        return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+    }
 }

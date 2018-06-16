@@ -52,9 +52,10 @@ public class LayoutEdit extends LayoutBase {
         this.currentFrame.setQuestion(this.questions.get(0));
     }
 
-    public void setBackgroundPath(String backgroundPath) {
-        this.backgroundPath = backgroundPath;
-        this.mapImageView = new MapImageView(new Image(backgroundPath));
+    public void setBackgroundPath(Image newMap, String newPath) {
+        this.backgroundPath = newPath;
+        this.mapImageView = new MapImageView(newMap);
+        ((MapImageView) mapAndQuestion.getLeft()).setImage(newMap);
     }
 
     public void resetScreen() {
