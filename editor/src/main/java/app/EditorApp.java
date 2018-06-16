@@ -55,11 +55,9 @@ public class EditorApp extends Application {
 
     private Group mainScreenRoot;
     private Group editScreenRoot;
-    private Group addScreenRoot;
 
     private LayoutMain mainScreen;
     private LayoutEdit editScreen;
-    private LayoutAdd addScreen;
 
     private LayoutBase currentScreen;
 
@@ -83,7 +81,6 @@ public class EditorApp extends Application {
         initMenus();
         mainScreenRoot = new Group();
         editScreenRoot = new Group();
-        addScreenRoot = new Group();
         initScreens();
     }
     
@@ -112,6 +109,7 @@ public class EditorApp extends Application {
 
     public void newMap() {
         currentlyOpenFile = null;
+        editScreen.resetScreen();
         editScreen.setBackgroundPath(defaultPath);
         mainScene.setRoot(editScreenRoot);
     }
@@ -121,7 +119,7 @@ public class EditorApp extends Application {
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("All Files", "*.map")
         );
-        fileChooser.setInitialDirectory(mapsFolder);
+        //fileChooser.setInitialDirectory(mapsFolder);
 
         currentlyOpenFile = fileChooser.showOpenDialog(new Stage());
         try {
@@ -192,13 +190,13 @@ public class EditorApp extends Application {
         }
     }
 
-    public void save(boolean shouldResetCurrentlyOpenFile) {
+    public void saveMap() {
         JSONObject jsonObject = new JSONObject();
         ArrayList<JSONObject> jsonObjectArrayListOfQuestions= new ArrayList<>();
 
         if (currentlyOpenFile == null){
             fileChooser.setTitle("Set name for new map");
-            fileChooser.setInitialDirectory(mapsFolder);
+            //fileChooser.setInitialDirectory(mapsFolder);
             currentlyOpenFile = fileChooser.showSaveDialog(new Stage());
         }
 
@@ -215,10 +213,7 @@ public class EditorApp extends Application {
                 .put("shapes",new JSONArray());
 
             saveFile(jsonObject.toString(4),currentlyOpenFile);
-
-            if (shouldResetCurrentlyOpenFile) {
-                currentlyOpenFile= null;
-            }
+            currentlyOpenFile = null;
          } catch (JSONException e) {
             log.error(e);
             e.printStackTrace();
@@ -233,7 +228,7 @@ public class EditorApp extends Application {
     }*/
 
     public void saveAndBackToMain(){
-        save(true);
+        saveMap();
         mainScene.setRoot(mainScreenRoot);
     }
 
@@ -412,13 +407,7 @@ public class EditorApp extends Application {
         defaultPath = "/maps/default.png";
         fileChooser = new FileChooser();
         currentlyOpenFile = null;
-        URL resource = EditorApp.class.getResource("/maps/");
-        mapsFolder = null;
-        try {
-            mapsFolder = Paths.get(resource.toURI()).toFile();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        //mapsFolder = new File(EditorApp.class.getResource("/maps/").getFile());
     }
 
     private void initScreens() {
@@ -426,6 +415,5 @@ public class EditorApp extends Application {
         mainScreenRoot.getChildren().add(mainScreen);
         editScreen = new LayoutEdit(editMenu, defaultPath);
         editScreenRoot.getChildren().add(editScreen);
-        addScreen = new LayoutAdd(addMenu);
     }
 }
