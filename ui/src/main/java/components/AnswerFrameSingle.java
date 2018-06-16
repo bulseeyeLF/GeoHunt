@@ -18,7 +18,7 @@ public class AnswerFrameSingle extends AnswerFrame {
 
     public AnswerFrameSingle setAnswer(Answer answer) {
         this.answer = answer;
-        this.getChildren().removeAll();
+        this.getChildren().clear();
         this.getChildren().add(answer.getAnswerText());
         return this;
     }

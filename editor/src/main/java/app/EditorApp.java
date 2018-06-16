@@ -45,7 +45,7 @@ public class EditorApp extends Application {
 
     private Utils utils ;
     private Scene mainScene;
-    private Image defaultMap ;
+    private String defaultPath ;
     private FileChooser fileChooser ;
     private File currentlyOpenFile;
 
@@ -104,22 +104,28 @@ public class EditorApp extends Application {
         addScreenRoot.getChildren().add(addScreen);
         mainScene.setRoot(addScreenRoot);
         currentMenu = addMenu;
-    }
+    }*/
 
     public void newMap() {
-        log.debug("Sth:"+ editScreenRoot.getChildren().removeAll());
-        editScreenRoot.getChildren().clear();
-        try {
-            editScreen = initEditScreen(null);
-            editScreenRoot.getChildren().add(editScreen);
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.error(e);
-        }
+        editScreen.setBackgroundPath(defaultPath);
         mainScene.setRoot(editScreenRoot);
-        currentMenu = editMenu;
     }
 
+    public void editMap() {
+        fileChooser.setTitle("Open Map");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("All Files", "*.map")
+        );
+        currentlyOpenFile = fileChooser.showOpenDialog(new Stage());
+        try {
+            mapLoader(currentlyOpenFile.getCanonicalPath(), editScreen);
+        } catch (IOException e) {
+            log.error(e);
+            e.printStackTrace();
+        }
+        mainScene.setRoot(editScreenRoot);
+    }
+    /*
     private void setGlobalTimer() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Timer");
@@ -129,7 +135,7 @@ public class EditorApp extends Application {
         result.ifPresent(number ->{
             editScreen.setTimer(Long.parseLong(number));
         });
-    }
+    }*/
     
     private void importMap() {
         FileChooser fileChooser = new FileChooser();
@@ -138,11 +144,10 @@ public class EditorApp extends Application {
             new FileChooser.ExtensionFilter("All Files", "*.png")
         );
         File file = fileChooser.showOpenDialog(new Stage());
-        Image img = new Image(file.toURI().toString());
         editScreen.setBackgroundPath(file.getAbsolutePath());
-        editScreen.setBackground(img);
+        editScreen.setBackgroundPath(file.getAbsolutePath());
     }
-    
+    /*
     public void addUserInputQuestion() {
         QuestionSingle newQuestion = null;
         try {
@@ -167,9 +172,9 @@ public class EditorApp extends Application {
     
     public void deleteQuestion() {
         addScreen.deleteQuestion(addScreen.getSelectedQuestion());
-    }
+    }*/
     
-    private void SaveFile(String content, File file){
+    private void saveFile(String content, File file){
         try {
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.flush();
@@ -185,63 +190,45 @@ public class EditorApp extends Application {
         JSONObject jsonObject = new JSONObject();
         ArrayList<JSONObject> jsonObjectArrayListOfQuestions= new ArrayList<>();
 
-        if (currentlyOpenFile==null){
+        if (currentlyOpenFile == null){
             FileChooser fileChooserNew = new FileChooser();
             fileChooserNew.setTitle("Set name for new map");
-            currentlyOpenFile= fileChooserNew.showSaveDialog(new Stage());
-            currentlyOpenFile.setWritable(true);
-
+            currentlyOpenFile = fileChooserNew.showSaveDialog(new Stage());
         }
+
         JSONArray jsonArray = new JSONArray();
-        if (addScreen!=null) {
-            addScreen.getQuestions().stream().map(Question::save).forEach(jsonObjectArrayListOfQuestions::add);
+        if (editScreen != null) {
+            editScreen.getQuestions().stream().map(Question::save).forEach(jsonObjectArrayListOfQuestions::add);
             jsonObjectArrayListOfQuestions.forEach(jsonArray::put);
         }
 
 
-        try { jsonObject.put("backgroundSource", editScreen.getBackgroundPath())
-                        .put("globalTimer", editScreen.getTimer())
-                        .put("questions", jsonObjectArrayListOfQuestions)
-                        .put("shapes",new JSONArray());
+        try {
+            jsonObject
+                .put("backgroundSource", editScreen.getBackgroundPath())
+                .put("globalTimer", editScreen.getTimer())
+                .put("questions", jsonObjectArrayListOfQuestions)
+                .put("shapes",new JSONArray());
 
-            SaveFile(jsonObject.toString(4),currentlyOpenFile);
-            if (shouldResetCurrentlyOpenFile){
+            saveFile(jsonObject.toString(4),currentlyOpenFile);
+            if (shouldResetCurrentlyOpenFile) {
                 currentlyOpenFile= null;
             }
-         }catch (JSONException e) {
+         } catch (JSONException e) {
             log.error(e);
             e.printStackTrace();
         }
     }
-
+    /*
     public void saveAndBackToEdit(){
         save(false);
         mainScene.setRoot(editScreenRoot);
         currentMenu = editMenu;
-    }
+    }*/
 
     public void saveAndBackToMain(){
         save(true);
         mainScene.setRoot(mainScreenRoot);
-        currentMenu = mainMenu;
-    }*/
-
-    public void editMap() {
-        fileChooser.setTitle("Open Map");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("All Files", "*.map")
-        );
-
-        currentlyOpenFile = fileChooser.showOpenDialog(new Stage());
-        editScreenRoot.getChildren().clear();
-        try {
-            mapLoader(currentlyOpenFile.getCanonicalPath(), editScreen);
-            editScreenRoot.getChildren().add(editScreen);
-        } catch (IOException e) {
-            log.error(e);
-            e.printStackTrace();
-        }
-        mainScene.setRoot(editScreenRoot);
     }
 
     private void close() {
@@ -272,18 +259,12 @@ public class EditorApp extends Application {
             String myJsonFile = sb.toString();
             JSONObject jsonObjectMap = new JSONObject(myJsonFile);
             String backgroundPath = jsonObjectMap.optString("backgroundSource", "default.png");
-            InputStream fileInputStream;
             log.debug(backgroundPath);
             if (!backgroundPath.contains("/")) {
                 backgroundPath = "/maps/" + backgroundPath;
-                fileInputStream = EditorApp.class.getResourceAsStream(backgroundPath);
-            } else {
-                fileInputStream = new FileInputStream(backgroundPath);
             }
 
-
             editScreen.setBackgroundPath(backgroundPath);
-            editScreen.setMap(new ImageView(new Image(fileInputStream)));
 
             JSONArray jsonArray = jsonObjectMap.getJSONArray("questions");
             ArrayList<Question> arrayListQuestion = new ArrayList<>();
@@ -299,7 +280,7 @@ public class EditorApp extends Application {
             editScreen.setTimer(jsonObjectMap.optLong("Timer"));
 
         } catch (JSONException e) {
-            editScreen.setMap(new ImageView(defaultMap));
+            editScreen.setBackgroundPath(defaultPath);
             log.error(e);
             e.printStackTrace();
         }
@@ -409,7 +390,7 @@ public class EditorApp extends Application {
         };
         
         MAIN_MENU_ACTIONS = new Selection[]{
-            () -> {}, //this::newMap,
+            this::newMap,
             this::editMap,
             this::close
         };
@@ -417,12 +398,12 @@ public class EditorApp extends Application {
         EDIT_MENU_ACTIONS = new Selection[]{
             () -> {}, //this::addQuestions,
             () -> {}, //this::setGlobalTimer,
-            () -> {}, //this::importMap,
-            () -> {}  //this::saveAndBackToMain
+            this::importMap,
+            this::saveAndBackToMain
         };
 
         utils = Utils.getInstance();
-        defaultMap = new Image(GameFrame.class.getResourceAsStream("/maps/default.png"));
+        defaultPath = "/maps/default.png";
         fileChooser = new FileChooser();
         currentlyOpenFile = null;
     }
@@ -430,7 +411,7 @@ public class EditorApp extends Application {
     private void initScreens() {
         mainScreen = new LayoutMain(mainMenu);
         mainScreenRoot.getChildren().add(mainScreen);
-        editScreen = new LayoutEdit(editMenu, defaultMap);
+        editScreen = new LayoutEdit(editMenu, defaultPath);
         editScreenRoot.getChildren().add(editScreen);
         addScreen = new LayoutAdd(addMenu);
     }
