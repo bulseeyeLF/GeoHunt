@@ -1,5 +1,5 @@
 {
-    "backgroundSource": "maps/default.png",
+    "backgroundSource": "notdefault.png",
     "shapes": [],
     "questions": [
         {

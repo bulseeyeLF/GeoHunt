@@ -1,19 +1,18 @@
 package core;
 
-import javafx.scene.control.RadioButton;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.Logger;
 
-public class MultipleChoiceA extends Answer {
+public class AnswerMultiple extends Answer {
 
-    private static final Logger log = Logger.getLogger(MultipleChoiceA.class);
+    private static final Logger log = Logger.getLogger(AnswerMultiple.class);
 
     @Getter
     @Setter
     private boolean correct;
 
-    MultipleChoiceA(String text, boolean correct) {
+    AnswerMultiple(String text, boolean correct) {
         super(text);
         this.correct = correct;
         log.debug("Multiple choice answer created");

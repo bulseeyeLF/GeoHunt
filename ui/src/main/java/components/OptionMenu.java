@@ -30,6 +30,7 @@ public class OptionMenu extends FlowPane {
 
 
     public OptionMenu(String name, String[] text, String[] hint, Selection[] actions, KeyCode[] triggers) {
+        this.setStyle("-fx-background-color: green");
         possibleActions = new HashMap<>();
         this.name = name;
         this.buttons = new OptionButton[text.length];

@@ -8,14 +8,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MultipleChoiceQ extends Question {
+public class QuestionMultiple extends Question {
 
-    private static final Logger log = Logger.getLogger(MultipleChoiceQ.class);
+    private static final Logger log = Logger.getLogger(QuestionMultiple.class);
 
     @Getter
-    private ArrayList<MultipleChoiceA> answers ;
+    private ArrayList<AnswerMultiple> answers ;
 
-    public MultipleChoiceQ(JSONObject jsonQuestion) {
+    public QuestionMultiple(JSONObject jsonQuestion) {
         super(jsonQuestion);
         answers = new ArrayList<>();
         JSONArray answersJson = jsonQuestion.optJSONArray("answers");
@@ -23,12 +23,12 @@ public class MultipleChoiceQ extends Question {
             answersJson.forEach(i->{
                 JSONObject oneAnswer = (JSONObject)i;
                 if (oneAnswer != null) {
-                    answers.add(new MultipleChoiceA(
+                    answers.add(new AnswerMultiple(
                             oneAnswer.optString("text", ""),
                             oneAnswer.optBoolean("correct", false)
                     ));
                 } else {
-                    answers.add(new MultipleChoiceA(
+                    answers.add(new AnswerMultiple(
                             "",
                             false
                     ));
@@ -36,7 +36,7 @@ public class MultipleChoiceQ extends Question {
             });
         } else {
             for (int i = 0; i < 4; i++) {
-                answers.add(new MultipleChoiceA("", false));
+                answers.add(new AnswerMultiple("", false));
             }
         }
 

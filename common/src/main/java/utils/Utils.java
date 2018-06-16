@@ -38,10 +38,10 @@ public class Utils {
     }
 
     public void setPercentageWidth(Region element, double percentage) {
-        element.setPrefWidth(width * 100 / percentage);
+        element.setPrefWidth(width * percentage / 100);
     }
 
     public void setPercentageHeight(Region element, double percentage) {
-        element.setPrefHeight(height * 100 / percentage);
+        element.setPrefHeight(height * percentage / 100);
     }
 }

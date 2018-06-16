@@ -23,7 +23,9 @@ public class LayoutMain extends LayoutBase {
         logo.setFitWidth(utils.getScreenWidth()/5);
         logo.setFitHeight(utils.getScreenHeight()/5);
 
-        this.setStyle("-fx-background-image: url(/main_menu_background.jpg); -fx-background-repeat: fit;");
+        this.setHeight(utils.getScreenHeight());
+        this.setWidth(utils.getScreenWidth());
+        this.setStyle("-fx-background-image: url(/main_menu_background.jpg); -fx-background-repeat: stretch;");
         this.setCenter(logo);
         this.setBottom(menu);
     }

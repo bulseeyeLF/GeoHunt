@@ -5,14 +5,14 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserInputQ extends Question {
+public class QuestionSingle extends Question {
 
-    private static final Logger log = Logger.getLogger(UserInputQ.class);
+    private static final Logger log = Logger.getLogger(QuestionSingle.class);
 
     @Getter
     private Answer answer;
 
-    public UserInputQ(JSONObject jsonQuestion) {
+    public QuestionSingle(JSONObject jsonQuestion) {
         super(jsonQuestion);
         answer = new Answer(jsonQuestion.optString("text", ""));
     }
@@ -20,7 +20,7 @@ public class UserInputQ extends Question {
     @Override
     public JSONObject save() {
         try {
-            log.debug("Save in UserInputQ");
+            log.debug("Save in QuestionSingle");
             return new JSONObject()
                 .put("questionText", this.questionField.getText())
                 .put("timer", this.timer)
