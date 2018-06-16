@@ -7,24 +7,24 @@
             "timer": 0,
             "answers": [
                 {
+                    "correct": false,
+                    "text": "1"
+                },
+                {
+                    "correct": false,
+                    "text": "2 TRUE"
+                },
+                {
+                    "correct": false,
+                    "text": "3"
+                },
+                {
                     "correct": true,
-                    "text": "Comi"
-                },
-                {
-                    "correct": false,
-                    "text": "Ne comi"
-                },
-                {
-                    "correct": false,
-                    "text": "neko tamo"
-                },
-                {
-                    "correct": false,
-                    "text": "ne znam"
+                    "text": "4 FALSE"
                 }
             ],
             "type": 1,
-            "questionText": "Novo pravilo? Ko je najveci bog?aaa"
+            "questionText": "RADI PLS"
         },
         {
             "timer": 0,

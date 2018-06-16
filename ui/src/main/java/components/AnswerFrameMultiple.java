@@ -31,6 +31,8 @@ public class AnswerFrameMultiple extends AnswerFrame {
 
     public AnswerFrameMultiple setAnswer(ArrayList<AnswerMultiple> answers) {
         this.answers = answers;
+        answerFields.clear();
+        buttons.clear();
         for (AnswerMultiple answer : answers) {
             TextField field = answer.getAnswerText();
             field.setPrefSize(100, 50);

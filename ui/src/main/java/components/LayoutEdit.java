@@ -27,10 +27,10 @@ public class LayoutEdit extends LayoutBase {
     private ArrayList<Question> questions;
     private Question selectedQuestion;
     private ArrayList<Shapes> shapes;
-
+    private Utils utils;
     public LayoutEdit(OptionMenu menu, String backgroundPath) {
         super(menu);
-        Utils utils = Utils.getInstance();
+        utils = Utils.getInstance();
         //this.setHeight(utils.getScreenHeight());
         //this.setWidth(utils.getScreenWidth());
 
@@ -42,26 +42,8 @@ public class LayoutEdit extends LayoutBase {
         menu.setAlignment(Pos.BOTTOM_CENTER);
         menu.setPrefHeight(utils.getScreenHeight()*20/100);
         menu.setPrefWidth(utils.getScreenWidth());
-
-        mapAndQuestion = new BorderPane();
-        mapAndQuestion.setPrefHeight(utils.getScreenHeight()*60/100);
-        mapAndQuestion.setPrefWidth(utils.getScreenWidth());
-        mapAndQuestion.setStyle("-fx-background-color: red;");
-
-
-        this.mapImageView = new MapImageView(new Image(backgroundPath));
-        this.mapImageView.setFitHeight(utils.getScreenHeight()*80/100);
-        this.mapImageView.setFitWidth(utils.getScreenWidth()*60/100);
-        this.mapAndQuestion.setLeft(this.mapImageView);
-
-        this.currentFrame = new QuestionFrame();
-        this.currentFrame.setPrefWidth(utils.getScreenWidth()*40/100);
-        this.currentFrame.setPrefHeight(utils.getScreenHeight()*80/100);
-        this.currentFrame.setStyle("-fx-background-color: yellow;");
-        this.mapAndQuestion.setRight(currentFrame);
-
-        this.setCenter(this.mapAndQuestion);
         this.setBottom(menu);
+        resetScreen();
     }
 
     public void setQuestions(ArrayList<Question> questions) {
@@ -73,5 +55,28 @@ public class LayoutEdit extends LayoutBase {
     public void setBackgroundPath(String backgroundPath) {
         this.backgroundPath = backgroundPath;
         this.mapImageView = new MapImageView(new Image(backgroundPath));
+    }
+
+    public void resetScreen() {
+
+        questions = null;
+        selectedQuestion = null;
+
+        mapAndQuestion = new BorderPane();
+        mapAndQuestion.setPrefHeight(utils.getScreenHeight()*60/100);
+        mapAndQuestion.setPrefWidth(utils.getScreenWidth());
+        mapAndQuestion.setStyle("-fx-background-color: red;");
+        mapAndQuestion.setRight(this.currentFrame);
+        mapAndQuestion.setLeft(mapImageView);
+        this.mapImageView = new MapImageView(new Image(backgroundPath));
+        this.mapImageView.setFitHeight(utils.getScreenHeight()*80/100);
+        this.mapImageView.setFitWidth(utils.getScreenWidth()*60/100);
+        this.mapAndQuestion.setLeft(this.mapImageView);
+        this.currentFrame = new QuestionFrame();
+        this.currentFrame.setPrefWidth(utils.getScreenWidth()*40/100);
+        this.currentFrame.setPrefHeight(utils.getScreenHeight()*80/100);
+        this.currentFrame.setStyle("-fx-background-color: yellow;");
+        this.mapAndQuestion.setRight(currentFrame);
+        this.setCenter(this.mapAndQuestion);
     }
 }
