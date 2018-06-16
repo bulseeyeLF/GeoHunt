@@ -5,8 +5,9 @@ import lombok.Getter;
 
 public class Answer {
     @Getter
-    protected TextField answerTextField;
+    protected TextField answerText;
 
     public Answer(String text) {
-        this.answerTextField = new TextField(text);}
+        answerText = new TextField(text);
+    }
 }

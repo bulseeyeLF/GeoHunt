@@ -1,25 +1,21 @@
 package app;
 
 import components.*;
-import core.MultipleChoiceQ;
+import core.QuestionMultiple;
 import core.Question;
-import core.UserInputQ;
+import core.QuestionSingle;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import lombok.Data;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +24,6 @@ import utils.Utils;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Optional;
 
 
 public class EditorApp extends Application {
@@ -63,10 +58,6 @@ public class EditorApp extends Application {
     private LayoutAdd addScreen;
 
     private LayoutBase currentScreen;
-
-    private GameFrame editScreenn;
-    private QuestionEditPane addScreenn;
-    private BorderPane mainScreenn;
 
     private  OptionMenu mainMenu;
     private  OptionMenu editMenu;
@@ -153,9 +144,9 @@ public class EditorApp extends Application {
     }
     
     public void addUserInputQuestion() {
-        UserInputQ newQuestion = null;
+        QuestionSingle newQuestion = null;
         try {
-            newQuestion = new UserInputQ(new JSONObject("{\"type\":0}"));
+            newQuestion = new QuestionSingle(new JSONObject("{\"type\":0}"));
         } catch (JSONException e) {
             log.error(e);
             e.printStackTrace();
@@ -164,9 +155,9 @@ public class EditorApp extends Application {
     }
     
     public void addMultipleChoiceQuestion() {
-        MultipleChoiceQ newQuestion = null;
+        QuestionMultiple newQuestion = null;
         try {
-            newQuestion = new MultipleChoiceQ(new JSONObject("{\"type\":1}"));
+            newQuestion = new QuestionMultiple(new JSONObject("{\"type\":1}"));
         } catch (JSONException e) {
             log.error(e);
             e.printStackTrace();
@@ -233,27 +224,25 @@ public class EditorApp extends Application {
         save(true);
         mainScene.setRoot(mainScreenRoot);
         currentMenu = mainMenu;
-    }
+    }*/
 
     public void editMap() {
         fileChooser.setTitle("Open Map");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("All Files", "*.map")
         );
-        Stage currentStage = new Stage();
-        currentlyOpenFile = fileChooser.showOpenDialog(currentStage);
+
+        currentlyOpenFile = fileChooser.showOpenDialog(new Stage());
         editScreenRoot.getChildren().clear();
         try {
-            editScreen = initEditScreen(currentlyOpenFile.getCanonicalPath());
+            mapLoader(currentlyOpenFile.getCanonicalPath(), editScreen);
             editScreenRoot.getChildren().add(editScreen);
         } catch (IOException e) {
             log.error(e);
             e.printStackTrace();
         }
-
         mainScene.setRoot(editScreenRoot);
-        currentMenu = editMenu;
-    }*/
+    }
 
     private void close() {
         Platform.exit();
@@ -271,24 +260,7 @@ public class EditorApp extends Application {
         parent.setTitle("Editor");
     }
 
-    private GameFrame initEditScreen(String input) throws IOException {
-        GameFrame editScreen = new GameFrame();
-        if ( input!= null ){
-            mapLoader(input, editScreen);
-        } else {
-            FileChooser fileChooser = new FileChooser();
-
-            editScreen.setBackground(defaultMap);
-        }
-        this.editMenu.setPrefWidth(utils.getScreenWidth()/5);
-        this.editMenu.setPrefHeight(utils.getScreenHeight());
-        editScreen.setRight(this.editMenu);
-        this.editMenu.setAlignment(Pos.CENTER);
-
-        return editScreen;
-    }
-
-    private void mapLoader(String input, GameFrame editScreen) throws IOException{
+    private void mapLoader(String input, LayoutEdit editScreen) throws IOException{
         try {
             BufferedReader br = new BufferedReader(new FileReader(input));
             StringBuilder sb = new StringBuilder();
@@ -301,31 +273,33 @@ public class EditorApp extends Application {
             JSONObject jsonObjectMap = new JSONObject(myJsonFile);
             String backgroundPath = jsonObjectMap.optString("backgroundSource", "default.png");
             InputStream fileInputStream;
+            log.debug(backgroundPath);
             if (!backgroundPath.contains("/")) {
-                backgroundPath = "resources/maps/" + backgroundPath;
-                fileInputStream = GameFrame.class.getResourceAsStream(backgroundPath);
+                backgroundPath = "/maps/" + backgroundPath;
+                fileInputStream = EditorApp.class.getResourceAsStream(backgroundPath);
             } else {
                 fileInputStream = new FileInputStream(backgroundPath);
             }
 
+
             editScreen.setBackgroundPath(backgroundPath);
-            editScreen.setBackground(new Image(fileInputStream));
+            editScreen.setMap(new ImageView(new Image(fileInputStream)));
 
             JSONArray jsonArray = jsonObjectMap.getJSONArray("questions");
             ArrayList<Question> arrayListQuestion = new ArrayList<>();
             jsonArray.forEach(i -> {
                 int typeInt = ((JSONObject) i).optInt("type");
                 if (typeInt == 0) {
-                    arrayListQuestion.add(new UserInputQ((JSONObject) i));
+                    arrayListQuestion.add(new QuestionSingle((JSONObject) i));
                 } else if (typeInt == 1) {
-                    arrayListQuestion.add(new MultipleChoiceQ((JSONObject) i));
+                    arrayListQuestion.add(new QuestionMultiple((JSONObject) i));
                 }
             });
             editScreen.setQuestions(arrayListQuestion);
             editScreen.setTimer(jsonObjectMap.optLong("Timer"));
 
         } catch (JSONException e) {
-            editScreen.setBackground(defaultMap);
+            editScreen.setMap(new ImageView(defaultMap));
             log.error(e);
             e.printStackTrace();
         }
@@ -436,7 +410,7 @@ public class EditorApp extends Application {
         
         MAIN_MENU_ACTIONS = new Selection[]{
             () -> {}, //this::newMap,
-            () -> {}, //this::editMap,
+            this::editMap,
             this::close
         };
         
@@ -456,7 +430,7 @@ public class EditorApp extends Application {
     private void initScreens() {
         mainScreen = new LayoutMain(mainMenu);
         mainScreenRoot.getChildren().add(mainScreen);
-        editScreen = new LayoutEdit(editMenu);
+        editScreen = new LayoutEdit(editMenu, defaultMap);
         editScreenRoot.getChildren().add(editScreen);
         addScreen = new LayoutAdd(addMenu);
     }

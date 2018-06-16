@@ -1,6 +1,8 @@
 package core;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import lombok.Data;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -11,12 +13,10 @@ public abstract class Question {
 
     protected Long timer;
     protected int type;
-    protected TextArea questionTextArea;
+    protected TextField questionField;
 
     public Question(JSONObject jsonQuestion) {
-        questionTextArea = new TextArea(
-            jsonQuestion.optString("questionText", "")
-        );
+        questionField = new TextField(jsonQuestion.optString("questionText", ""));
         timer = jsonQuestion.optLong("timer", 0);
         type = jsonQuestion.optInt("type", 0);
     }

@@ -1,3 +1,4 @@
+/*
 package components;
 
 import core.Question;
@@ -19,8 +20,8 @@ public class QuestionEditPane extends BorderPane {
     private ArrayList<Button> questionButtons;
     @Getter
     private Question selectedQuestion;
-    private MultipleChoiceQFrame multipleChoiceAdapter;
-    private UserInputQFrame userInputAdapter;
+    private QuestionFrameMultiple multipleChoiceAdapter;
+    private QuestionFrameSingle userInputAdapter;
     private FlowPane buttonsPane;
     @Getter
     private QuestionFrame frame;
@@ -31,8 +32,8 @@ public class QuestionEditPane extends BorderPane {
             questions = new ArrayList<>();
         }
         Utils utils = Utils.getInstance();
-        userInputAdapter = new UserInputQFrame();
-        multipleChoiceAdapter = new MultipleChoiceQFrame();
+        userInputAdapter = new QuestionFrameSingle();
+        multipleChoiceAdapter = new QuestionFrameMultiple();
         buttonsPane = new FlowPane();
         this.questions = questions;
         questionButtons = new ArrayList<>();
@@ -104,3 +105,4 @@ public class QuestionEditPane extends BorderPane {
 
 
 }
+*/
