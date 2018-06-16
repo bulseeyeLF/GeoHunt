@@ -280,7 +280,7 @@ public class EditorApp extends Application {
                 backgroundPath = "/maps/" + backgroundPath;
                 newMap = new Image(backgroundPath);
             } else {
-                newMap = new Image(backgroundPath);
+                newMap = new Image("file:" + backgroundPath);
             }
             editScreen.setBackgroundPath(newMap, backgroundPath);
 
