@@ -1,17 +1,25 @@
 package components;
 
 import core.Question;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import lombok.*;
+import org.apache.log4j.Logger;
 import utils.Utils;
 
 import java.util.ArrayList;
 
+
+
 public class LayoutEdit extends LayoutBase {
+
+    private static Logger log = Logger.getLogger(LayoutEdit.class);
+
     @Getter
     private String backgroundPath;
     @Setter
