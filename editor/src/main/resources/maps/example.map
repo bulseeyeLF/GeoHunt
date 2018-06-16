@@ -1,5 +1,6 @@
 {
-    "backgroundSource": "notdefault.png",
+    "backgroundSource": "/maps/notdefault.png",
+    "globalTimer": 0,
     "shapes": [],
     "questions": [
         {
@@ -23,7 +24,7 @@
                 }
             ],
             "type": 1,
-            "questionText": "Novo pravilo? Ko je najveci bog?"
+            "questionText": "Novo pravilo? Ko je najveci bog?aaa"
         },
         {
             "timer": 0,

@@ -50,8 +50,8 @@ public class AnswerFrameMultiple extends AnswerFrame {
             answerFields.add(field);
             buttons.add(button);
         }
+        this.getChildren().clear();
         for (int i = 0; i < answers.size(); i++) {
-            this.getChildren().removeAll();
             this.getChildren().addAll(answerFields.get(i), buttons.get(i));
         }
         return this;
