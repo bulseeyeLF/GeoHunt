@@ -14,15 +14,19 @@ import java.util.ArrayList;
 public class LayoutEdit extends LayoutBase {
     @Getter
     private String backgroundPath;
-    private ImageView map;
+    @Setter
+    private MapImageView mapImageView;
+
     @Getter
     @Setter
     private Long timer;
+
     private BorderPane mapAndQuestion;
     private QuestionFrame currentFrame;
     @Getter
     private ArrayList<Question> questions;
     private Question selectedQuestion;
+    private ArrayList<Shapes> shapes;
 
     public LayoutEdit(OptionMenu menu, String backgroundPath) {
         super(menu);
@@ -44,10 +48,11 @@ public class LayoutEdit extends LayoutBase {
         mapAndQuestion.setPrefWidth(utils.getScreenWidth());
         mapAndQuestion.setStyle("-fx-background-color: red;");
 
-        this.map = new ImageView(new Image(backgroundPath));
-        this.map.setFitHeight(utils.getScreenHeight()*80/100);
-        this.map.setFitWidth(utils.getScreenWidth()*60/100);
-        this.mapAndQuestion.setLeft(this.map);
+
+        this.mapImageView = new MapImageView(new Image(backgroundPath));
+        this.mapImageView.setFitHeight(utils.getScreenHeight()*80/100);
+        this.mapImageView.setFitWidth(utils.getScreenWidth()*60/100);
+        this.mapAndQuestion.setLeft(this.mapImageView);
 
         this.currentFrame = new QuestionFrame();
         this.currentFrame.setPrefWidth(utils.getScreenWidth()*40/100);
@@ -67,6 +72,6 @@ public class LayoutEdit extends LayoutBase {
 
     public void setBackgroundPath(String backgroundPath) {
         this.backgroundPath = backgroundPath;
-        this.map = new ImageView(new Image(backgroundPath));
+        this.mapImageView = new MapImageView(new Image(backgroundPath));
     }
 }
