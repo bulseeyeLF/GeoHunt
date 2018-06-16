@@ -220,7 +220,6 @@ public class EditorApp extends Application {
             editScreen.getQuestions().stream().map(Question::save).forEach(jsonObjectArrayListOfQuestions::add);
             jsonObjectArrayListOfQuestions.forEach(jsonArray::put);
         }
-
         try {
             jsonObject
                 .put("backgroundSource", editScreen.getBackgroundPath())
@@ -234,6 +233,7 @@ public class EditorApp extends Application {
             log.error(e);
             e.printStackTrace();
         }
+        currentlyOpenFile = null;
     }
     /*
     public void saveAndBackToEdit(){
