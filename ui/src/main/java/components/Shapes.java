@@ -10,6 +10,7 @@ public abstract class Shapes{
     @Setter
     @Getter
     Shape shape ;
+    boolean selected;
 
     protected Shapes(){
     }
@@ -18,8 +19,8 @@ public abstract class Shapes{
 
     public abstract Rectangle getRectangle();
 
-    public boolean isFocused(){
-        return shape.isFocused();
+    public void setSelected(boolean selected){
+       this.selected = selected;
     }
 
 }

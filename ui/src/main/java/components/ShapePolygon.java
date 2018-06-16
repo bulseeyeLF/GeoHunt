@@ -3,6 +3,7 @@ package components;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -62,5 +63,6 @@ public class ShapePolygon extends Shapes {
             minY = Math.min(minY, y);
             maxY = Math.max(maxY, y);
         }
+
     }
 }

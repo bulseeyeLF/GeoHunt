@@ -9,19 +9,22 @@ import javafx.scene.layout.BorderPane;
 import lombok.Setter;
 import utils.Utils;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class LayoutEdit extends LayoutBase {
     @Setter
     private String backgroundPath;
     @Setter
-    private ImageView map;
+    private MapImageView mapImageView;
     private BorderPane mapAndQuestion;
     private QuestionFrame currentFrame;
     private ArrayList<Question> questions;
     private Question selectedQuestion;
 
-    public LayoutEdit(OptionMenu menu, Image map) {
+    private ArrayList<Shapes> shapes;
+
+    public LayoutEdit(OptionMenu menu, Image mapImage) {
         super(menu);
         Utils utils = Utils.getInstance();
 
@@ -40,10 +43,10 @@ public class LayoutEdit extends LayoutBase {
         mapAndQuestion.setPrefWidth(utils.getScreenWidth());
         mapAndQuestion.setStyle("-fx-background-color: red;");
 
-        this.map = new ImageView(map);
-        this.map.setFitHeight(utils.getScreenHeight()*80/100);
-        this.map.setFitWidth(utils.getScreenWidth()*60/100);
-        this.mapAndQuestion.setLeft(this.map);
+        this.mapImageView = new MapImageView(mapImage);
+        this.mapImageView.setFitHeight(utils.getScreenHeight()*80/100);
+        this.mapImageView.setFitWidth(utils.getScreenWidth()*60/100);
+        this.mapAndQuestion.setLeft(this.mapImageView);
 
         this.currentFrame = new QuestionFrame();
         this.currentFrame.setPrefWidth(utils.getScreenWidth()*40/100);
