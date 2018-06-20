@@ -1,12 +1,9 @@
 package components;
 
 import core.Question;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import lombok.*;
 import org.apache.log4j.Logger;
@@ -23,7 +20,7 @@ public class LayoutEdit extends LayoutBase {
     @Getter
     private String backgroundPath;
     @Setter
-    private MapImageView mapImageView;
+    private CanvasImageView canvasImageView;
 
     @Getter
     @Setter
@@ -62,8 +59,8 @@ public class LayoutEdit extends LayoutBase {
 
     public void setBackgroundPath(Image newMap, String newPath) {
         this.backgroundPath = newPath;
-        this.mapImageView = new MapImageView(newMap);
-        ((MapImageView) mapAndQuestion.getLeft()).setImage(newMap);
+        this.canvasImageView = new CanvasImageView(newMap);
+        ((CanvasImageView) mapAndQuestion.getLeft()).setMapImageView(newMap);
     }
 
     public void resetScreen() {
@@ -76,11 +73,11 @@ public class LayoutEdit extends LayoutBase {
         mapAndQuestion.setPrefWidth(utils.getScreenWidth());
         mapAndQuestion.setStyle("-fx-background-color: red;");
         mapAndQuestion.setRight(this.currentFrame);
-        mapAndQuestion.setLeft(mapImageView);
-        this.mapImageView = new MapImageView(new Image(backgroundPath));
-        this.mapImageView.setFitHeight(utils.getScreenHeight()*80/100);
-        this.mapImageView.setFitWidth(utils.getScreenWidth()*60/100);
-        this.mapAndQuestion.setLeft(this.mapImageView);
+        mapAndQuestion.setLeft(this.canvasImageView);
+        this.canvasImageView = new CanvasImageView(new Image(backgroundPath));
+        this.canvasImageView.getMapImageView().setFitHeight(utils.getScreenHeight()*80/100);
+        this.canvasImageView.getMapImageView().setFitWidth(utils.getScreenWidth()*60/100);
+        this.mapAndQuestion.setLeft(this.canvasImageView);
         this.currentFrame = new QuestionFrame();
         this.currentFrame.setPrefWidth(utils.getScreenWidth()*40/100);
         this.currentFrame.setPrefHeight(utils.getScreenHeight()*80/100);

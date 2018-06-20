@@ -17,8 +17,7 @@ public class MyHandler implements EventHandler<MouseEvent> {
 
     public MyHandler(EventHandler<MouseEvent> onDraggedEventHandler,
                      EventHandler<MouseEvent> onClickedEventHandler,
-                     EventHandler<MouseEvent> onReleasedEventHandler,
-                     EventHandler<MouseEvent> onDoubleClickEvenHandler) {
+                     EventHandler<MouseEvent> onReleasedEventHandler) {
         this.onDraggedEventHandler = onDraggedEventHandler;
         this.onClickedEventHandler = onClickedEventHandler;
         this.onReleasedEventHandler = onReleasedEventHandler;
