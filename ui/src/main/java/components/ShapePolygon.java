@@ -73,7 +73,7 @@ public class ShapePolygon extends Shapes {
             yCords[i/2] = coordinates[i+1];
         }
 
-        if (params.length == 3){
+        if (params.length == 3 || params.length ==0){
             log.debug("Stroke Polygon");
             graphicsContext.strokePolygon(xCords,yCords,xCords.length);
 

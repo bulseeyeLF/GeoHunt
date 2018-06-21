@@ -9,6 +9,8 @@ import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+
 
 public class CanvasImageView extends Canvas {
     @Getter
@@ -24,10 +26,12 @@ public class CanvasImageView extends Canvas {
     private double x,y;
     Shapes currentShape;
     private double [] coords =null;
+    ArrayList<Shapes> shapesOnCanvas;
 
 
     public CanvasImageView(Image img){
         super(WIDTH,HEIGHT);
+        shapesOnCanvas = new ArrayList<>();
         currentImage = img;
         dragged = false;
         mapImageView = new ImageView(img);
@@ -44,21 +48,28 @@ public class CanvasImageView extends Canvas {
         );
     }
 
+    private void redrawShapes() {
+        log.debug("REDRAWING");
+        graphicsContext.clearRect(0,0,WIDTH,HEIGHT);
+        graphicsContext.drawImage(currentImage, 0, 0, WIDTH,HEIGHT);
+        shapesOnCanvas.forEach(shapes -> shapes.drawShape(graphicsContext));
+        log.debug("REDRAWING FINISHED");
+        //TODO implement reading shapes from file and drawing them on canvas
+    }
 
+    private void saveShape(Shapes currentShape) {
+        shapesOnCanvas.add(currentShape);
+    }
 
-    //TODO drawing circle
     private void MousePressed(MouseEvent event) {
         log.debug("Mouse pressed");
-        //TODO maybe initialization of circle?
         x = event.getX();
         y = event.getY();
     }
 
     public void MouseDragged(MouseEvent event) {
-        //TODO implement instanciating Circle
         double xPosition = event.getX();
         double yPosition = event.getY();
-        graphicsContext.clearRect(0,0,WIDTH,HEIGHT);
         redrawShapes();
         if (xPosition > WIDTH ) xPosition = WIDTH;
         if (yPosition > HEIGHT) yPosition = HEIGHT;
@@ -66,18 +77,13 @@ public class CanvasImageView extends Canvas {
         if (yPosition < 0) yPosition = 0;
         currentShape= new ShapeEllipse(x,y, Math.sqrt(Math.pow(xPosition -x,2)), Math.sqrt(Math.pow(yPosition - y,2)));
         currentShape.drawShape(graphicsContext, xPosition,yPosition);
+        ((ShapeEllipse)currentShape).setRadiusXposition(xPosition);
+        ((ShapeEllipse)currentShape).setRadiusYposition(yPosition);
         log.debug("Mouse dragged");
         dragged = true;
     }
 
-    private void redrawShapes() {
-        graphicsContext.drawImage(currentImage, 0, 0, WIDTH,HEIGHT);
-        //TODO implement reading shapes from file and drawing them on canvas
-    }
 
-    private void saveShape(Shapes currentShape) {
-        //TODO implement func
-    }
 
     public void MouseReleased(MouseEvent event){
         if (dragged){
@@ -93,14 +99,12 @@ public class CanvasImageView extends Canvas {
         //TODO implement selecting the shape
         double xPosition = event.getX();
         double yPosition = event.getY();
-
-        graphicsContext.clearRect(0,0,WIDTH,HEIGHT);
         redrawShapes();
         if (xPosition > WIDTH ) xPosition = WIDTH;
         if (yPosition > HEIGHT) yPosition = HEIGHT;
         if (xPosition < 0) xPosition = 0;
         if (yPosition < 0) yPosition = 0;
-       if (currentShape ==null){
+       if (currentShape == null){
            currentShape = new ShapePolygon(event.getX(),event.getY());
        }else {
            ((ShapePolygon) currentShape).addPoint(xPosition, yPosition);
@@ -115,6 +119,7 @@ public class CanvasImageView extends Canvas {
         if (currentShape instanceof ShapePolygon){
             log.debug("current shape instance of shapepolygon");
             currentShape.drawShape(graphicsContext, event.getX(), event.getY(), 1);
+            saveShape(currentShape);
             currentShape = null;
         }
     }

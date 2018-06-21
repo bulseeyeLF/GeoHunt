@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 import lombok.Data;
+import lombok.Setter;
 import org.apache.log4j.Logger;
 
 @Data
@@ -14,6 +15,10 @@ public class ShapeEllipse extends Shapes{
     private double centreY;
     private double radiusX;
     private double radiusY;
+    @Setter
+    private double radiusXposition;
+    @Setter
+    private double radiusYposition;
 
     private static Logger log = Logger.getLogger(ShapeEllipse.class);
 
@@ -52,10 +57,13 @@ public class ShapeEllipse extends Shapes{
 
     @Override
     protected void drawShape(GraphicsContext graphicsContext, double ... params) {
-        double radiusXpostion = params[0];
-        double radiusYposition = params[1];
+        if (params.length != 0) {
+            radiusXposition = params[0];
+            radiusYposition = params[1];
+        }
         graphicsContext.setStroke(Color.BLACK);
-        graphicsContext.strokeOval(Math.min(centreX, radiusXpostion), Math.min(centreY,radiusYposition), radiusX, radiusY);
+        graphicsContext.strokeOval(Math.min(centreX, radiusXposition), Math.min(centreY,radiusYposition), radiusX, radiusY);
+        log.debug("Stroke ellipse");
     }
 
 
