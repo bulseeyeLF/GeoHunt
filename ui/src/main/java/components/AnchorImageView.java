@@ -94,16 +94,16 @@ public class AnchorImageView extends AnchorPane {
 
     private void redrawShapes() {
         this.getChildren().clear();
-        mapImageView = new ImageView(currentImage);
+        mapImageView.setImage(currentImage);
         this.getChildren().add(mapImageView);
         this.getChildren().addAll(shapesOnCanvas.stream().map(Shapes::getShape).collect(Collectors.toList()));
     }
 
-    public void setMapImageView(Image imageView){
+    public void setMapImageView(Image image){
         //graphicsContext.clearRect(0,0,WIDTH,HEIGHT);
         this.getChildren().clear();
-        currentImage = imageView;
-        mapImageView = new ImageView(currentImage);
+        mapImageView.setImage(image);
+        currentImage = image;
         this.getChildren().add(mapImageView);
     }
 }

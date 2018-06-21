@@ -55,6 +55,7 @@ public class LayoutEdit extends LayoutBase {
     public void addQuestion() {
 
     };
+
     public void setQuestions(ArrayList<Question> questions) {
         this.questions = questions;
         if (!questions.isEmpty()) {
@@ -69,7 +70,6 @@ public class LayoutEdit extends LayoutBase {
         this.anchorImageView = new AnchorImageView(newMap);
         ((AnchorImageView) mapAndQuestion.getLeft()).setMapImageView(newMap);
     }
-
 
     public void resetScreen() {
         questions = null;

@@ -76,8 +76,7 @@ public class OptionMenu extends FlowPane {
         log.debug("Button pressed");
     }
     public void selectSelectedButton() {
-        for (OptionButton button:buttons
-             ) {
+        for (OptionButton button: buttons) {
             if (button.isFocused()) {
                 button.getAction().execute();
             }
