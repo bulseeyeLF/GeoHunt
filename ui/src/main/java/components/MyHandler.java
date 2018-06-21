@@ -11,24 +11,30 @@ public class MyHandler implements EventHandler<MouseEvent> {
 
     private final EventHandler<MouseEvent> onReleasedEventHandler;
 
+    private final EventHandler<MouseEvent> onPressedEventHandler;
+
 
     private boolean dragging = false;
 
 
     public MyHandler(EventHandler<MouseEvent> onDraggedEventHandler,
                      EventHandler<MouseEvent> onClickedEventHandler,
-                     EventHandler<MouseEvent> onReleasedEventHandler) {
+                     EventHandler<MouseEvent> onReleasedEventHandler,
+                     EventHandler<MouseEvent> onPressedEventHandler) {
         this.onDraggedEventHandler = onDraggedEventHandler;
         this.onClickedEventHandler = onClickedEventHandler;
         this.onReleasedEventHandler = onReleasedEventHandler;
+        this.onPressedEventHandler = onPressedEventHandler;
     }
 
     @Override
     public void handle(MouseEvent event) {
         if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
             dragging = false;
+            this.onPressedEventHandler.handle(event);
         }
         else if (event.getEventType() == MouseEvent.DRAG_DETECTED) {
+            //this.onDragDetectHandler.handle(event);
             dragging = true;
         }
         else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED) {

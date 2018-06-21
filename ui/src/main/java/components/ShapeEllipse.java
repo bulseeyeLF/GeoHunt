@@ -1,9 +1,12 @@
 package components;
 
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 import lombok.Data;
+import org.apache.log4j.Logger;
 
 @Data
 public class ShapeEllipse extends Shapes{
@@ -11,6 +14,8 @@ public class ShapeEllipse extends Shapes{
     private double centreY;
     private double radiusX;
     private double radiusY;
+
+    private static Logger log = Logger.getLogger(ShapeEllipse.class);
 
     public ShapeEllipse(){
         super();
@@ -44,4 +49,15 @@ public class ShapeEllipse extends Shapes{
     public Rectangle getRectangle() {
         return new Rectangle(centreX, centreX,radiusX, radiusY);
     }
+
+    @Override
+    protected void drawShape(GraphicsContext graphicsContext, double ... params) {
+        double radiusXpostion = params[0];
+        double radiusYposition = params[1];
+        graphicsContext.setStroke(Color.BLACK);
+        graphicsContext.strokeOval(Math.min(centreX, radiusXpostion), Math.min(centreY,radiusYposition), radiusX, radiusY);
+    }
+
+
+
 }

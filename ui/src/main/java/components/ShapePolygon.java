@@ -1,6 +1,7 @@
 package components;
 
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -52,6 +53,11 @@ public class ShapePolygon extends Shapes {
     @Override
     public Rectangle getRectangle() {
         return new Rectangle((maxX-minX)/2, (maxY-minY)/2,maxX-minX, maxY-minY );
+    }
+
+    @Override
+    protected void drawShape(GraphicsContext graphicsContext, double ... params) {
+
     }
 
     private void setMinMax(){

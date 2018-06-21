@@ -1,6 +1,7 @@
 package components;
 
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import lombok.Getter;
@@ -22,5 +23,7 @@ public abstract class Shapes{
     public void setSelected(boolean selected){
        this.selected = selected;
     }
+
+    protected abstract void drawShape(GraphicsContext graphicsContext, double ... params);
 
 }
