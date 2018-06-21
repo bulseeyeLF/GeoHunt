@@ -1,5 +1,5 @@
 {
-    "backgroundSource": "notdefault.png",
+    "backgroundSource": "/Users/bulse_eye/git/GeoHunt/editor/src/main/resources/maps/notdefault.png",
     "globalTimer": 40000,
     "shapes": [],
     "questions": [
@@ -15,11 +15,11 @@
                     "text": "2 TRUE"
                 },
                 {
-                    "correct": false,
+                    "correct": true,
                     "text": "3"
                 },
                 {
-                    "correct": true,
+                    "correct": false,
                     "text": "4 FALSE"
                 }
             ],

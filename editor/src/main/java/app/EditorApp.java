@@ -114,7 +114,7 @@ public class EditorApp extends Application {
         currentlyOpenFile = null;
         editScreen.resetScreen();
 
-        editScreen.setBackgroundPath(new Image(getClass().getResourceAsStream(defaultPath)), defaultPath);
+        editScreen.setBackgroundPath(defaultPath);
         mainScene.setRoot(editScreenRoot);
     }
 
@@ -127,13 +127,15 @@ public class EditorApp extends Application {
         //fileChooser.setInitialDirectory(mapsFolder);
 
         currentlyOpenFile = fileChooser.showOpenDialog(new Stage());
-        try {
-            mapLoader(currentlyOpenFile.getCanonicalPath(), editScreen);
-        } catch (IOException e) {
-            log.error(e);
-            e.printStackTrace();
+        if (currentlyOpenFile != null) {
+            try {
+                mapLoader(currentlyOpenFile.getCanonicalPath(), editScreen);
+            } catch (IOException e) {
+                log.error(e);
+                e.printStackTrace();
+            }
+            mainScene.setRoot(editScreenRoot);
         }
-        mainScene.setRoot(editScreenRoot);
     }
 
     private void setGlobalTimer() {
@@ -164,7 +166,7 @@ public class EditorApp extends Application {
             new FileChooser.ExtensionFilter("All Files", "*.png")
         );
         File file = fileChooser.showOpenDialog(new Stage());
-        editScreen.setBackgroundPath(new Image("file:" + file.getAbsolutePath()), file.getAbsolutePath());
+        editScreen.setBackgroundPath(file.getAbsolutePath());
     }
     /*
     public void addUserInputQuestion() {
@@ -210,28 +212,36 @@ public class EditorApp extends Application {
         ArrayList<JSONObject> jsonObjectArrayListOfQuestions= new ArrayList<>();
 
         if (currentlyOpenFile == null){
-            fileChooser.setTitle("Set name for new map");
+            fileChooser.setTitle("Save a new map");
             //fileChooser.setInitialDirectory(mapsFolder);
+            fileChooser.getExtensionFilters().clear();
+            fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Files", "*.map")
+            );
             currentlyOpenFile = fileChooser.showSaveDialog(new Stage());
         }
+        if (currentlyOpenFile != null) {
+            JSONArray jsonArray = new JSONArray();
+            if (editScreen != null) {
+                ArrayList<Question> questions = editScreen.getQuestions();
+                if (questions != null) {
+                    questions.stream().map(Question::save).forEach(jsonObjectArrayListOfQuestions::add);
+                    jsonObjectArrayListOfQuestions.forEach(jsonArray::put);
+                }
+            }
+            try {
+                jsonObject
+                    .put("backgroundSource", editScreen.getBackgroundPath())
+                    .put("globalTimer", editScreen.getTimer())
+                    .put("questions", jsonObjectArrayListOfQuestions)
+                    .put("shapes",new JSONArray());
 
-        JSONArray jsonArray = new JSONArray();
-        if (editScreen != null) {
-            editScreen.getQuestions().stream().map(Question::save).forEach(jsonObjectArrayListOfQuestions::add);
-            jsonObjectArrayListOfQuestions.forEach(jsonArray::put);
-        }
-        try {
-            jsonObject
-                .put("backgroundSource", editScreen.getBackgroundPath())
-                .put("globalTimer", editScreen.getTimer())
-                .put("questions", jsonObjectArrayListOfQuestions)
-                .put("shapes",new JSONArray());
-
-            saveFile(jsonObject.toString(4),currentlyOpenFile);
-            currentlyOpenFile = null;
-         } catch (JSONException e) {
-            log.error(e);
-            e.printStackTrace();
+                saveFile(jsonObject.toString(4), currentlyOpenFile);
+                currentlyOpenFile = null;
+            } catch (JSONException e) {
+                log.error(e);
+                e.printStackTrace();
+            }
         }
         currentlyOpenFile = null;
     }
@@ -275,14 +285,15 @@ public class EditorApp extends Application {
             String myJsonFile = sb.toString();
             JSONObject jsonObjectMap = new JSONObject(myJsonFile);
             String backgroundPath = jsonObjectMap.optString("backgroundSource", "default.png");
-            Image newMap;
-            if (!backgroundPath.contains("/")){
-                backgroundPath = "/maps/" + backgroundPath;
-                newMap = new Image(backgroundPath);
-            } else {
-                newMap = new Image("file:" + backgroundPath);
+            if (!backgroundPath.contains("/")) {
+                URL resource = EditorApp.class.getResource("/maps/" + backgroundPath);
+                try {
+                    backgroundPath = Paths.get(resource.toURI()).toString();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
-            editScreen.setBackgroundPath(newMap, backgroundPath);
+            editScreen.setBackgroundPath(backgroundPath);
 
             JSONArray jsonArray = jsonObjectMap.getJSONArray("questions");
 
@@ -421,7 +432,12 @@ public class EditorApp extends Application {
         };
 
         utils = Utils.getInstance();
-        defaultPath = "maps/default.png";
+        URL resource = EditorApp.class.getResource("/maps/default.png");
+        try {
+            defaultPath = Paths.get(resource.toURI()).toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         fileChooser = new FileChooser();
         currentlyOpenFile = null;
         //mapsFolder = new File(EditorApp.class.getResource("/maps/").getFile());
