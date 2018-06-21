@@ -18,7 +18,6 @@ public class GameFrame extends BorderPane {
     private Utils utils = Utils.getInstance();
     private double WIDTH = utils.getScreenWidth() - utils.getScreenWidth()/5;
     private double HEIGHT = utils.getScreenHeight();
-    @Getter
     private Long timer;
     private String backgroundPath;
 

@@ -20,7 +20,7 @@ public class LayoutEdit extends LayoutBase {
     @Getter
     private String backgroundPath;
     @Setter
-    private CanvasImageView canvasImageView;
+    private AnchorImageView anchorImageView;
 
     @Getter
     @Setter
@@ -66,8 +66,8 @@ public class LayoutEdit extends LayoutBase {
     public void setBackgroundPath(String newPath) {
         this.backgroundPath = newPath;
         Image newMap = new Image("file:" + this.backgroundPath);
-        this.canvasImageView = new CanvasImageView(newMap);
-        ((CanvasImageView) mapAndQuestion.getLeft()).setMapImageView(newMap);
+        this.anchorImageView = new AnchorImageView(newMap);
+        ((AnchorImageView) mapAndQuestion.getLeft()).setMapImageView(newMap);
     }
 
 
@@ -80,11 +80,11 @@ public class LayoutEdit extends LayoutBase {
         mapAndQuestion.setPrefWidth(utils.getScreenWidth());
         mapAndQuestion.setStyle("-fx-background-color: red;");
         mapAndQuestion.setRight(this.currentFrame);
-        mapAndQuestion.setLeft(this.canvasImageView);
-        this.canvasImageView = new CanvasImageView(new Image("file:" + backgroundPath));
-        this.canvasImageView.getMapImageView().setFitHeight(utils.getScreenHeight()*80/100);
-        this.canvasImageView.getMapImageView().setFitWidth(utils.getScreenWidth()*60/100);
-        this.mapAndQuestion.setLeft(this.canvasImageView);
+        mapAndQuestion.setLeft(this.anchorImageView);
+        this.anchorImageView = new AnchorImageView(new Image("file:" + backgroundPath));
+        this.anchorImageView.getMapImageView().setFitHeight(utils.getScreenHeight()*80/100);
+        this.anchorImageView.getMapImageView().setFitWidth(utils.getScreenWidth()*60/100);
+        this.mapAndQuestion.setLeft(this.anchorImageView);
         this.currentFrame = new QuestionFrame();
         this.currentFrame.setPrefWidth(utils.getScreenWidth()*40/100);
         this.currentFrame.setPrefHeight(utils.getScreenHeight()*80/100);

@@ -67,6 +67,7 @@ public class CanvasImageView extends Canvas {
     private void MousePressed(MouseEvent event) {
         x = event.getX();
         y = event.getY();
+        event.consume();
     }
 
     public void MouseDragged(MouseEvent event) {
@@ -82,6 +83,7 @@ public class CanvasImageView extends Canvas {
         ((ShapeEllipse)currentShape).setRadiusXposition(xPosition);
         ((ShapeEllipse)currentShape).setRadiusYposition(yPosition);
         dragged = true;
+        event.consume();
     }
 
 
@@ -93,6 +95,7 @@ public class CanvasImageView extends Canvas {
             //TODO implement saving the shape
         }
         dragged = false;
+        event.consume();
     }
 
     public void MouseClicked(MouseEvent event) {
@@ -111,7 +114,7 @@ public class CanvasImageView extends Canvas {
        }
        currentShape.drawShape(graphicsContext, xPosition,yPosition);
 
-
+        event.consume();
     }
 
     private void DoubleClick(MouseEvent event) {
@@ -120,6 +123,7 @@ public class CanvasImageView extends Canvas {
             saveShape(currentShape);
             currentShape = null;
         }
+        event.consume();
     }
 
 

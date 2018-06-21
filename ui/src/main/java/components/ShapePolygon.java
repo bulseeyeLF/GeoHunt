@@ -1,7 +1,9 @@
 package components;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
@@ -34,6 +36,10 @@ public class ShapePolygon extends Shapes {
         this.coordinates = coordinates;
         setMinMax();
         shape=new Polygon(coordinates);
+        shape.setOnMousePressed(event -> {
+            log.debug("Entered???");
+            event.consume();
+        });
     }
 
     public void addPoint (double x, double y){
