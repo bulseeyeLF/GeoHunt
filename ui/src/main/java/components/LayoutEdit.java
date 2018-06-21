@@ -51,30 +51,35 @@ public class LayoutEdit extends LayoutBase {
         resetScreen();
     }
 
+    public void addQuestion() {
+
+    };
     public void setQuestions(ArrayList<Question> questions) {
         this.questions = questions;
-        this.selectedQuestion = questions.get(0);
-        this.currentFrame.setQuestion(this.questions.get(0));
+        if (!questions.isEmpty()) {
+            this.selectedQuestion = questions.get(0);
+            this.currentFrame.setQuestion(this.questions.get(0));
+        }
     }
 
-    public void setBackgroundPath(Image newMap, String newPath) {
+    public void setBackgroundPath(String newPath) {
         this.backgroundPath = newPath;
+        Image newMap = new Image("file:" + this.backgroundPath);
         this.canvasImageView = new CanvasImageView(newMap);
         ((CanvasImageView) mapAndQuestion.getLeft()).setMapImageView(newMap);
     }
 
     public void resetScreen() {
-
         questions = null;
         selectedQuestion = null;
-
+        timer = 0L;
         mapAndQuestion = new BorderPane();
         mapAndQuestion.setPrefHeight(utils.getScreenHeight()*60/100);
         mapAndQuestion.setPrefWidth(utils.getScreenWidth());
         mapAndQuestion.setStyle("-fx-background-color: red;");
         mapAndQuestion.setRight(this.currentFrame);
         mapAndQuestion.setLeft(this.canvasImageView);
-        this.canvasImageView = new CanvasImageView(new Image(backgroundPath));
+        this.canvasImageView = new CanvasImageView(new Image("file:" + backgroundPath));
         this.canvasImageView.getMapImageView().setFitHeight(utils.getScreenHeight()*80/100);
         this.canvasImageView.getMapImageView().setFitWidth(utils.getScreenWidth()*60/100);
         this.mapAndQuestion.setLeft(this.canvasImageView);
