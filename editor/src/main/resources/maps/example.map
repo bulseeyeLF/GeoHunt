@@ -1,6 +1,6 @@
 {
-    "backgroundSource": "/Users/bulse_eye/git/GeoHunt/editor/src/main/resources/maps/notdefault.png",
-    "globalTimer": 40000,
+    "backgroundSource": "/Users/bulse_eye/git/GeoHunt/editor/src/main/resources/maps/default.png",
+    "globalTimer": 7000,
     "shapes": [],
     "questions": [
         {

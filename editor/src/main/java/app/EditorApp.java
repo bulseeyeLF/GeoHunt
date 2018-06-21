@@ -116,6 +116,7 @@ public class EditorApp extends Application {
 
         editScreen.setBackgroundPath(defaultPath);
         mainScene.setRoot(editScreenRoot);
+        currentScreen = editScreen;
     }
 
     public void editMap() {
@@ -135,6 +136,7 @@ public class EditorApp extends Application {
                 e.printStackTrace();
             }
             mainScene.setRoot(editScreenRoot);
+            currentScreen = editScreen;
         }
     }
 
@@ -255,6 +257,7 @@ public class EditorApp extends Application {
     public void saveAndBackToMain(){
         saveMap();
         mainScene.setRoot(mainScreenRoot);
+        currentScreen = mainScreen;
     }
 
     private void close() {
