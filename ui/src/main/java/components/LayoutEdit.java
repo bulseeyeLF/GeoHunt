@@ -30,8 +30,9 @@ public class LayoutEdit extends LayoutBase {
     private QuestionFrame currentFrame;
     @Getter
     private ArrayList<Question> questions;
+    private ArrayList<Shapes> shapes; //TODO ovo moramo zajedno, ne znam kako si planirao da dohvatamo/upisujemo shapes u map fajl
     private Question selectedQuestion;
-    private ArrayList<Shapes> shapes;
+
     private Utils utils;
     public LayoutEdit(OptionMenu menu, String backgroundPath) {
         super(menu);
@@ -68,6 +69,7 @@ public class LayoutEdit extends LayoutBase {
         this.canvasImageView = new CanvasImageView(newMap);
         ((CanvasImageView) mapAndQuestion.getLeft()).setMapImageView(newMap);
     }
+
 
     public void resetScreen() {
         questions = null;

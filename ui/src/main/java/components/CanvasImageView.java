@@ -48,12 +48,15 @@ public class CanvasImageView extends Canvas {
         );
     }
 
+    private ArrayList<Shapes> loadShapes (){
+
+        return  new ArrayList<>();
+    }
+
     private void redrawShapes() {
-        log.debug("REDRAWING");
         graphicsContext.clearRect(0,0,WIDTH,HEIGHT);
         graphicsContext.drawImage(currentImage, 0, 0, WIDTH,HEIGHT);
         shapesOnCanvas.forEach(shapes -> shapes.drawShape(graphicsContext));
-        log.debug("REDRAWING FINISHED");
         //TODO implement reading shapes from file and drawing them on canvas
     }
 
@@ -62,7 +65,6 @@ public class CanvasImageView extends Canvas {
     }
 
     private void MousePressed(MouseEvent event) {
-        log.debug("Mouse pressed");
         x = event.getX();
         y = event.getY();
     }
@@ -79,7 +81,6 @@ public class CanvasImageView extends Canvas {
         currentShape.drawShape(graphicsContext, xPosition,yPosition);
         ((ShapeEllipse)currentShape).setRadiusXposition(xPosition);
         ((ShapeEllipse)currentShape).setRadiusYposition(yPosition);
-        log.debug("Mouse dragged");
         dragged = true;
     }
 
@@ -90,7 +91,6 @@ public class CanvasImageView extends Canvas {
             saveShape(currentShape);
             currentShape = null;
             //TODO implement saving the shape
-            log.debug("Mouse released");
         }
         dragged = false;
     }
@@ -110,14 +110,12 @@ public class CanvasImageView extends Canvas {
            ((ShapePolygon) currentShape).addPoint(xPosition, yPosition);
        }
        currentShape.drawShape(graphicsContext, xPosition,yPosition);
-       log.debug("Mouse Clicked");
+
 
     }
 
     private void DoubleClick(MouseEvent event) {
-        log.debug("Double click");
         if (currentShape instanceof ShapePolygon){
-            log.debug("current shape instance of shapepolygon");
             currentShape.drawShape(graphicsContext, event.getX(), event.getY(), 1);
             saveShape(currentShape);
             currentShape = null;

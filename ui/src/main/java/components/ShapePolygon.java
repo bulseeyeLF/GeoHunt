@@ -64,6 +64,7 @@ public class ShapePolygon extends Shapes {
 
     @Override
     protected void drawShape(GraphicsContext graphicsContext, double ... params) {
+        super.drawShape(graphicsContext);
         graphicsContext.setStroke(Color.BLACK);
         double [] xCords = new double[coordinates.length/2];
         double [] yCords = new double[coordinates.length/2];
@@ -74,11 +75,9 @@ public class ShapePolygon extends Shapes {
         }
 
         if (params.length == 3 || params.length ==0){
-            log.debug("Stroke Polygon");
             graphicsContext.strokePolygon(xCords,yCords,xCords.length);
 
         } else {
-            log.debug("StrokePolyliine");
             graphicsContext.strokePolyline(xCords, yCords, xCords.length);
         }
     }

@@ -25,6 +25,7 @@ public class ShapeEllipse extends Shapes{
     public ShapeEllipse(){
         super();
         shape = new Ellipse();
+
     }
 
     public ShapeEllipse(double x, double y, double rX, double rY){
@@ -34,15 +35,7 @@ public class ShapeEllipse extends Shapes{
         radiusX = rX;
         radiusY = rY;
         shape = new Ellipse(x,y,rX, rY);
-    }
 
-    public ShapeEllipse(Point2D centre, double rX, double rY){
-        super();
-        centreX = centre.getX();
-        centreY = centre.getY();
-        radiusX = rX;
-        radiusY = rY;
-        shape = new Ellipse(centre.getX(), centre.getY(), rX,rY);
     }
 
     @Override
@@ -57,15 +50,14 @@ public class ShapeEllipse extends Shapes{
 
     @Override
     protected void drawShape(GraphicsContext graphicsContext, double ... params) {
+        super.drawShape(graphicsContext);
         if (params.length != 0) {
             radiusXposition = params[0];
             radiusYposition = params[1];
         }
         graphicsContext.setStroke(Color.BLACK);
         graphicsContext.strokeOval(Math.min(centreX, radiusXposition), Math.min(centreY,radiusYposition), radiusX, radiusY);
-        log.debug("Stroke ellipse");
     }
-
 
 
 }
