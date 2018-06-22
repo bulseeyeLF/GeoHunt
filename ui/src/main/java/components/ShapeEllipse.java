@@ -11,9 +11,8 @@ import javafx.scene.shape.Rectangle;
 import lombok.Data;
 import lombok.Setter;
 import org.apache.log4j.Logger;
-import sun.jvm.hotspot.code.ObjectValue;
 
-@Data
+
 public class ShapeEllipse extends Shapes{
     private double centreX;
     private double centreY;
@@ -29,12 +28,8 @@ public class ShapeEllipse extends Shapes{
     public ShapeEllipse(){
         super();
         shape = new Ellipse();
-        shape.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                log.debug("mouse entered");
-            }
-        });
+        this.setSelected(false);
+        setListeners();
 
     }
 
@@ -45,35 +40,9 @@ public class ShapeEllipse extends Shapes{
         radiusX = rX;
         radiusY = rY;
         shape = new Ellipse(x,y,rX, rY);
-        shape.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                log.debug("Entered???");
-                event.consume();
-            }
-        });
+        this.setSelected(false);
+        setListeners();
 
-    }
-
-    @Override
-    public Point2D getCentre() {
-        return new Point2D(centreX,centreY);
-    }
-
-    @Override
-    public Rectangle getRectangle() {
-        return new Rectangle(centreX, centreX,radiusX, radiusY);
-    }
-
-    @Override
-    protected void drawShape(GraphicsContext graphicsContext, double ... params) {
-        super.drawShape(graphicsContext);
-        if (params.length != 0) {
-            radiusXposition = params[0];
-            radiusYposition = params[1];
-        }
-        graphicsContext.setStroke(Color.BLACK);
-        graphicsContext.strokeOval(Math.min(centreX, radiusXposition), Math.min(centreY,radiusYposition), radiusX, radiusY);
     }
 
 

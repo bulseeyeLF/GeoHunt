@@ -1,22 +1,17 @@
 package components;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.Logger;
 
-public abstract class Shapes{
+public abstract class Shapes {
     @Setter
     @Getter
-    protected Shape shape ;
+    protected Shape shape;
+    @Getter
     boolean selected;
     @Setter
     protected GraphicsContext shapeGraphicsContext;
@@ -25,19 +20,40 @@ public abstract class Shapes{
 
     protected Shapes() {
     }
-    public abstract Point2D getCentre();
 
-    public abstract Rectangle getRectangle();
-
-    public void setSelected(boolean selected){
-       this.selected = selected;
+    public void setSelected(boolean selected) {
+        if (selected){
+            shape.setOpacity(0.5);
+            shape.setStroke(Color.BLACK);
+            shape.setStrokeDashOffset(5);
+            shape.setFill(Color.RED);
+            this.selected = true;
+        }
+        else {
+            shape.setOpacity(0.1);
+            shape.setStroke(Color.BLACK);
+            shape.setFill(Color.BLACK);
+            this.selected = false;
+        }
     }
-    protected boolean isSelected () {return shape.isFocused();}
 
-    protected void drawShape(GraphicsContext graphicsContext, double ... params){
-        shapeGraphicsContext = graphicsContext;
+    protected void setListeners() {
+        shape.setOnMouseEntered(event -> {
+            if (!isSelected()) {
+                shape.setOpacity(0.5);
+                shape.setFill(Color.BLACK);
+                shape.setStrokeDashOffset(0);
+                shape.setStroke(Color.BLACK);
+                log.debug("entered");
+                event.consume();
+            }
+        });
+        shape.setOnMouseExited(event -> {
+            if (!isSelected()) {
+                shape.setOpacity(0.1);
+                log.debug("exited");
+                event.consume();
+            }
+        });
     }
-
-
-
 }

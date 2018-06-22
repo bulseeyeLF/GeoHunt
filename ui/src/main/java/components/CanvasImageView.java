@@ -1,3 +1,4 @@
+/*
 package components;
 
 
@@ -136,3 +137,4 @@ public class CanvasImageView extends Canvas {
     }
 
 }
+*/
