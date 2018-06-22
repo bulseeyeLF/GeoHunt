@@ -14,6 +14,13 @@ public class ShapePolygon extends Shapes {
     @Setter
     private double [] coordinates ;
 
+    double minX = Double.MAX_VALUE;
+    double maxX = -Double.MAX_VALUE;
+    double minY = Double.MAX_VALUE;
+    double maxY = -Double.MAX_VALUE;
+    @Getter
+    private double area;
+
     private static Logger log = Logger.getLogger(ShapePolygon.class);
 
     public ShapePolygon(double ...coordinates){
@@ -50,5 +57,21 @@ public class ShapePolygon extends Shapes {
         shape.setFill(null);
 
     }
+
+    public void setArea(){
+        for(int i = 0; i < coordinates.length; i += 2) {
+            double x = coordinates[i];
+            double y = coordinates[i + 1];
+            minX = Math.min(minX, x);
+            maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y);
+            maxY = Math.max(maxY, y);
+        }
+        double width = maxX - minX;
+        double height = maxY - minY;
+        this.area = width * height;
+    }
+
+
 
 }
