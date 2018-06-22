@@ -28,10 +28,10 @@ public abstract class Shapes {
 
     public void setSelected(boolean selected) {
         if (selected){
-            shape.setOpacity(0.6);
+            shape.setOpacity(0.7);
             Glow glow = new Glow();
-            glow.setLevel(200);
-            glow.setInput(new DropShadow(15,Color.BLACK));
+            glow.setLevel(500);
+            glow.setInput(new DropShadow(13,Color.BLACK));
             shape.setEffect(glow);
             shape.setStroke(Color.DARKGRAY);
             shape.setStrokeType(StrokeType.OUTSIDE);
@@ -41,9 +41,9 @@ public abstract class Shapes {
         }
         else {
             shape.setEffect(null);
-            shape.setOpacity(0.4);
+            shape.setOpacity(0.5);
             shape.setStroke(Color.BLACK);
-            shape.setFill(Color.DARKGRAY);
+            shape.setFill(Color.GRAY);
             shape.setStrokeWidth(1);
             this.selected = false;
         }
@@ -52,19 +52,18 @@ public abstract class Shapes {
     protected void setListeners() {
         shape.setOnMouseEntered(event -> {
             if (!isSelected()) {
-                shape.setOpacity(0.5);
-                shape.setFill(Color.DARKGRAY);
-                shape.setStrokeDashOffset(0);
-                shape.setStroke(Color.DARKGRAY);
-                shape.setEffect(new DropShadow());
+                shape.setOpacity(0.6);
+                shape.setFill(Color.LIGHTGREY);
+                shape.setEffect(new DropShadow(13,Color.LIGHTGRAY));
                 log.debug("entered");
                 event.consume();
             }
         });
         shape.setOnMouseExited(event -> {
             if (!isSelected()) {
-                shape.setOpacity(0.4);
+                shape.setOpacity(0.5);
                 shape.setEffect(null);
+                shape.setFill(Color.GRAY);
                 shape.setStroke(Color.BLACK);
                 log.debug("exited");
                 event.consume();
