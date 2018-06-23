@@ -1,12 +1,14 @@
 package components;
 
 import core.Question;
+import core.QuestionSingle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import lombok.*;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import utils.Utils;
 
 import java.util.ArrayList;
@@ -16,7 +18,6 @@ import java.util.ArrayList;
 public class LayoutEdit extends LayoutBase {
 
     private static Logger log = Logger.getLogger(LayoutEdit.class);
-
     @Getter
     private String backgroundPath;
     @Setter
@@ -39,9 +40,7 @@ public class LayoutEdit extends LayoutBase {
         utils = Utils.getInstance();
         //this.setHeight(utils.getScreenHeight());
         //this.setWidth(utils.getScreenWidth());
-
         this.backgroundPath = backgroundPath;
-
         menu.setButtonSizes(80, 200);
         menu.setPadding(new Insets(5, 5, 200, 5));
         menu.setHgap(10);
@@ -53,8 +52,22 @@ public class LayoutEdit extends LayoutBase {
     }
 
     public void addQuestion() {
-
+        // ovo mora da se pozove na kraju saveShape-a
+        // ovdje mozda moramo da gledamo koje pitanje zelimo da napravimo
+        // ili po defaultu pravimo single pa ima toggle dugme, nisam jos siguran
+        QuestionSingle newQuestion = new QuestionSingle(null);
+        this.questions.add(newQuestion);
+        this.selectedQuestion = newQuestion;
+        this.currentFrame.setQuestion(newQuestion);
     };
+
+    public void setSelectedQuestion(int i) {
+        this.selectedQuestion = this.questions.get(i);
+        // zivo me interesuje hoce li da radi bez ovoga
+        // ako stavim u konstruktoru this.currentFrame.setQuestion(this.selectedQuestion)
+        // i onda samo mijenjam selectedQuestion
+        this.currentFrame.setQuestion(this.selectedQuestion);
+    }
 
     public void setQuestions(ArrayList<Question> questions) {
         this.questions = questions;

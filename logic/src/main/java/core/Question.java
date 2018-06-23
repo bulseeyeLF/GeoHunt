@@ -16,6 +16,9 @@ public abstract class Question {
     protected TextField questionField;
 
     public Question(JSONObject jsonQuestion) {
+        if (jsonQuestion == null) {
+            jsonQuestion = new JSONObject();
+        }
         questionField = new TextField(jsonQuestion.optString("questionText", ""));
         timer = jsonQuestion.optLong("timer", 0);
         type = jsonQuestion.optInt("type", 0);
