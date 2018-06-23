@@ -98,10 +98,14 @@ public class LayoutEdit extends LayoutBase {
         this.anchorImageView = new AnchorImageView(new Image("file:" + backgroundPath), this);
         this.anchorImageView.getMapImageView().setFitHeight(utils.getScreenHeight()*80/100);
         this.anchorImageView.getMapImageView().setFitWidth(utils.getScreenWidth()*60/100);
+        this.anchorImageView.setMaxHeight(utils.getScreenHeight()*80/100);
+        this.anchorImageView.setMaxWidth(utils.getScreenWidth()*60/100);
         this.mapAndQuestion.setLeft(this.anchorImageView);
+
         this.currentFrame = new QuestionFrame();
         this.currentFrame.setPrefWidth(utils.getScreenWidth()*40/100);
         this.currentFrame.setPrefHeight(utils.getScreenHeight()*80/100);
+        this.currentFrame.setMinWidth(utils.getScreenWidth()*40/100);
         this.currentFrame.setStyle("-fx-background-color: yellow;");
         this.mapAndQuestion.setRight(currentFrame);
         this.setCenter(this.mapAndQuestion);
