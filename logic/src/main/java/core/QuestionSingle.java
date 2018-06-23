@@ -14,7 +14,8 @@ public class QuestionSingle extends Question {
 
     public QuestionSingle(JSONObject jsonQuestion) {
         super(jsonQuestion);
-        answer = new Answer(jsonQuestion.optString("text", ""));
+        if (jsonQuestion !=null) answer = new Answer(jsonQuestion.optString("text", ""));
+        else  answer = new Answer(null);
     }
 
     @Override

@@ -50,7 +50,7 @@ public class LayoutEdit extends LayoutBase {
         this.setBottom(menu);
         resetScreen();
     }
-
+        //1. TODO dodaj novo pitanje i selektuj ga, za novi shape koji nacrtas
     public void addQuestion() {
         // ovo mora da se pozove na kraju saveShape-a
         // ovdje mozda moramo da gledamo koje pitanje zelimo da napravimo
@@ -60,12 +60,13 @@ public class LayoutEdit extends LayoutBase {
         this.selectedQuestion = newQuestion;
         this.currentFrame.setQuestion(newQuestion);
     };
-
+        //2 .TODO selektuj vec postojece pitanje kad se selektuje objekat
     public void setSelectedQuestion(int i) {
         this.selectedQuestion = this.questions.get(i);
         // zivo me interesuje hoce li da radi bez ovoga
         // ako stavim u konstruktoru this.currentFrame.setQuestion(this.selectedQuestion)
         // i onda samo mijenjam selectedQuestion
+        //u listeneru za select?
         this.currentFrame.setQuestion(this.selectedQuestion);
     }
 
@@ -80,7 +81,7 @@ public class LayoutEdit extends LayoutBase {
     public void setBackgroundPath(String newPath) {
         this.backgroundPath = newPath;
         Image newMap = new Image("file:" + this.backgroundPath);
-        this.anchorImageView = new AnchorImageView(newMap);
+        this.anchorImageView = new AnchorImageView(newMap, this);
         ((AnchorImageView) mapAndQuestion.getLeft()).setMapImageView(newMap);
     }
 
@@ -94,7 +95,7 @@ public class LayoutEdit extends LayoutBase {
         mapAndQuestion.setStyle("-fx-background-color: red;");
         mapAndQuestion.setRight(this.currentFrame);
         mapAndQuestion.setLeft(this.anchorImageView);
-        this.anchorImageView = new AnchorImageView(new Image("file:" + backgroundPath));
+        this.anchorImageView = new AnchorImageView(new Image("file:" + backgroundPath), this);
         this.anchorImageView.getMapImageView().setFitHeight(utils.getScreenHeight()*80/100);
         this.anchorImageView.getMapImageView().setFitWidth(utils.getScreenWidth()*60/100);
         this.mapAndQuestion.setLeft(this.anchorImageView);

@@ -27,11 +27,13 @@ public class AnchorImageView extends AnchorPane {
     @Getter
     private ArrayList<Shapes> shapesOnPane;
     private Shapes currentlySelectedShape;
+    private LayoutEdit parent;
 
-    public AnchorImageView(Image img){
+    public AnchorImageView(Image img, LayoutEdit parent){
         super();
         this.setWidth(WIDTH);
         this.setHeight(HEIGHT);
+        this.parent = parent;
         shapesOnPane = new ArrayList<>();
         currentImage = img;
         dragged = false;
@@ -59,12 +61,15 @@ public class AnchorImageView extends AnchorPane {
                     currentlySelectedShape = currentShape;
                     shapesOnPane.forEach(shape -> shape.setSelected(false));
                     currentShape.setSelected(true);
+                    log.debug("index of selected shape: "+shapesOnPane.indexOf(currentShape));
+                    this.parent.setSelectedQuestion(shapesOnPane.indexOf(currentShape));
                     redrawShapes(currentShape);
                     log.debug("secondory click");
                 }
                 event.consume();
             });
             shapesOnPane.add(currentShape);
+            this.parent.addQuestion();
             redrawShapes(currentlySelectedShape);
             log.debug("Saved");
         }
