@@ -112,7 +112,9 @@ public class EditorApp extends Application {
 
     public void newMap() {
         currentlyOpenFile = null;
+
         editScreen.resetScreen();
+        editScreen.setQuestions(new ArrayList<Question>());
 
         editScreen.setBackgroundPath(defaultPath);
         mainScene.setRoot(editScreenRoot);

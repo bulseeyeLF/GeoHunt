@@ -38,8 +38,8 @@ public class LayoutEdit extends LayoutBase {
     public LayoutEdit(OptionMenu menu, String backgroundPath) {
         super(menu);
         utils = Utils.getInstance();
-        //this.setHeight(utils.getScreenHeight());
-        //this.setWidth(utils.getScreenWidth());
+        this.setHeight(utils.getScreenHeight());
+        this.setWidth(utils.getScreenWidth());
         this.backgroundPath = backgroundPath;
         menu.setButtonSizes(80, 200);
         menu.setPadding(new Insets(5, 5, 200, 5));
