@@ -33,6 +33,11 @@ public class ShapeEllipse extends Shapes{
 
     }
 
+    @Override
+    protected void setArea() {
+        this.area = radiusX * radiusY;
+    }
+
     public ShapeEllipse(double x, double y, double rX, double rY){
         super();
         centreX = x;

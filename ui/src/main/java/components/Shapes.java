@@ -1,12 +1,11 @@
 package components;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
-import javafx.scene.effect.Shadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Shape;
-import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,56 +17,60 @@ public abstract class Shapes {
     protected Shape shape;
     @Getter
     boolean selected;
-    @Setter
-    protected GraphicsContext shapeGraphicsContext;
-
     private static final Logger log = Logger.getLogger(Shapes.class);
+    @Getter
+    protected double area;
 
     protected Shapes() {
+        this.area = 100;
     }
 
     public void setSelected(boolean selected) {
         if (selected){
-            shape.setOpacity(0.7);
             Glow glow = new Glow();
             glow.setLevel(500);
             glow.setInput(new DropShadow(13,Color.BLACK));
-            shape.setEffect(glow);
-            shape.setStroke(Color.DARKGRAY);
-            shape.setStrokeType(StrokeType.OUTSIDE);
-            shape.setStrokeWidth(1);
-            shape.setFill(Color.DARKGRAY);
+            this.setShapeLook(0.7,Color.DARKGRAY,Color.DARKGRAY,1,StrokeType.OUTSIDE,glow);
             this.selected = true;
         }
         else {
-            shape.setEffect(null);
-            shape.setOpacity(0.5);
-            shape.setStroke(Color.BLACK);
-            shape.setFill(Color.GRAY);
-            shape.setStrokeWidth(1);
+            this.setShapeLook(0.5,Color.GRAY,Color.BLACK,1,null,null);
             this.selected = false;
         }
     }
 
     protected void setListeners() {
-        shape.setOnMouseEntered(event -> {
-            if (!isSelected()) {
-                shape.setOpacity(0.6);
-                shape.setFill(Color.LIGHTGREY);
-                shape.setEffect(new DropShadow(13,Color.LIGHTGRAY));
-                log.debug("entered");
-                event.consume();
-            }
-        });
-        shape.setOnMouseExited(event -> {
-            if (!isSelected()) {
-                shape.setOpacity(0.5);
-                shape.setEffect(null);
-                shape.setFill(Color.GRAY);
-                shape.setStroke(Color.BLACK);
-                log.debug("exited");
-                event.consume();
-            }
-        });
+
+        shape.addEventHandler(MouseEvent.ANY,
+            new ShapesHandler(
+                this::setEntered,
+                this::setExited
+        ));
     }
+
+    public void setEntered(MouseEvent event){
+        if (!isSelected()) {
+            this.setShapeLook(0.6,Color.LIGHTGRAY,Color.BLACK,1,null,(new DropShadow(13,Color.LIGHTGRAY)));
+            event.consume();
+        }
+    }
+
+    public void setExited(MouseEvent event){
+        if (!isSelected()) {
+            this.setShapeLook(0.5,Color.GRAY,Color.BLACK,1,null,null);
+            event.consume();
+        }
+    }
+
+
+    private void setShapeLook(double opacity, Paint fill, Paint stroke, double strokeWidth, StrokeType strokeType, Effect effect){
+        shape.setOpacity(opacity);
+        shape.setFill(fill);
+        shape.setStroke(stroke);
+        shape.setStrokeWidth(strokeWidth);
+        shape.setStrokeType(strokeType);
+        shape.setEffect(effect);
+    }
+
+    protected abstract void setArea();
 }

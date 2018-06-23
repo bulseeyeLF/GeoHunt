@@ -5,16 +5,11 @@ import javafx.scene.input.MouseEvent;
 
 public class MyHandler implements EventHandler<MouseEvent> {
 
-    private final EventHandler<MouseEvent> onDraggedEventHandler;
-
-    private final EventHandler<MouseEvent> onClickedEventHandler;
-
-    private final EventHandler<MouseEvent> onReleasedEventHandler;
-
-    private final EventHandler<MouseEvent> onPressedEventHandler;
-
-    private final EventHandler<MouseEvent> onDoubleCLickEventHandler;
-
+    private EventHandler<MouseEvent> onDraggedEventHandler;
+    private EventHandler<MouseEvent> onClickedEventHandler;
+    private EventHandler<MouseEvent> onReleasedEventHandler;
+    private EventHandler<MouseEvent> onPressedEventHandler;
+    private EventHandler<MouseEvent> onDoubleCLickEventHandler;
 
     private boolean dragging = false;
 
