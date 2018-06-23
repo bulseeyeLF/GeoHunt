@@ -20,22 +20,24 @@ public abstract class Shapes {
     private static final Logger log = Logger.getLogger(Shapes.class);
     @Getter
     protected double area;
-
     protected Shapes() {
         this.area = 100;
+        log.debug("super constructor called");
     }
 
     public void setSelected(boolean selected) {
         if (selected){
             Glow glow = new Glow();
-            glow.setLevel(500);
-            glow.setInput(new DropShadow(13,Color.BLACK));
-            this.setShapeLook(0.7,Color.DARKGRAY,Color.DARKGRAY,1,StrokeType.OUTSIDE,glow);
+            glow.setLevel(650);
+            glow.setInput(new DropShadow(9,Color.BLACK));
+            this.setShapeLook(0.7,Color.DARKGRAY,Color.DARKGRAY,0.5,null,glow);
             this.selected = true;
+            //log.debug( "setSelected on TRUE");
         }
         else {
-            this.setShapeLook(0.5,Color.GRAY,Color.BLACK,1,null,null);
+            this.setShapeLook(0.5,Color.GRAY,Color.BLACK,0.5,null,null);
             this.selected = false;
+            //log.debug("setSelected on FALSE");
         }
     }
 
@@ -50,14 +52,16 @@ public abstract class Shapes {
 
     public void setEntered(MouseEvent event){
         if (!isSelected()) {
-            this.setShapeLook(0.6,Color.LIGHTGRAY,Color.BLACK,1,null,(new DropShadow(13,Color.LIGHTGRAY)));
+            this.setShapeLook(0.6,Color.LIGHTGRAY,Color.BLACK,0.1,null,(new DropShadow(13,Color.LIGHTGRAY)));
+            log.debug("Entered");
             event.consume();
         }
     }
 
     public void setExited(MouseEvent event){
         if (!isSelected()) {
-            this.setShapeLook(0.5,Color.GRAY,Color.BLACK,1,null,null);
+            log.debug("Exited");
+            this.setShapeLook(0.5,Color.GRAY,Color.BLACK,0.1,null,null);
             event.consume();
         }
     }
@@ -70,6 +74,7 @@ public abstract class Shapes {
         shape.setStrokeWidth(strokeWidth);
         shape.setStrokeType(strokeType);
         shape.setEffect(effect);
+        log.debug("SetShapeLook finished");
     }
 
     protected abstract void setArea();
