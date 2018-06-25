@@ -115,6 +115,7 @@ public class EditorApp extends Application {
 
         editScreen.resetScreen();
         editScreen.setQuestions(new ArrayList<Question>());
+        editScreen.setShapes (new ArrayList<Shapes>());
 
         editScreen.setBackgroundPath(defaultPath);
         mainScene.setRoot(editScreenRoot);
@@ -214,6 +215,7 @@ public class EditorApp extends Application {
     public void saveMap() {
         JSONObject jsonObject = new JSONObject();
         ArrayList<JSONObject> jsonObjectArrayListOfQuestions= new ArrayList<>();
+        ArrayList<JSONObject> jsonObjectArrayListOfShapes = new ArrayList<>();
 
         if (currentlyOpenFile == null){
             fileChooser.setTitle("Save a new map");
@@ -232,13 +234,19 @@ public class EditorApp extends Application {
                     questions.stream().map(Question::save).forEach(jsonObjectArrayListOfQuestions::add);
                     jsonObjectArrayListOfQuestions.forEach(jsonArray::put);
                 }
+                ArrayList<Shapes> shapes = editScreen.getShapes();
+                if (shapes != null){
+                    shapes.stream().map(Shapes::save).forEach(jsonObjectArrayListOfShapes::add);
+                    jsonObjectArrayListOfShapes.forEach(jsonArray::put);
+                }
+
             }
             try {
                 jsonObject
                     .put("backgroundSource", editScreen.getBackgroundPath())
                     .put("globalTimer", editScreen.getTimer())
                     .put("questions", jsonObjectArrayListOfQuestions)
-                    .put("shapes",new JSONArray());
+                    .put("shapes",jsonObjectArrayListOfShapes);
 
                 saveFile(jsonObject.toString(4), currentlyOpenFile);
                 currentlyOpenFile = null;
@@ -300,10 +308,10 @@ public class EditorApp extends Application {
             }
             editScreen.setBackgroundPath(backgroundPath);
 
-            JSONArray jsonArray = jsonObjectMap.getJSONArray("questions");
+            JSONArray jsonArrayOfQuestions = jsonObjectMap.getJSONArray("questions");
 
             ArrayList<Question> arrayListQuestion = new ArrayList<>();
-            jsonArray.forEach(i -> {
+            jsonArrayOfQuestions.forEach(i -> {
                 int typeInt = ((JSONObject) i).optInt("type");
                 if (typeInt == 0) {
                     arrayListQuestion.add(new QuestionSingle((JSONObject) i));
@@ -312,6 +320,20 @@ public class EditorApp extends Application {
                 }
             });
             editScreen.setQuestions(arrayListQuestion);
+
+            JSONArray jsonArrayOfShapes = jsonObjectMap.getJSONArray("shapes");
+
+            ArrayList<Shapes> shapesArrayList = new ArrayList<>();
+            jsonArrayOfShapes.forEach(i -> {
+                int typeInt = ((JSONObject) i).optInt("type");
+                if (typeInt == 0) {
+                    shapesArrayList.add(new ShapePolygon((JSONObject)i));
+                } else if (typeInt == 1) {
+                    shapesArrayList.add(new ShapeEllipse((JSONObject) i));
+                }
+            });
+            editScreen.setShapes(shapesArrayList);
+
             editScreen.setTimer(jsonObjectMap.optLong("globalTimer"));
 
         } catch (JSONException e) {

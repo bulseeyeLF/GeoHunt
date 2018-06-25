@@ -30,6 +30,7 @@ public class LayoutEdit extends LayoutBase {
     private QuestionFrame currentFrame;
     @Getter
     private ArrayList<Question> questions;
+    @Getter
     private ArrayList<Shapes> shapes; //TODO ovo moramo zajedno, ne znam kako si planirao da dohvatamo/upisujemo shapes u map fajl
     private Question selectedQuestion;
     
@@ -48,7 +49,7 @@ public class LayoutEdit extends LayoutBase {
         resetScreen();
     }
         //1. TODO dodaj novo pitanje i selektuj ga, za novi shape koji nacrtas
-    public void addQuestion() {
+    public void addQuestion(Shapes shape) {
         // ovo mora da se pozove na kraju saveShape-a
         // ovdje mozda moramo da gledamo koje pitanje zelimo da napravimo
         // ili po defaultu pravimo single pa ima toggle dugme, nisam jos siguran
@@ -56,6 +57,7 @@ public class LayoutEdit extends LayoutBase {
         this.questions.add(newQuestion);
         this.selectedQuestion = newQuestion;
         this.currentFrame.setQuestion(newQuestion);
+        this.shapes.add(shape);
     };
         //2 .TODO selektuj vec postojece pitanje kad se selektuje objekat
     public void setSelectedQuestion(int i) {
@@ -74,6 +76,13 @@ public class LayoutEdit extends LayoutBase {
             this.currentFrame.setQuestion(this.questions.get(0));
         }
     }
+
+    public void setShapes(ArrayList<Shapes> shapes) {
+        log.debug("Shapes setted");
+        this.shapes = shapes;
+    }
+
+
 
     public void setBackgroundPath(String newPath) {
         this.backgroundPath = newPath;

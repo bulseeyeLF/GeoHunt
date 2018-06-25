@@ -4,6 +4,10 @@ import javafx.scene.shape.Polyline;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class ShapePolygon extends Shapes {
@@ -15,21 +19,40 @@ public class ShapePolygon extends Shapes {
     private double maxX = -Double.MAX_VALUE;
     private double minY = Double.MAX_VALUE;
     private double maxY = -Double.MAX_VALUE;
+    private int id =0;
 
     private static Logger log = Logger.getLogger(ShapePolygon.class);
 
     public ShapePolygon(double ...coordinates){
         super();
+        initPolygon(coordinates);
+    }
 
+    public ShapePolygon(JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("coordinates");
         this.coordinates = new ArrayList<>();
-        shape=new Polyline(coordinates);
-        for ( double d : coordinates){
+
+        for (int i = 0; i < jsonArray.length() ; i ++){
+            if (shape == null){
+               initPolygon(jsonArray.getJSONObject(0).getDouble("x"), jsonArray.getJSONObject(0).getDouble("y"));
+            }
+            else {
+                this.addPoint(jsonArray.getJSONObject(i).getDouble("x"),jsonArray.getJSONObject(i).getDouble("y"));
+            }
+        }
+
+        finishPolygon();
+    }
+
+    private void initPolygon(double ... coords){
+        this.coordinates = new ArrayList<>();
+        shape=new Polyline(coords);
+        for ( double d : coords){
             this.coordinates.add(d);
         }
         this.setSelected(false);
         //shape.setFill(null);
         setListeners();
-        log.debug("Constructor finished");
     }
 
     public void finishPolygon(){
@@ -49,7 +72,6 @@ public class ShapePolygon extends Shapes {
         //shape.setFill(null);
       //  ((Polyline)shape).getPoints().stream().map(Object::toString).forEach(e -> log.debug("cord: " + e + " , "));
         log.debug("addPoint finished");
-
     }
     @Override
     protected void setArea(){
@@ -65,5 +87,18 @@ public class ShapePolygon extends Shapes {
         double height = maxY - minY;
         this.area = width * height;
         log.debug("setArea finished");
+    }
+
+    @Override
+    public JSONObject save() {
+        log.debug("Save Polygon");
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0 ; i < coordinates.size() ;  i+=2){
+            jsonArray.put((new JSONObject()).put("x",coordinates.get(i)).put("y", coordinates.get(i+1)));
+        }
+        return new JSONObject()
+            .put("shape", 0)
+            .put("coordinates", jsonArray)
+            .put("id", id);
     }
 }

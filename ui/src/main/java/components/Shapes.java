@@ -10,6 +10,7 @@ import javafx.scene.shape.StrokeType;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 
 public abstract class Shapes {
     @Setter
@@ -78,4 +79,6 @@ public abstract class Shapes {
     }
 
     protected abstract void setArea();
+
+    public abstract JSONObject save();
 }

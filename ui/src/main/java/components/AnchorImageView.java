@@ -74,7 +74,7 @@ public class AnchorImageView extends AnchorPane {
         if (currentShape.getArea()>10) {
             currentlySelectedShape = currentShape;
             shapesOnPane.add(currentShape);
-            this.parent.addQuestion();
+            this.parent.addQuestion(currentlySelectedShape);
             shapesOnPane.forEach(shape -> {
                 if (shape != currentlySelectedShape) shape.setSelected(false);
             });
