@@ -115,9 +115,8 @@ public class EditorApp extends Application {
 
         editScreen.resetScreen();
         editScreen.setQuestions(new ArrayList<Question>());
-        editScreen.setShapes (new ArrayList<Shapes>());
-
         editScreen.setBackgroundPath(defaultPath);
+        editScreen.setShapes (new ArrayList<Shapes>());
         mainScene.setRoot(editScreenRoot);
         currentScreen = editScreen;
     }
@@ -171,7 +170,9 @@ public class EditorApp extends Application {
             new FileChooser.ExtensionFilter("All Files", "*.png")
         );
         File file = fileChooser.showOpenDialog(new Stage());
-        editScreen.setBackgroundPath(file.getAbsolutePath());
+        if (file != null) {
+            editScreen.setBackgroundPath(file.getAbsolutePath());
+        }
     }
     /*
     public void addUserInputQuestion() {
@@ -236,6 +237,7 @@ public class EditorApp extends Application {
                 }
                 ArrayList<Shapes> shapes = editScreen.getShapes();
                 if (shapes != null){
+                    log.debug("u editoru : " + shapes.size());
                     shapes.stream().map(Shapes::save).forEach(jsonObjectArrayListOfShapes::add);
                     jsonObjectArrayListOfShapes.forEach(jsonArray::put);
                 }
@@ -323,18 +325,18 @@ public class EditorApp extends Application {
 
             JSONArray jsonArrayOfShapes = jsonObjectMap.getJSONArray("shapes");
 
-            ArrayList<Shapes> shapesArrayList = new ArrayList<>();
+            ArrayList<Shapes> arrayListShapes = new ArrayList<>();
             jsonArrayOfShapes.forEach(i -> {
                 int typeInt = ((JSONObject) i).optInt("type");
                 if (typeInt == 0) {
-                    shapesArrayList.add(new ShapePolygon((JSONObject)i));
+                    arrayListShapes.add(new ShapePolygon((JSONObject)i));
                 } else if (typeInt == 1) {
-                    shapesArrayList.add(new ShapeEllipse((JSONObject) i));
+                    arrayListShapes.add(new ShapeEllipse((JSONObject) i));
                 }
             });
-            editScreen.setShapes(shapesArrayList);
-
-            editScreen.setTimer(jsonObjectMap.optLong("globalTimer"));
+            editScreen.setShapes(arrayListShapes);
+            log.debug("array list of shapes from map: " + arrayListShapes.get(0));
+            log.debug("Shapes setted in Editor App");
 
         } catch (JSONException e) {
             log.error(e);

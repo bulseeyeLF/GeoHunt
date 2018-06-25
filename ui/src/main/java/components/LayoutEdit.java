@@ -46,6 +46,7 @@ public class LayoutEdit extends LayoutBase {
         menu.setPrefHeight(UTILS.getScreenHeight()*20/100);
         menu.setPrefWidth(UTILS.getScreenWidth());
         this.setBottom(menu);
+        //log.debug("shapes size : " + shapes.size());
         resetScreen();
     }
         //1. TODO dodaj novo pitanje i selektuj ga, za novi shape koji nacrtas
@@ -57,7 +58,8 @@ public class LayoutEdit extends LayoutBase {
         this.questions.add(newQuestion);
         this.selectedQuestion = newQuestion;
         this.currentFrame.setQuestion(newQuestion);
-        this.shapes.add(shape);
+        //this.shapes.add(shape);
+        log.debug("Koliko puta se ovo ispisuje :D i kolika je velicina shape-a" + this.shapes.size());
     };
         //2 .TODO selektuj vec postojece pitanje kad se selektuje objekat
     public void setSelectedQuestion(int i) {
@@ -78,8 +80,10 @@ public class LayoutEdit extends LayoutBase {
     }
 
     public void setShapes(ArrayList<Shapes> shapes) {
-        log.debug("Shapes setted");
         this.shapes = shapes;
+        ((AnchorImageView) mapAndQuestion.getLeft()).setShapes(shapes);
+
+        log.debug("Shapes setted - shapes size  : " + shapes.size());
     }
 
 
@@ -89,10 +93,12 @@ public class LayoutEdit extends LayoutBase {
         Image newMap = new Image("file:" + this.backgroundPath);
         this.anchorImageView = new AnchorImageView(newMap, this);
         ((AnchorImageView) mapAndQuestion.getLeft()).setMapImageView(newMap);
+        log.debug("Image View setted");
     }
 
     public void resetScreen() {
         questions = null;
+        shapes = null;
         selectedQuestion = null;
         timer = 0L;
         mapAndQuestion = new BorderPane();
@@ -107,6 +113,7 @@ public class LayoutEdit extends LayoutBase {
         this.anchorImageView.setMaxHeight(UTILS.getScreenHeight()*80/100);
         this.anchorImageView.setMaxWidth(UTILS.getScreenWidth()*60/100);
         this.mapAndQuestion.setLeft(this.anchorImageView);
+        //log.debug("Here is size : " + this.shapes.size());
 
         this.currentFrame = new QuestionFrame();
         this.currentFrame.setPrefWidth(UTILS.getScreenWidth()*40/100);

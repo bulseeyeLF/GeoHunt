@@ -3,6 +3,7 @@ package components;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Shape;
@@ -54,18 +55,19 @@ public abstract class Shapes {
     public void setEntered(MouseEvent event){
         if (!isSelected()) {
             this.setShapeLook(0.6,Color.LIGHTGRAY,Color.BLACK,0.1,null,(new DropShadow(13,Color.LIGHTGRAY)));
-            log.debug("Entered");
+            // log.debug("Entered");
             event.consume();
         }
     }
 
     public void setExited(MouseEvent event){
         if (!isSelected()) {
-            log.debug("Exited");
+            //log.debug("Exited");
             this.setShapeLook(0.5,Color.GRAY,Color.BLACK,0.1,null,null);
             event.consume();
         }
     }
+
 
 
     private void setShapeLook(double opacity, Paint fill, Paint stroke, double strokeWidth, StrokeType strokeType, Effect effect){
@@ -75,7 +77,7 @@ public abstract class Shapes {
         shape.setStrokeWidth(strokeWidth);
         shape.setStrokeType(strokeType);
         shape.setEffect(effect);
-        log.debug("SetShapeLook finished");
+        //log.debug("SetShapeLook finished");
     }
 
     protected abstract void setArea();

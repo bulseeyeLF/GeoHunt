@@ -9,6 +9,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import lombok.Getter;
+
+import java.util.ArrayList;
+
 import static components.GameFrame.UTILS;
 
 public class QuestionFrame extends BorderPane {
@@ -43,4 +46,5 @@ public class QuestionFrame extends BorderPane {
         this.setTop(inputField);
         this.setBottom(currentFrame);
     }
+
 }

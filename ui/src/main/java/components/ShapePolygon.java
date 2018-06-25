@@ -71,7 +71,7 @@ public class ShapePolygon extends Shapes {
         this.setSelected(false);
         //shape.setFill(null);
       //  ((Polyline)shape).getPoints().stream().map(Object::toString).forEach(e -> log.debug("cord: " + e + " , "));
-        log.debug("addPoint finished");
+        //log.debug("addPoint finished");
     }
     @Override
     protected void setArea(){
@@ -86,7 +86,7 @@ public class ShapePolygon extends Shapes {
         double width = maxX - minX;
         double height = maxY - minY;
         this.area = width * height;
-        log.debug("setArea finished");
+        //log.debug("setArea finished");
     }
 
     @Override
