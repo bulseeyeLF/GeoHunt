@@ -19,6 +19,8 @@
 *.tar.gz
 *.rar
 *.map
+*.iml
+*.png
 
 # IDEA stuff #
 .idea/

@@ -49,7 +49,7 @@ public class EditorApp extends Application {
     private  Selection[] ADD_MENU_ACTIONS;
     private  KeyCode[] ADD_MENU_TRIGGERS;
 
-    private Utils utils ;
+    static Utils UTILS = Utils.getInstance() ;
     private Scene mainScene;
     private File mapsFolder;
     private String defaultPath ;
@@ -103,8 +103,8 @@ public class EditorApp extends Application {
     /*public void addQuestions() {
         addScreenRoot.getChildren().clear();
         addScreen = initAddScreen();
-        //addScreen.setPrefHeight(utils.getScreenHeight());
-        //addScreen.setPrefWidth(utils.getScreenWidth());
+        //addScreen.setPrefHeight(UTILS.getScreenHeight());
+        //addScreen.setPrefWidth(UTILS.getScreenWidth());
         addScreenRoot.getChildren().add(addScreen);
         mainScene.setRoot(addScreenRoot);
         currentMenu = addMenu;
@@ -272,8 +272,8 @@ public class EditorApp extends Application {
     }
 
     private void initScreen(Stage parent) {
-        parent.setWidth(utils.getScreenWidth());
-        parent.setHeight(utils.getScreenHeight());
+        parent.setWidth(UTILS.getScreenWidth());
+        parent.setHeight(UTILS.getScreenHeight());
         parent.setOnCloseRequest(event -> close());
         parent.setTitle("Editor");
     }
@@ -436,7 +436,6 @@ public class EditorApp extends Application {
             this::saveAndBackToMain
         };
 
-        utils = Utils.getInstance();
         URL resource = EditorApp.class.getResource("/maps/default.png");
         try {
             defaultPath = Paths.get(resource.toURI()).toString();

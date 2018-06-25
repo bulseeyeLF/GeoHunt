@@ -9,7 +9,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import lombok.Getter;
-import utils.Utils;
+import static components.GameFrame.UTILS;
 
 public class QuestionFrame extends BorderPane {
     private AnswerFrame currentFrame;
@@ -20,9 +20,8 @@ public class QuestionFrame extends BorderPane {
     protected TextField inputField;
 
     QuestionFrame() {
-        Utils utils = Utils.getInstance();
-        utils.setPercentageWidth(this, 40);
-        utils.setPercentageHeight(this, 80);
+        UTILS.setPercentageWidth(this, 40);
+        UTILS.setPercentageHeight(this, 80);
         inputField = new TextField();
         mulipleFrame = new AnswerFrameMultiple();
         mulipleFrame.setPrefWidth(500);

@@ -7,9 +7,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 import org.apache.log4j.Logger;
-import utils.Utils;
+
 
 import java.util.ArrayList;
+
+import static components.GameFrame.UTILS;
 
 public class AnchorImageView extends AnchorPane {
     @Getter
@@ -18,8 +20,8 @@ public class AnchorImageView extends AnchorPane {
 
     private boolean dragged;
     private static Logger log = Logger.getLogger(AnchorImageView.class);
-    private static double WIDTH = Utils.getInstance().getScreenWidth()*60/100;
-    private static double HEIGHT = Utils.getInstance().getScreenHeight()*80/100;
+    private static double WIDTH = UTILS.getScreenWidth()*60/100;
+    private static double HEIGHT = UTILS.getScreenHeight()*80/100;
     private Image currentImage;
     private double x,y;
     private Shapes currentShape;

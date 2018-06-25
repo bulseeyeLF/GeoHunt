@@ -6,18 +6,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import lombok.Data;
-import lombok.Getter;
 import utils.Utils;
 
 import java.util.ArrayList;
 
 @Data
 public class GameFrame extends BorderPane {
+    //globalno definisan UTILS za ceo module
+    static Utils UTILS = Utils.getInstance() ;
     private ArrayList<Question> questions;
     private Image backgroundImage;
-    private Utils utils = Utils.getInstance();
-    private double WIDTH = utils.getScreenWidth() - utils.getScreenWidth()/5;
-    private double HEIGHT = utils.getScreenHeight();
+    private double WIDTH = UTILS.getScreenWidth() - UTILS.getScreenWidth()/5;
+    private double HEIGHT = UTILS.getScreenHeight();
     private Long timer;
     private String backgroundPath;
 

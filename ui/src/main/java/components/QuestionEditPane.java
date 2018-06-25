@@ -8,9 +8,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import lombok.Getter;
 import org.apache.log4j.Logger;
-import utils.Utils;
 
 import java.util.ArrayList;
+
+import static components.GameFrame.UTILS;
 
 public class QuestionEditPane extends BorderPane {
 
@@ -31,7 +32,6 @@ public class QuestionEditPane extends BorderPane {
         if (questions == null) {
             questions = new ArrayList<>();
         }
-        Utils utils = Utils.getInstance();
         userInputAdapter = new QuestionFrameSingle();
         multipleChoiceAdapter = new QuestionFrameMultiple();
         buttonsPane = new FlowPane();
@@ -40,7 +40,7 @@ public class QuestionEditPane extends BorderPane {
         for (int i = 0; i < questions.size(); i ++) {
             if (i == 0 ) {
                 setSelectedQuestion(questions.get(i));
-                selectedQuestion.getQuestionTextArea().setPrefHeight(utils.getScreenHeight()/3);
+                selectedQuestion.getQuestionTextArea().setPrefHeight(UTILS.getScreenHeight()/3);
                 this.setCenter(selectedQuestion.getQuestionTextArea());
             }
             questionButtons.add(new Button(Integer.toString(i)));
@@ -56,7 +56,7 @@ public class QuestionEditPane extends BorderPane {
             buttonsPane.getChildren().add(questionButtons.get(i));
         }
         this.setTop(buttonsPane);
-        buttonsPane.setPrefHeight(utils.getScreenHeight()/3);
+        buttonsPane.setPrefHeight(UTILS.getScreenHeight()/3);
         buttonsPane.setAlignment(Pos.CENTER);
         setBottom(frame);
         log.debug("Question Edit Frame constructor finshed");

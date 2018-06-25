@@ -8,11 +8,10 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import lombok.*;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
-import utils.Utils;
 
 import java.util.ArrayList;
 
+import static components.GameFrame.UTILS;
 
 
 public class LayoutEdit extends LayoutBase {
@@ -33,20 +32,18 @@ public class LayoutEdit extends LayoutBase {
     private ArrayList<Question> questions;
     private ArrayList<Shapes> shapes; //TODO ovo moramo zajedno, ne znam kako si planirao da dohvatamo/upisujemo shapes u map fajl
     private Question selectedQuestion;
-
-    private Utils utils;
+    
     public LayoutEdit(OptionMenu menu, String backgroundPath) {
         super(menu);
-        utils = Utils.getInstance();
-        this.setHeight(utils.getScreenHeight());
-        this.setWidth(utils.getScreenWidth());
+        this.setHeight(UTILS.getScreenHeight());
+        this.setWidth(UTILS.getScreenWidth());
         this.backgroundPath = backgroundPath;
         menu.setButtonSizes(80, 200);
         menu.setPadding(new Insets(5, 5, 200, 5));
         menu.setHgap(10);
         menu.setAlignment(Pos.BOTTOM_CENTER);
-        menu.setPrefHeight(utils.getScreenHeight()*20/100);
-        menu.setPrefWidth(utils.getScreenWidth());
+        menu.setPrefHeight(UTILS.getScreenHeight()*20/100);
+        menu.setPrefWidth(UTILS.getScreenWidth());
         this.setBottom(menu);
         resetScreen();
     }
@@ -90,22 +87,22 @@ public class LayoutEdit extends LayoutBase {
         selectedQuestion = null;
         timer = 0L;
         mapAndQuestion = new BorderPane();
-        mapAndQuestion.setPrefHeight(utils.getScreenHeight()*60/100);
-        mapAndQuestion.setPrefWidth(utils.getScreenWidth());
+        mapAndQuestion.setPrefHeight(UTILS.getScreenHeight()*60/100);
+        mapAndQuestion.setPrefWidth(UTILS.getScreenWidth());
         mapAndQuestion.setStyle("-fx-background-color: red;");
         mapAndQuestion.setRight(this.currentFrame);
         mapAndQuestion.setLeft(this.anchorImageView);
         this.anchorImageView = new AnchorImageView(new Image("file:" + backgroundPath), this);
-        this.anchorImageView.getMapImageView().setFitHeight(utils.getScreenHeight()*80/100);
-        this.anchorImageView.getMapImageView().setFitWidth(utils.getScreenWidth()*60/100);
-        this.anchorImageView.setMaxHeight(utils.getScreenHeight()*80/100);
-        this.anchorImageView.setMaxWidth(utils.getScreenWidth()*60/100);
+        this.anchorImageView.getMapImageView().setFitHeight(UTILS.getScreenHeight()*80/100);
+        this.anchorImageView.getMapImageView().setFitWidth(UTILS.getScreenWidth()*60/100);
+        this.anchorImageView.setMaxHeight(UTILS.getScreenHeight()*80/100);
+        this.anchorImageView.setMaxWidth(UTILS.getScreenWidth()*60/100);
         this.mapAndQuestion.setLeft(this.anchorImageView);
 
         this.currentFrame = new QuestionFrame();
-        this.currentFrame.setPrefWidth(utils.getScreenWidth()*40/100);
-        this.currentFrame.setPrefHeight(utils.getScreenHeight()*80/100);
-        this.currentFrame.setMinWidth(utils.getScreenWidth()*40/100);
+        this.currentFrame.setPrefWidth(UTILS.getScreenWidth()*40/100);
+        this.currentFrame.setPrefHeight(UTILS.getScreenHeight()*80/100);
+        this.currentFrame.setMinWidth(UTILS.getScreenWidth()*40/100);
         this.currentFrame.setStyle("-fx-background-color: yellow;");
         this.mapAndQuestion.setRight(currentFrame);
         this.setCenter(this.mapAndQuestion);
