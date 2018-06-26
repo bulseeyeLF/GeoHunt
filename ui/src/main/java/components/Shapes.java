@@ -37,7 +37,7 @@ public abstract class Shapes {
             //log.debug( "setSelected on TRUE");
         }
         else {
-            this.setShapeLook(0.5,Color.GRAY,Color.BLACK,0.5,null,null);
+            this.setShapeLook(0.5,Color.GRAY,Color.BLACK,0.5,StrokeType.INSIDE,null);
             this.selected = false;
             //log.debug("setSelected on FALSE");
         }
@@ -77,10 +77,14 @@ public abstract class Shapes {
         shape.setStrokeWidth(strokeWidth);
         shape.setStrokeType(strokeType);
         shape.setEffect(effect);
-        //log.debug("SetShapeLook finished");
+        log.debug("SetShapeLook finished");
     }
 
     protected abstract void setArea();
+
+    public abstract void finish();
+
+    public  abstract void delete();
 
     public abstract JSONObject save();
 }

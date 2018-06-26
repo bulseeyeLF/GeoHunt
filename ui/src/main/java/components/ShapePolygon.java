@@ -1,5 +1,6 @@
 package components;
 
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,7 +42,7 @@ public class ShapePolygon extends Shapes {
             }
         }
 
-        finishPolygon();
+        finish();
     }
 
     private void initPolygon(double ... coords){
@@ -53,14 +54,6 @@ public class ShapePolygon extends Shapes {
         this.setSelected(false);
         //shape.setFill(null);
         setListeners();
-    }
-
-    public void finishPolygon(){
-        ((Polyline)shape).getPoints().add(((Polyline)shape).getPoints().get(0));
-        ((Polyline)shape).getPoints().add(((Polyline)shape).getPoints().get(1));
-        this.setSelected(true);
-    //    ((Polyline)shape).getPoints().stream().map(Object::toString).forEach(e -> log.debug("cord: " + e + " , "));
-        log.debug("FinishPolygon finished");
     }
 
     public void addPoint (double x, double y){
@@ -90,6 +83,21 @@ public class ShapePolygon extends Shapes {
     }
 
     @Override
+    public void finish() {
+        ((Polyline)shape).getPoints().add(((Polyline)shape).getPoints().get(0));
+        ((Polyline)shape).getPoints().add(((Polyline)shape).getPoints().get(1));
+        this.setSelected(true);
+        //    ((Polyline)shape).getPoints().stream().map(Object::toString).forEach(e -> log.debug("cord: " + e + " , "));
+        log.debug("FinishPolygon finished");
+    }
+
+    @Override
+    public void delete() {
+        shape = new Polyline();
+        this.setSelected(false);
+    }
+
+    @Override
     public JSONObject save() {
         log.debug("Save Polygon");
         JSONArray jsonArray = new JSONArray();
@@ -97,7 +105,7 @@ public class ShapePolygon extends Shapes {
             jsonArray.put((new JSONObject()).put("x",coordinates.get(i)).put("y", coordinates.get(i+1)));
         }
         return new JSONObject()
-            .put("shape", 0)
+            .put("type", 0)
             .put("coordinates", jsonArray)
             .put("id", id);
     }

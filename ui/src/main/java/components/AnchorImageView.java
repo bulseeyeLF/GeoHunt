@@ -56,60 +56,35 @@ public class AnchorImageView extends AnchorPane {
         log.debug("anchorImageView constructor");
     }
 
-    public void setShapes(ArrayList<Shapes> shapes) {
-        log.debug("shapes on pane: " + shapesOnPane.size());
-        if (!shapes.isEmpty()){
-            currentlySelectedShape = shapes.get(0);
-            shapesOnPane = shapes;
-            log.debug("shapes on pane size :  "+shapesOnPane.size());
-            shapesOnPane.forEach(shape -> {
-                if (shape != currentlySelectedShape) shape.setSelected(false);
-                else shape.setSelected(true);
-                shape.getShape().setOnMouseClicked(event -> shapeMouseSecondoryClicked(event,shape));
-            });
-            this.getChildren().addAll(shapesOnPane.stream().map(Shapes::getShape).collect(Collectors.toList()));
-            log.debug("Size of children : "+ this.getChildren().size());
-        } else {
-            shapesOnPane = shapes;
-        }
-
-    }
-
     private void shapeMouseSecondoryClicked (MouseEvent event, Shapes currentShape) {
         log.debug("shapes on pane: " + shapesOnPane.size());
-            if (event.getButton() == MouseButton.SECONDARY) {
-                currentlySelectedShape = currentShape;
-                shapesOnPane.forEach(shape -> shape.setSelected(false));
-                currentShape.setSelected(true);
-                log.debug("index of selected shape: "+shapesOnPane.indexOf(currentShape));
-                this.parent.setSelectedQuestion(shapesOnPane.indexOf(currentShape));
-                //redrawShapes(currentShape);
-                log.debug("secondory click");
-            }
-            event.consume();
+        if (event.getButton() == MouseButton.SECONDARY) {
+            currentlySelectedShape = currentShape;
+            shapesOnPane.forEach(shape -> shape.setSelected(false));
+            currentShape.setSelected(true);
+            log.debug("index of selected shape: "+shapesOnPane.indexOf(currentShape));
+            this.parent.setSelectedQuestion(shapesOnPane.indexOf(currentShape));
+            //redrawShapes(currentShape);
+            log.debug("secondory click");
+        }
+        event.consume();
     }
 
     private void saveShape(Shapes currentShape) {
         currentShape.shape.setOnMouseClicked(event -> shapeMouseSecondoryClicked(event,currentShape));
         log.debug("current shape  " + currentShape);
         currentShape.setArea();
-        if (currentShape.getArea()>10) {
-            log.debug("pre add - a shapes on pane: " + shapesOnPane.size());
-            log.debug("pre add - a children: " + this.getChildren().size());
-
+        log.debug("AREA: "+currentShape.getArea());
+        if (currentShape.getArea()>20) {
+            log.debug("Area bigger thaan 10");
             shapesOnPane.add(currentShape);
-            log.debug("posle add - a shapes on pane: " + shapesOnPane.size());
-            log.debug("posle add - a children: " + this.getChildren().size());
             this.parent.addQuestion(currentlySelectedShape);
-            log.debug("6shapes on pane: " + shapesOnPane.size());
             shapesOnPane.forEach(shape -> {
-                log.debug("7shapes on pane: " + shapesOnPane.size());
                 if (shape != currentlySelectedShape) shape.setSelected(false);
-                log.debug("8shapes on pane: " + shapesOnPane.size());
             });
-            //redrawShapes(currentlySelectedShape);
-            log.debug("Saved");
-            log.debug("shapes on pane: " + shapesOnPane.size());
+        }
+        else {
+            currentShape.delete();
         }
     }
 
@@ -126,9 +101,6 @@ public class AnchorImageView extends AnchorPane {
         log.debug("Redrawed");
     }*/
 
-    private void DoubleClick(MouseEvent event) {
-    }
-
     private void MousePressed(MouseEvent event) {
         double xPosition = event.getX();
         double yPosition = event.getY();
@@ -138,31 +110,62 @@ public class AnchorImageView extends AnchorPane {
         y = yPosition;
         event.consume();
         log.debug("mouse pressed");
-        log.debug("shapes on pane: " + shapesOnPane.size());
+    }
+
+    private void DoubleClick(MouseEvent event) {
+        double xPosition = event.getX();
+        double yPosition = event.getY();
+        xPosition = setPositionLimitHelper(xPosition, WIDTH, 6);
+        yPosition = setPositionLimitHelper(yPosition, HEIGHT, 6);
+        ((ShapePolygon) currentShape).addPoint(xPosition, yPosition);
+        currentShape.finish();
+        currentlySelectedShape = currentShape;
+        saveShape(currentShape);
+        currentShape = null;
+
     }
 
     private void MouseReleased(MouseEvent event) {
-       if (dragged) {
-           double xPosition = event.getX();
-           double yPosition = event.getY();
-           //redrawShapes(currentlySelectedShape);
-           xPosition = setPositionLimitHelper(xPosition, WIDTH, 6);
-           yPosition = setPositionLimitHelper(yPosition, HEIGHT, 6);
-           ((ShapePolygon) currentShape).addPoint(xPosition, yPosition);
-           if (currentShape instanceof ShapePolygon) {
-               ((ShapePolygon) currentShape).finishPolygon();
-               currentlySelectedShape = currentShape;
-               saveShape(currentShape);
-               currentShape = null;
-               log.debug("released after dragged");
-               log.debug("shapes on pane: " + shapesOnPane.size());
-           }
-       }
-        dragged = false;
+        if (dragged) {
+            double xPosition = event.getX();
+            double yPosition = event.getY();
+            xPosition = setPositionLimitHelper(xPosition, WIDTH, 6);
+            yPosition = setPositionLimitHelper(yPosition, HEIGHT, 6);
+            //mouseReleasedPolygon(event, xPosition, yPosition);
+            mouseReleasedEllipse(event,xPosition,yPosition);
+            currentShape.finish();
+            currentlySelectedShape = currentShape;
+            saveShape(currentShape);
+            currentShape = null;
+            dragged = false;
+            log.debug("released after dragged");
+        }
         event.consume();
     }
 
+    private void mouseReleasedPolygon(MouseEvent event, double xpos, double ypos){
+        if (currentShape instanceof ShapePolygon){
+            ((ShapePolygon)currentShape).addPoint(xpos, ypos);
+        }
+    }
+    private void mouseReleasedEllipse(MouseEvent event, double xpos, double ypos){
+        if(currentShape instanceof ShapeEllipse){
+        }
+    }
+
     private void MouseClicked(MouseEvent event) {
+        double xPosition = event.getX();
+        double yPosition = event.getY();
+        //redrawShapes(currentlySelectedShape);
+        xPosition = setPositionLimitHelper(xPosition, WIDTH, 6);
+        yPosition = setPositionLimitHelper(yPosition, HEIGHT, 6);
+        if (currentShape == null) {
+            currentShape = new ShapePolygon(x, y);
+            this.getChildren().add(currentShape.shape);
+        } else if (currentShape instanceof ShapePolygon){
+            ((ShapePolygon) currentShape).addPoint(xPosition, yPosition);
+        }
+        log.debug("moouse clicked");
     }
 
     private void MouseDragged(MouseEvent event) {
@@ -171,17 +174,46 @@ public class AnchorImageView extends AnchorPane {
         //redrawShapes(currentlySelectedShape);
         xPosition = setPositionLimitHelper(xPosition, WIDTH, 6);
         yPosition = setPositionLimitHelper(yPosition, HEIGHT, 6);
+        //mouseDraggedPolygon(event,xPosition,yPosition);
+        mouseDraggedEllipse(event,xPosition,yPosition);
+        dragged = true;
+        event.consume();
+
+    }
+
+    private void mouseDraggedPolygon (MouseEvent event,double xpos, double ypos){
+
         if (currentShape == null) {
             log.debug("Current shape je null");
             currentShape = new ShapePolygon(x, y);
             this.getChildren().add(currentShape.shape);
             log.debug("Velicina pane-a ??? " +this.getChildren().size());
-        } else {
-            ((ShapePolygon) currentShape).addPoint(xPosition, yPosition);
+        } else if (currentShape instanceof ShapePolygon) {
+            ((ShapePolygon) currentShape).addPoint(xpos, ypos);
         }
-        dragged = true;
-       // log.debug("shapes on pane: " + shapesOnPane.size());
     }
+    private void mouseDraggedEllipse (MouseEvent event,double xpos, double ypos){
+        if (currentShape == null) {
+            currentShape= new ShapeEllipse(
+                (xpos + x) / 2,
+                (ypos + y) / 2,
+                 Math.abs((xpos - x) / 2),
+                Math.abs(ypos - y) / 2);
+            log.debug("created ellipse");
+            this.getChildren().add(currentShape.shape);
+            log.debug("getChildren :  " + this.getChildren().size());
+            /*((ShapeEllipse)currentShape).setRadiusXposition(xpos);
+            ((ShapeEllipse)currentShape).setRadiusYposition(ypos);*/
+        } else if (currentShape instanceof ShapeEllipse){
+            log.debug("u elsu");
+            ((ShapeEllipse)currentShape).setEllipse(
+                (xpos + x) / 2,
+                (ypos + y) / 2,
+                 Math.abs((xpos - x) / 2),
+                Math.abs(ypos - y) / 2);
+        }
+    }
+
 
     public void setMapImageView(Image image){
         //graphicsContext.clearRect(0,0,WIDTH,HEIGHT);
@@ -190,6 +222,24 @@ public class AnchorImageView extends AnchorPane {
         currentImage = image;
         this.getChildren().add(mapImageView);
         log.debug("shapes on pane: " + shapesOnPane.size());
+    }
+
+    public void setShapes(ArrayList<Shapes> shapes) {
+        log.debug("shapes on pane: " + shapesOnPane.size());
+        if (!shapes.isEmpty()){
+            currentlySelectedShape = shapes.get(0);
+            shapesOnPane = shapes;
+            log.debug("shapes on pane size :  "+shapesOnPane.size());
+            shapesOnPane.forEach(shape -> {
+                if (shape != currentlySelectedShape) shape.setSelected(false);
+                else shape.setSelected(true);
+                shape.getShape().setOnMouseClicked(event -> shapeMouseSecondoryClicked(event,shape));
+            });
+            this.getChildren().addAll(shapesOnPane.stream().map(Shapes::getShape).collect(Collectors.toList()));
+            log.debug("Size of children : "+ this.getChildren().size());
+        } else {
+            shapesOnPane = shapes;
+        }
     }
 
     private double setPositionLimitHelper (double position,double LIMIT, double constant ){

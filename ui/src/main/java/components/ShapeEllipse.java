@@ -1,4 +1,5 @@
 package components;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import lombok.Setter;
 import org.apache.log4j.Logger;
@@ -41,10 +42,17 @@ public class ShapeEllipse extends Shapes{
     }
 
     @Override
+    public void finish() {
+        this.setSelected(true);
+        log.debug("FinishEllipse finished finished");
+    }
+
+
+    @Override
     public JSONObject save() {
         log.debug("Save Ellipse");
         return new JSONObject()
-            .put("shape", 1)
+            .put("type", 1)
             .put("centreX", this.centreX)
             .put("centreY", this.centreY)
             .put("radiusX", this.radiusX)
@@ -64,5 +72,21 @@ public class ShapeEllipse extends Shapes{
 
     }
 
+    public void setEllipse (double centreX, double centreY, double radiusX, double radiusY){
+        this.centreX = centreX;
+        this.centreY = centreY;
+        this.radiusX = radiusX;
+        this.radiusY = radiusY;
+        ((Ellipse)shape).setCenterX(centreX);
+        ((Ellipse)shape).setCenterY(centreY);
+        ((Ellipse)shape).setRadiusX(radiusX);
+        ((Ellipse)shape).setRadiusY(radiusY);
+        this.setSelected(false);
+    }
+
+    @Override
+    public void delete() {
+        this.setEllipse(0,0,0,0);
+    }
 
 }
