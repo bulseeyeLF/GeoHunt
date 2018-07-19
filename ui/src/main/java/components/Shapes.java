@@ -12,14 +12,16 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
+import utils.ShapeUtils;
 
 public abstract class Shapes {
+    private static final Logger log = Logger.getLogger(Shapes.class);
+    private static final ShapeUtils shapeUtils = ShapeUtils.getInstance();
     @Setter
     @Getter
     protected Shape shape;
     @Getter
     boolean selected;
-    private static final Logger log = Logger.getLogger(Shapes.class);
     @Getter
     protected double area;
     protected Shapes() {
@@ -29,32 +31,46 @@ public abstract class Shapes {
 
     public void setSelected(boolean selected) {
         if (selected){
-            Glow glow = new Glow();
-            glow.setLevel(650);
-            glow.setInput(new DropShadow(9,Color.BLACK));
-            this.setShapeLook(0.7,Color.DARKGRAY,Color.DARKGRAY,0.5,null,glow);
+            this.setShapeLook(
+                shapeUtils.getOPACITY_SELECTED(),
+                shapeUtils.getFILL_SELECTED(),
+                shapeUtils.getSTROKE_SELECTED(),
+                shapeUtils.getSTROKE_WIDTH_SELECTED(),
+                shapeUtils.getSTROKE_TYPE_DEFAULT(),
+                shapeUtils.getEFFECT_SELECTED());
             this.selected = true;
             //log.debug( "setSelected on TRUE");
         }
         else {
-            this.setShapeLook(0.5,Color.GRAY,Color.BLACK,0.5,StrokeType.INSIDE,null);
+            this.setShapeLook(
+                shapeUtils.getOPACITY_DEFAULT(),
+                shapeUtils.getFILL_DEFAULT(),
+                shapeUtils.getSTROKE_DEFAULT(),
+                shapeUtils.getSTROKE_WIDTH_DEFAULT(),
+                shapeUtils.getSTROKE_TYPE_INSIDE(), //TODO check why is only here this stroke type, what is this anyway
+                shapeUtils.getEFFECT_DEFAULT());
             this.selected = false;
             //log.debug("setSelected on FALSE");
         }
     }
 
     protected void setListeners() {
-
         shape.addEventHandler(MouseEvent.ANY,
             new ShapesHandler(
                 this::setEntered,
                 this::setExited
-        ));
+            ));
     }
 
     public void setEntered(MouseEvent event){
         if (!isSelected()) {
-            this.setShapeLook(0.6,Color.LIGHTGRAY,Color.BLACK,0.1,null,(new DropShadow(13,Color.LIGHTGRAY)));
+            this.setShapeLook(
+                shapeUtils.getOPACITY_ENTERED(),
+                shapeUtils.getFILL_ENTERED(),
+                shapeUtils.getSTROKE_ENTERED(),
+                shapeUtils.getSTROKE_WIDTH_ENTERED(),
+                shapeUtils.getSTROKE_TYPE_DEFAULT(),
+                shapeUtils.getEFFECT_ENTERED());
             // log.debug("Entered");
             event.consume();
         }
@@ -63,12 +79,16 @@ public abstract class Shapes {
     public void setExited(MouseEvent event){
         if (!isSelected()) {
             //log.debug("Exited");
-            this.setShapeLook(0.5,Color.GRAY,Color.BLACK,0.1,null,null);
+            this.setShapeLook(
+                shapeUtils.getOPACITY_DEFAULT(),
+                shapeUtils.getFILL_DEFAULT(),
+                shapeUtils.getSTROKE_DEFAULT(),
+                shapeUtils.getSTROKE_WIDTH_DEFAULT(),
+                shapeUtils.getSTROKE_TYPE_INSIDE(),
+                shapeUtils.getEFFECT_DEFAULT());
             event.consume();
         }
     }
-
-
 
     private void setShapeLook(double opacity, Paint fill, Paint stroke, double strokeWidth, StrokeType strokeType, Effect effect){
         shape.setOpacity(opacity);
@@ -77,7 +97,6 @@ public abstract class Shapes {
         shape.setStrokeWidth(strokeWidth);
         shape.setStrokeType(strokeType);
         shape.setEffect(effect);
-        log.debug("SetShapeLook finished");
     }
 
     protected abstract void setArea();

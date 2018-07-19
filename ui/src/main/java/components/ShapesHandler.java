@@ -7,13 +7,9 @@ public class ShapesHandler implements EventHandler<MouseEvent> {
     private final EventHandler<MouseEvent>  onEnteredShapeEventHandler;
     private final EventHandler<MouseEvent>  onExitedShapeEventHandler;
 
-
-    private boolean dragging = false;
-
     public ShapesHandler(EventHandler<MouseEvent> onEnteredShapeEventHandler, EventHandler<MouseEvent> onExitedShapeEventHandler){
         this.onEnteredShapeEventHandler = onEnteredShapeEventHandler;
         this.onExitedShapeEventHandler = onExitedShapeEventHandler;
-
     }
 
     @Override

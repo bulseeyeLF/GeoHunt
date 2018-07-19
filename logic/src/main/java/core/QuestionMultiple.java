@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class QuestionMultiple extends Question {
 
     private static final Logger log = Logger.getLogger(QuestionMultiple.class);
+    private static final int NUMBER_OF_ANSWERS = 4;
 
     @Getter
     private ArrayList<AnswerMultiple> answers ;
@@ -35,11 +36,10 @@ public class QuestionMultiple extends Question {
                 }
             });
         } else {
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < NUMBER_OF_ANSWERS; i++) {
                 answers.add(new AnswerMultiple("", false));
             }
         }
-
         log.debug("Multiple choice question created");
     }
 
@@ -50,12 +50,12 @@ public class QuestionMultiple extends Question {
             JSONArray jsonArray = new JSONArray();
             answers.forEach(a->{
                 try {
-                    jsonArray.put(new JSONObject()
-                        .put("text", a.getAnswerText().getText())
-                        .put("correct", a.isCorrect()));
+                    jsonArray
+                        .put(new JSONObject()
+                            .put("text", a.getAnswerText().getText())
+                            .put("correct", a.isCorrect()));
                 } catch (JSONException e) {
-                    log.error(e);
-                    e.printStackTrace();
+                    log.error("Error with saving json",e);
                 }
             });
             jsonObject

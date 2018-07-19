@@ -9,15 +9,11 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,9 +45,8 @@ public class EditorApp extends Application {
     private  Selection[] ADD_MENU_ACTIONS;
     private  KeyCode[] ADD_MENU_TRIGGERS;
 
-    static Utils UTILS = Utils.getInstance() ;
+    private static Utils UTILS = Utils.getInstance();
     private Scene mainScene;
-    private File mapsFolder;
     private String defaultPath ;
     private FileChooser fileChooser ;
     private File currentlyOpenFile;
@@ -77,7 +72,7 @@ public class EditorApp extends Application {
         try {
             super.init();
         } catch (Exception e) {
-            log.error(e);
+            log.error("Init method failed",e);
         }
         initConstants();
         initActionsAndVariables();
@@ -112,7 +107,6 @@ public class EditorApp extends Application {
 
     public void newMap() {
         currentlyOpenFile = null;
-
         editScreen.resetScreen();
         editScreen.setQuestions(new ArrayList<Question>());
         editScreen.setBackgroundPath(defaultPath);
@@ -415,11 +409,11 @@ public class EditorApp extends Application {
 
     private void initMenus(){
         mainMenu = new OptionMenu(
-                "main",
-                MAIN_MENU_TEXT,
-                MAIN_MENU_HINT_TEXT,
-                MAIN_MENU_ACTIONS,
-                MAIN_MENU_TRIGGERS
+            "main",
+            MAIN_MENU_TEXT,
+            MAIN_MENU_HINT_TEXT,
+            MAIN_MENU_ACTIONS,
+            MAIN_MENU_TRIGGERS
         );
         
         editMenu = new OptionMenu(
@@ -464,7 +458,7 @@ public class EditorApp extends Application {
         try {
             defaultPath = Paths.get(resource.toURI()).toString();
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            log.error("Default path couldn't be set",e);
         }
         fileChooser = new FileChooser();
         currentlyOpenFile = null;

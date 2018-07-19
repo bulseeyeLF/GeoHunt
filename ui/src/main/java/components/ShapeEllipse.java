@@ -4,6 +4,7 @@ import javafx.scene.shape.Ellipse;
 import lombok.Setter;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
+import utils.ShapeUtils;
 
 
 public class ShapeEllipse extends Shapes{
@@ -47,12 +48,11 @@ public class ShapeEllipse extends Shapes{
         log.debug("FinishEllipse finished finished");
     }
 
-
     @Override
     public JSONObject save() {
         log.debug("Save Ellipse");
         return new JSONObject()
-            .put("type", 1)
+            .put("type", ShapeUtils.TYPE_ELLIPSE)
             .put("centreX", this.centreX)
             .put("centreY", this.centreY)
             .put("radiusX", this.radiusX)

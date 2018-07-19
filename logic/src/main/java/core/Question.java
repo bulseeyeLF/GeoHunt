@@ -1,7 +1,5 @@
 package core;
 
-import javafx.geometry.Insets;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import lombok.Data;
 import org.apache.log4j.Logger;
