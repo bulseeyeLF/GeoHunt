@@ -1,9 +1,8 @@
-package components;
+package components.Shapes;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Shape;
@@ -32,6 +31,7 @@ public abstract class Shapes {
             Glow glow = new Glow();
             glow.setLevel(650);
             glow.setInput(new DropShadow(9,Color.BLACK));
+
             this.setShapeLook(0.7,Color.DARKGRAY,Color.DARKGRAY,0.5,null,glow);
             this.selected = true;
             //log.debug( "setSelected on TRUE");
@@ -54,7 +54,7 @@ public abstract class Shapes {
 
     public void setEntered(MouseEvent event){
         if (!isSelected()) {
-            this.setShapeLook(0.6,Color.LIGHTGRAY,Color.BLACK,0.1,null,(new DropShadow(13,Color.LIGHTGRAY)));
+            this.setShapeLook(0.6,Color.DARKORANGE,Color.BLACK,0.1,null,(new DropShadow(13,Color.LIGHTGRAY)));
             // log.debug("Entered");
             event.consume();
         }

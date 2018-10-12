@@ -25,8 +25,8 @@ public class GameFrame extends BorderPane {
         this.backgroundImage = background;
         ImageView map = new ImageView(this.backgroundImage);
         this.setCenter(map);
-        map.setFitHeight(HEIGHT);
-        map.setFitWidth(WIDTH);
+        /*map.setFitHeight(HEIGHT);
+        map.setFitWidth(WIDTH);*/
     }
     //TODO za sta ti sluze ovi konstruktori silni?
     public GameFrame() {

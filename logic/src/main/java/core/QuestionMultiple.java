@@ -1,5 +1,6 @@
 package core;
 
+import javafx.scene.control.TextField;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -18,29 +19,41 @@ public class QuestionMultiple extends Question {
     public QuestionMultiple(JSONObject jsonQuestion) {
         super(jsonQuestion);
         answers = new ArrayList<>();
-        JSONArray answersJson = jsonQuestion.optJSONArray("answers");
-        if (answersJson != null) {
-            answersJson.forEach(i->{
-                JSONObject oneAnswer = (JSONObject)i;
-                if (oneAnswer != null) {
-                    answers.add(new AnswerMultiple(
-                            oneAnswer.optString("text", ""),
-                            oneAnswer.optBoolean("correct", false)
-                    ));
-                } else {
-                    answers.add(new AnswerMultiple(
-                            "",
-                            false
-                    ));
-                }
-            });
-        } else {
-            for (int i = 0; i < 4; i++) {
-                answers.add(new AnswerMultiple("", false));
+        if (jsonQuestion != null) {
+            JSONArray answersJson = jsonQuestion.optJSONArray("answers");
+            if (answersJson != null) {
+                answersJson.forEach(i -> {
+                    JSONObject oneAnswer = (JSONObject) i;
+                    if (oneAnswer != null) {
+                        answers.add(new AnswerMultiple(
+                                oneAnswer.optString("text", ""),
+                                oneAnswer.optBoolean("correct", false)
+                        ));
+                    } else {
+                        answers.add(new AnswerMultiple(
+                                "",
+                                false
+                        ));
+                    }
+                });
+            } else {
+                createEmptyAnswers();
             }
         }
-
+        else {
+            jsonQuestion = new JSONObject();
+            questionField = new TextField(jsonQuestion.optString("questionText", ""));
+            timer = jsonQuestion.optLong("timer", 0);
+            type = jsonQuestion.optInt("type", 1);
+            createEmptyAnswers();
+        }
         log.debug("Multiple choice question created");
+    }
+
+    public void createEmptyAnswers(){
+        for (int i = 0; i < 4; i++) {
+            answers.add(new AnswerMultiple("", false));
+        }
     }
 
     @Override
@@ -59,10 +72,11 @@ public class QuestionMultiple extends Question {
                 }
             });
             jsonObject
-                .put("questionText", this.questionField.getText())
-                .put("timer", this.timer)
-                .put("type", this.type)
-                .put("answers", jsonArray);
+                    .put("questionText", this.questionField.getText())
+                    .put("timer", this.getTimerSpinner().getValue())
+                    .put("type", this.type)
+                    .put("answers", jsonArray)
+                    .put("pictureSource",getQuestionPictureSource());
             log.debug("Save Multiple Question");
             return jsonObject;
         } catch (JSONException e) {

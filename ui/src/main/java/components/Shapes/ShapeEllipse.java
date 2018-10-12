@@ -1,5 +1,4 @@
-package components;
-import javafx.scene.paint.Color;
+package components.Shapes;
 import javafx.scene.shape.Ellipse;
 import lombok.Setter;
 import org.apache.log4j.Logger;

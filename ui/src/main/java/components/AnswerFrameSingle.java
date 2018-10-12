@@ -12,7 +12,7 @@ public class AnswerFrameSingle extends AnswerFrame {
     }
     @Override
     public void init() {
-        this.setPrefHeight(125);
+        /*this.setPrefHeight(125);*/
         this.setPadding(new Insets(10, 10, 10, 10));
     }
 

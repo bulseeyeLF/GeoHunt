@@ -1,12 +1,10 @@
-package components;
+package components.Shapes;
 
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;

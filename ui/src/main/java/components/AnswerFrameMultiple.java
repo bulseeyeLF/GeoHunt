@@ -24,8 +24,8 @@ public class AnswerFrameMultiple extends AnswerFrame {
 
     @Override
     public void init() {
-        this.setHgap(50);
-        this.setVgap(100);
+        /*this.setHgap(50);
+        this.setVgap(100);*/
         this.setPadding(new Insets(10, 10, 10, 10));
     }
 

@@ -1,5 +1,8 @@
-package components;
+package components.Shapes;
 
+import components.LayoutEdit;
+import components.MyHandler;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -7,12 +10,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 import org.apache.log4j.Logger;
+import utils.Utils;
 
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.stream.Collectors;
-
-import static components.GameFrame.UTILS;
 
 public class AnchorImageView extends AnchorPane {
     @Getter
@@ -21,8 +25,8 @@ public class AnchorImageView extends AnchorPane {
 
     private boolean dragged;
     private static Logger log = Logger.getLogger(AnchorImageView.class);
-    private static double WIDTH = UTILS.getScreenWidth()*60/100;
-    private static double HEIGHT = UTILS.getScreenHeight()*80/100;
+    private static double WIDTH = Utils.getInstance().getScreenWidth()*70/100;
+    private double HEIGHT = Utils.getInstance().getScreenHeight();
     private Image currentImage;
     private double x,y;
     private Shapes currentShape;
@@ -36,6 +40,7 @@ public class AnchorImageView extends AnchorPane {
         super();
         this.parent = parent;
         this.setMaxWidth(WIDTH);
+        HEIGHT = HEIGHT - parent.getMenu().getAbsHeight();
         this.setMaxHeight(HEIGHT);
         shapesOnPane = new ArrayList<>();
         currentImage = img;
@@ -63,6 +68,7 @@ public class AnchorImageView extends AnchorPane {
             shapesOnPane.forEach(shape -> shape.setSelected(false));
             currentShape.setSelected(true);
             log.debug("index of selected shape: "+shapesOnPane.indexOf(currentShape));
+            //TODO na ovoj liniji imamo povezzanost izmedju shape-a i pitanja!!!
             this.parent.setSelectedQuestion(shapesOnPane.indexOf(currentShape));
             //redrawShapes(currentShape);
             log.debug("secondory click");
@@ -78,7 +84,16 @@ public class AnchorImageView extends AnchorPane {
         if (currentShape.getArea()>20) {
             log.debug("Area bigger thaan 10");
             shapesOnPane.add(currentShape);
-            this.parent.addQuestion(currentlySelectedShape);
+            //TODO popup za pitanje da li zelis multiple ili single question
+            ChoiceDialog<String> choiceDialogQuestion = new ChoiceDialog<>("Single Question",
+                    "Single Question", "Multiple Question", "Visual Question");
+            choiceDialogQuestion.setTitle("Create new question");
+            choiceDialogQuestion.setHeaderText("Choose type of question");
+            choiceDialogQuestion.setGraphic(new ImageView("/logo.png"));
+            choiceDialogQuestion.showAndWait();
+            String questionType = choiceDialogQuestion.getSelectedItem();
+            this.parent.addQuestion(currentlySelectedShape,questionType);
+
             shapesOnPane.forEach(shape -> {
                 if (shape != currentlySelectedShape) shape.setSelected(false);
             });
@@ -219,6 +234,7 @@ public class AnchorImageView extends AnchorPane {
         //graphicsContext.clearRect(0,0,WIDTH,HEIGHT);
         this.getChildren().clear();
         mapImageView.setImage(image);
+
         currentImage = image;
         this.getChildren().add(mapImageView);
         log.debug("shapes on pane: " + shapesOnPane.size());

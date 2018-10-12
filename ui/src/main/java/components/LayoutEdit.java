@@ -1,17 +1,18 @@
 package components;
 
+import components.Shapes.AnchorImageView;
+import components.Shapes.Shapes;
 import core.Question;
+import core.QuestionMultiple;
 import core.QuestionSingle;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import core.QuestionVisual;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import lombok.*;
 import org.apache.log4j.Logger;
+import utils.Utils;
 
 import java.util.ArrayList;
-
-import static components.GameFrame.UTILS;
 
 
 public class LayoutEdit extends LayoutBase {
@@ -36,25 +37,25 @@ public class LayoutEdit extends LayoutBase {
     
     public LayoutEdit(OptionMenu menu, String backgroundPath) {
         super(menu);
-        this.setHeight(UTILS.getScreenHeight());
-        this.setWidth(UTILS.getScreenWidth());
         this.backgroundPath = backgroundPath;
-        menu.setButtonSizes(80, 200);
-        menu.setPadding(new Insets(5, 5, 200, 5));
-        menu.setHgap(10);
-        menu.setAlignment(Pos.BOTTOM_CENTER);
-        menu.setPrefHeight(UTILS.getScreenHeight()*20/100);
-        menu.setPrefWidth(UTILS.getScreenWidth());
-        this.setBottom(menu);
         //log.debug("shapes size : " + shapes.size());
         resetScreen();
     }
         //1. TODO dodaj novo pitanje i selektuj ga, za novi shape koji nacrtas
-    public void addQuestion(Shapes shape) {
+    public void addQuestion(Shapes shape, String questionType) {
         // ovo mora da se pozove na kraju saveShape-a
         // ovdje mozda moramo da gledamo koje pitanje zelimo da napravimo
         // ili po defaultu pravimo single pa ima toggle dugme, nisam jos siguran
-        QuestionSingle newQuestion = new QuestionSingle(null);
+        Question newQuestion;
+        if (questionType.equals("Multiple Question")) {
+           newQuestion = new QuestionMultiple(null);
+        }
+        else if (questionType.equals("Single Question")){
+            newQuestion = new QuestionSingle(null);
+        }
+        else {
+            newQuestion = new QuestionVisual(null);
+        }
         this.questions.add(newQuestion);
         this.selectedQuestion = newQuestion;
         this.currentFrame.setQuestion(newQuestion);
@@ -91,35 +92,41 @@ public class LayoutEdit extends LayoutBase {
     public void setBackgroundPath(String newPath) {
         this.backgroundPath = newPath;
         Image newMap = new Image("file:" + this.backgroundPath);
-        this.anchorImageView = new AnchorImageView(newMap, this);
+        this.anchorImageView = makeNewAncorImageView(newMap, this);
         ((AnchorImageView) mapAndQuestion.getLeft()).setMapImageView(newMap);
         log.debug("Image View setted");
     }
 
+    public AnchorImageView makeNewAncorImageView (Image img, LayoutEdit parent){
+        AnchorImageView helpAnchorImageView = new AnchorImageView(img, parent);
+        helpAnchorImageView.getMapImageView().setFitWidth(Utils.getInstance().getScreenWidth()*70/100);
+        helpAnchorImageView.getMapImageView().setFitHeight(Utils.getInstance().getScreenHeight()-getMenu().getAbsHeight());
+        return helpAnchorImageView;
+    }
     public void resetScreen() {
         questions = null;
         shapes = null;
         selectedQuestion = null;
         timer = 0L;
         mapAndQuestion = new BorderPane();
-        mapAndQuestion.setPrefHeight(UTILS.getScreenHeight()*60/100);
-        mapAndQuestion.setPrefWidth(UTILS.getScreenWidth());
-        mapAndQuestion.setStyle("-fx-background-color: red;");
+        mapAndQuestion.setPrefHeight(Utils.getInstance().getScreenHeight()-this.getMenu().getAbsHeight());
+        mapAndQuestion.setPrefWidth(Utils.getInstance().getScreenWidth());
+        mapAndQuestion.setStyle("-fx-background-color: lightgray;");
         mapAndQuestion.setRight(this.currentFrame);
         mapAndQuestion.setLeft(this.anchorImageView);
-        this.anchorImageView = new AnchorImageView(new Image("file:" + backgroundPath), this);
-        this.anchorImageView.getMapImageView().setFitHeight(UTILS.getScreenHeight()*80/100);
-        this.anchorImageView.getMapImageView().setFitWidth(UTILS.getScreenWidth()*60/100);
-        this.anchorImageView.setMaxHeight(UTILS.getScreenHeight()*80/100);
-        this.anchorImageView.setMaxWidth(UTILS.getScreenWidth()*60/100);
+        this.anchorImageView = makeNewAncorImageView(new Image("file:" + backgroundPath), this);
+        //this.anchorImageView.getMapImageView().setFitHeight(UTILS.getScreenHeight()*80/100);
+        //this.anchorImageView.getMapImageView().setFitWidth(UTILS.getScreenWidth()*60/100);
+        //this.anchorImageView.setMaxHeight(UTILS.getScreenHeight()*80/100);
+        //this.anchorImageView.setMaxWidth(UTILS.getScreenWidth()*60/100);
         this.mapAndQuestion.setLeft(this.anchorImageView);
         //log.debug("Here is size : " + this.shapes.size());
 
         this.currentFrame = new QuestionFrame();
-        this.currentFrame.setPrefWidth(UTILS.getScreenWidth()*40/100);
-        this.currentFrame.setPrefHeight(UTILS.getScreenHeight()*80/100);
-        this.currentFrame.setMinWidth(UTILS.getScreenWidth()*40/100);
-        this.currentFrame.setStyle("-fx-background-color: yellow;");
+        //this.currentFrame.setPrefWidth(UTILS.getScreenWidth()*40/100);
+        //this.currentFrame.setPrefHeight(UTILS.getScreenHeight()*80/100);
+        //this.currentFrame.setMinWidth(UTILS.getScreenWidth()*40/100);
+        this.currentFrame.setStyle("-fx-background-color:  #cc7a00 ;");
         this.mapAndQuestion.setRight(currentFrame);
         this.setCenter(this.mapAndQuestion);
     }

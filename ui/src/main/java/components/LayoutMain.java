@@ -12,21 +12,12 @@ public class LayoutMain extends LayoutBase {
     private static final Logger log = Logger.getLogger(LayoutMain.class);
     public LayoutMain(OptionMenu menu) {
         super(menu);
-        menu.setHgap(50);
-        menu.setPadding(new Insets(5, 5, 100, 5));
-        log.debug(UTILS.getScreenHeight());
-        menu.setButtonSizes(UTILS.getScreenHeight()/10, UTILS.getScreenWidth()/9);
-        log.debug(menu.getWidth());
-        log.debug(menu.getWidth());
-        menu.setAlignment(Pos.CENTER);
-        ImageView logo = new ImageView (new Image(LayoutMain.class.getResourceAsStream("/logo.png")));
-        logo.setFitWidth(UTILS.getScreenWidth()/5);
-        logo.setFitHeight(UTILS.getScreenHeight()/5);
+        menu.getLogo().setFitWidth(300);
+        menu.getLogo().setFitHeight(300);
 
         this.setHeight(UTILS.getScreenHeight());
         this.setWidth(UTILS.getScreenWidth());
-        this.setStyle("-fx-background-image: url(/main_menu_background.jpg); -fx-background-repeat: stretch;");
-        this.setCenter(logo);
-        this.setBottom(menu);
+        this.setStyle("-fx-background-image: url(/main_menu_background.jpeg); -fx-background-repeat: round; -fx-opacity: 0.9");
+        this.setCenter(menu.getLogo());
     }
 }

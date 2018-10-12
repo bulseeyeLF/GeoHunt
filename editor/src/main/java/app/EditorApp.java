@@ -1,6 +1,9 @@
 package app;
 
 import components.*;
+import components.Shapes.ShapeEllipse;
+import components.Shapes.ShapePolygon;
+import components.Shapes.Shapes;
 import core.QuestionMultiple;
 import core.Question;
 import core.QuestionSingle;
@@ -9,15 +12,11 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -164,7 +163,7 @@ public class EditorApp extends Application {
     }
     
     private void importMap() {
-        fileChooser.setTitle("Import map");
+        fileChooser.setTitle("Import background");
         fileChooser.getExtensionFilters().clear();
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("All Files", "*.png")
@@ -373,7 +372,7 @@ public class EditorApp extends Application {
         EDIT_MENU_TEXT = new String[]{
             "Add Question",
             "Set Global Timer",
-            "Import map",
+            "Import background",
             "Save and Back"
         };
 
