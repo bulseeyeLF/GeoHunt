@@ -39,8 +39,7 @@ public class QuestionMultiple extends Question {
             } else {
                 createEmptyAnswers();
             }
-        }
-        else {
+        } else {
             jsonQuestion = new JSONObject();
             questionField = new TextField(jsonQuestion.optString("questionText", ""));
             timer = jsonQuestion.optLong("timer", 0);

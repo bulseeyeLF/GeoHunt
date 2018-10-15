@@ -1,15 +1,11 @@
 package components;
 
-import components.Shapes.AnchorImageView;
-import components.Shapes.Shapes;
-import core.Question;
-import core.QuestionMultiple;
-import core.QuestionSingle;
-import core.QuestionVisual;
+import core.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import lombok.*;
 import org.apache.log4j.Logger;
+import shape.Shapes;
 import utils.Utils;
 
 import java.util.ArrayList;
@@ -53,15 +49,22 @@ public class LayoutEdit extends LayoutBase {
         else if (questionType.equals("Single Question")){
             newQuestion = new QuestionSingle(null);
         }
-        else {
+        else if (questionType.equals("Visual Question")) {
             newQuestion = new QuestionVisual(null);
+            //TODO ovde cuvamo shape kao answer?
+            ((QuestionVisual)newQuestion).setAnswerShape(new AnswerShape(shape.save()));
         }
+        else {
+            newQuestion = null; // oporavak od greske
+            log.error("new question nije nijedan tip wtf?");
+        }
+
         this.questions.add(newQuestion);
         this.selectedQuestion = newQuestion;
         this.currentFrame.setQuestion(newQuestion);
         //this.shapes.add(shape);
         log.debug("Koliko puta se ovo ispisuje :D i kolika je velicina shape-a" + this.shapes.size());
-    };
+    }
         //2 .TODO selektuj vec postojece pitanje kad se selektuje objekat
     public void setSelectedQuestion(int i) {
         this.selectedQuestion = this.questions.get(i);
@@ -84,7 +87,7 @@ public class LayoutEdit extends LayoutBase {
         this.shapes = shapes;
         ((AnchorImageView) mapAndQuestion.getLeft()).setShapes(shapes);
 
-        log.debug("Shapes setted - shapes size  : " + shapes.size());
+        log.debug("shape setted - shapes size  : " + shapes.size());
     }
 
 

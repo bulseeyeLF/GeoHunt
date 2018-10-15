@@ -1,9 +1,6 @@
 package components;
 
-import core.Answer;
-import core.Question;
-import core.QuestionMultiple;
-import core.QuestionSingle;
+import core.*;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -25,6 +22,7 @@ public class QuestionFrame extends BorderPane {
     private AnswerFrame currentFrame;
     private AnswerFrameMultiple mulipleFrame;
     private AnswerFrameSingle singleFrame;
+    private AnswerFrameVisual visualFrame;
     @Getter
     protected Question question;
     protected TextField inputField;
@@ -38,6 +36,7 @@ public class QuestionFrame extends BorderPane {
        // mulipleFrame.setPrefWidth(500);
         singleFrame = new AnswerFrameSingle();
         //singleFrame.setPrefHeight(100);
+        visualFrame = new AnswerFrameVisual();
         this.setPadding(new Insets(100, 50, 100, 50));
 
     }
@@ -47,8 +46,11 @@ public class QuestionFrame extends BorderPane {
         this.inputField = question.getQuestionField();
         if (question.getType() == 0) {
             currentFrame = singleFrame.setAnswer(((QuestionSingle) question).getAnswer());
-        } else {
+        } else if (question.getType() == 1) {
             currentFrame = mulipleFrame.setAnswer(((QuestionMultiple) question).getAnswers());
+        }
+        else if (question.getType() == 2){
+            currentFrame = visualFrame.setAnswer(((QuestionVisual) question).getAnswerShape());
         }
 
         this.setTop(inputField);

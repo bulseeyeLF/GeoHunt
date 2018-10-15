@@ -1,4 +1,4 @@
-package components.Shapes;
+package shape;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;

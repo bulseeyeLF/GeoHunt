@@ -1,4 +1,4 @@
-package components.Shapes;
+package shape;
 import javafx.scene.shape.Ellipse;
 import lombok.Setter;
 import org.apache.log4j.Logger;
@@ -36,7 +36,7 @@ public class ShapeEllipse extends Shapes{
     }
 
     @Override
-    protected void setArea() {
+    public void setArea() {
         this.area = radiusX * radiusY;
     }
 

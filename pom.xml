@@ -12,6 +12,7 @@
         <module>ui</module>
         <module>common</module>
         <module>logic</module>
+        <module>shapes</module>
     </modules>
     <packaging>pom</packaging>
 

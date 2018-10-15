@@ -1,12 +1,10 @@
 package app;
 
 import components.*;
-import components.Shapes.ShapeEllipse;
-import components.Shapes.ShapePolygon;
-import components.Shapes.Shapes;
 import core.QuestionMultiple;
 import core.Question;
 import core.QuestionSingle;
+import core.QuestionVisual;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -21,6 +19,9 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import shape.ShapeEllipse;
+import shape.ShapePolygon;
+import shape.Shapes;
 import utils.Utils;
 
 import java.io.*;
@@ -319,6 +320,9 @@ public class EditorApp extends Application {
                 } else if (typeInt == 1) {
                     arrayListQuestion.add(new QuestionMultiple((JSONObject) i));
                 }
+                else if (typeInt == 2) {
+                    arrayListQuestion.add(new QuestionVisual((JSONObject)i));
+                }
             });
             editScreen.setQuestions(arrayListQuestion);
 
@@ -330,12 +334,12 @@ public class EditorApp extends Application {
                 if (typeInt == 0) {
                     arrayListShapes.add(new ShapePolygon((JSONObject)i));
                 } else if (typeInt == 1) {
-                    arrayListShapes.add(new ShapeEllipse((JSONObject) i));
+                    arrayListShapes.add(new ShapeEllipse((JSONObject)i));
                 }
             });
             editScreen.setShapes(arrayListShapes);
             log.debug("array list of shapes from map: " + arrayListShapes.get(0));
-            log.debug("Shapes setted in Editor App");
+            log.debug("shape setted in Editor App");
 
         } catch (JSONException e) {
             log.error(e);

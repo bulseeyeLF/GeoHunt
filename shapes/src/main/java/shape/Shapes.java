@@ -1,4 +1,4 @@
-package components.Shapes;
+package shape;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -80,7 +80,7 @@ public abstract class Shapes {
         log.debug("SetShapeLook finished");
     }
 
-    protected abstract void setArea();
+    public abstract void setArea();
 
     public abstract void finish();
 

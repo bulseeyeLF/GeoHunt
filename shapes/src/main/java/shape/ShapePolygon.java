@@ -1,4 +1,4 @@
-package components.Shapes;
+package shape;
 
 import javafx.scene.shape.Polyline;
 import lombok.Getter;
@@ -65,7 +65,7 @@ public class ShapePolygon extends Shapes {
         //log.debug("addPoint finished");
     }
     @Override
-    protected void setArea(){
+    public void setArea(){
         for(int i = 0; i < coordinates.size(); i += 2) {
             double x = coordinates.get(i);
             double y = coordinates.get(i+1);

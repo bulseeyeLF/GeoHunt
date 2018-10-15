@@ -1,12 +1,26 @@
 package core;
 
+import lombok.Getter;
 import org.json.JSONObject;
+import shape.ShapeEllipse;
+import shape.ShapePolygon;
+import shape.Shapes;
 
-public class AnswerShape  {
+public class AnswerShape {
 
-    JSONObject answerShapeJson;
+    @Getter
+    Shapes answerShape;
 
-    public AnswerShape(JSONObject jsonObject){
-        answerShapeJson = jsonObject;
+    //TODO kako cemo da cuvamo answerShape????
+
+    public AnswerShape(JSONObject answerShapeJson) {
+        if (answerShapeJson!= null){
+            int type = answerShapeJson.optInt("type");
+            if (type == 0){
+                answerShape = new ShapePolygon(answerShapeJson);
+            } else if (type == 1) {
+                answerShape = new ShapeEllipse(answerShapeJson);
+            }
+        }
     }
 }

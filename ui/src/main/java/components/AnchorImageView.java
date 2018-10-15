@@ -1,7 +1,5 @@
-package components.Shapes;
+package components;
 
-import components.LayoutEdit;
-import components.MyHandler;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,12 +8,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 import org.apache.log4j.Logger;
+import shape.ShapeEllipse;
+import shape.ShapePolygon;
+import shape.Shapes;
 import utils.Utils;
 
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class AnchorImageView extends AnchorPane {
@@ -77,7 +76,7 @@ public class AnchorImageView extends AnchorPane {
     }
 
     private void saveShape(Shapes currentShape) {
-        currentShape.shape.setOnMouseClicked(event -> shapeMouseSecondoryClicked(event,currentShape));
+        currentShape.getShape().setOnMouseClicked(event -> shapeMouseSecondoryClicked(event,currentShape));
         log.debug("current shape  " + currentShape);
         currentShape.setArea();
         log.debug("AREA: "+currentShape.getArea());
@@ -103,7 +102,7 @@ public class AnchorImageView extends AnchorPane {
         }
     }
 
-   /* private void redrawShapes(Shapes selectedShape) {
+   /* private void redrawShapes(shape selectedShape) {
         this.getChildren().clear();
         mapImageView.setImage(currentImage);
         this.getChildren().add(mapImageView);
@@ -111,7 +110,7 @@ public class AnchorImageView extends AnchorPane {
             if (shape != selectedShape) shape.setSelected(false);
             else shape.setSelected(true);
         });
-        this.getChildren().addAll(shapesOnPane.stream().map(Shapes::getShape).collect(Collectors.toList()));
+        this.getChildren().addAll(shapesOnPane.stream().map(shape::getShape).collect(Collectors.toList()));
 
         log.debug("Redrawed");
     }*/
@@ -176,7 +175,7 @@ public class AnchorImageView extends AnchorPane {
         yPosition = setPositionLimitHelper(yPosition, HEIGHT, 6);
         if (currentShape == null) {
             currentShape = new ShapePolygon(x, y);
-            this.getChildren().add(currentShape.shape);
+            this.getChildren().add(currentShape.getShape());
         } else if (currentShape instanceof ShapePolygon){
             ((ShapePolygon) currentShape).addPoint(xPosition, yPosition);
         }
@@ -201,7 +200,7 @@ public class AnchorImageView extends AnchorPane {
         if (currentShape == null) {
             log.debug("Current shape je null");
             currentShape = new ShapePolygon(x, y);
-            this.getChildren().add(currentShape.shape);
+            this.getChildren().add(currentShape.getShape());
             log.debug("Velicina pane-a ??? " +this.getChildren().size());
         } else if (currentShape instanceof ShapePolygon) {
             ((ShapePolygon) currentShape).addPoint(xpos, ypos);
@@ -215,7 +214,7 @@ public class AnchorImageView extends AnchorPane {
                  Math.abs((xpos - x) / 2),
                 Math.abs(ypos - y) / 2);
             log.debug("created ellipse");
-            this.getChildren().add(currentShape.shape);
+            this.getChildren().add(currentShape.getShape());
             log.debug("getChildren :  " + this.getChildren().size());
             /*((ShapeEllipse)currentShape).setRadiusXposition(xpos);
             ((ShapeEllipse)currentShape).setRadiusYposition(ypos);*/
