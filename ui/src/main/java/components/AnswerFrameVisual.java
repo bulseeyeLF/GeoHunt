@@ -3,6 +3,7 @@ package components;
 import core.Answer;
 import core.AnswerShape;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 
 public class AnswerFrameVisual extends AnswerFrame {
     private AnswerShape answer;
@@ -18,7 +19,7 @@ public class AnswerFrameVisual extends AnswerFrame {
     public AnswerFrameVisual setAnswer(AnswerShape answer) {
         this.answer = answer;
         this.getChildren().clear();
-        //TODO  valjda ovde nema nicega drugog?
+        this.getChildren().add(new Label("Answer is one of the shapes on your map"));
         return this;
     }
 }

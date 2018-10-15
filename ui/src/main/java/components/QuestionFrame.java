@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -53,18 +54,17 @@ public class QuestionFrame extends BorderPane {
             currentFrame = visualFrame.setAnswer(((QuestionVisual) question).getAnswerShape());
         }
 
-        this.setTop(inputField);
+        this.setTop(new VBox(question.getQuestionLabel(), inputField));
         //this.setRight(question.getTimerSpinner());
-        Button addPictureButton = new Button();
-        addPictureButton.setStyle("-fx-background-radius: 360px");
-        addPictureButton.setGraphic(new ImageView(new Image("/buttons/add_picture_button.png")));
-        addPictureButton.setOnAction(event -> addPicture());
+        question.getAddPictureButton().setStyle("-fx-background-radius: 360px");
+        question.getAddPictureButton().setGraphic(new ImageView(new Image("/buttons/add_picture_button.png")));
+        question.getAddPictureButton().setOnAction(event -> addPicture());
         //this.setLeft(addPictureButton);
         centerPane = new BorderPane();
         centerPane.setMaxHeight(Utils.getInstance().getScreenHeight()*40/100);
         centerPane.setMaxWidth(Utils.getInstance().getScreenWidth()*20/100);
-        centerPane.setLeft(addPictureButton);
-        centerPane.setRight(question.getTimerSpinner());
+        centerPane.setLeft(new VBox(question.getPictureLabel(), question.getAddPictureButton()));
+        centerPane.setRight(new VBox(question.getTimerLabel(), question.getTimerSpinner()));
         if (question.getQuestionPictureSource()!=null){
            setPicture(question.getQuestionPictureSource());
         }
@@ -90,7 +90,6 @@ public class QuestionFrame extends BorderPane {
         question.setQuestionPictureSource(resource);
         choosenImage.setFitWidth((Utils.getInstance().getScreenWidth()*10/100));
         choosenImage.setFitHeight((Utils.getInstance().getScreenHeight()*30/100));
-
         centerPane.setBottom(choosenImage);
     }
 

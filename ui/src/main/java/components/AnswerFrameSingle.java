@@ -2,6 +2,8 @@ package components;
 
 import core.Answer;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 public class AnswerFrameSingle extends AnswerFrame {
 
@@ -19,7 +21,7 @@ public class AnswerFrameSingle extends AnswerFrame {
     public AnswerFrameSingle setAnswer(Answer answer) {
         this.answer = answer;
         this.getChildren().clear();
-        this.getChildren().add(answer.getAnswerText());
+        this.getChildren().add(new VBox(new Label("Correct answer: "),answer.getAnswerText()));
         return this;
     }
 }

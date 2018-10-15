@@ -11,8 +11,6 @@ public class AnswerShape {
     @Getter
     Shapes answerShape;
 
-    //TODO kako cemo da cuvamo answerShape????
-
     public AnswerShape(JSONObject answerShapeJson) {
         if (answerShapeJson!= null){
             int type = answerShapeJson.optInt("type");

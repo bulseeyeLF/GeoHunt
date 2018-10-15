@@ -67,7 +67,6 @@ public class AnchorImageView extends AnchorPane {
             shapesOnPane.forEach(shape -> shape.setSelected(false));
             currentShape.setSelected(true);
             log.debug("index of selected shape: "+shapesOnPane.indexOf(currentShape));
-            //TODO na ovoj liniji imamo povezzanost izmedju shape-a i pitanja!!!
             this.parent.setSelectedQuestion(shapesOnPane.indexOf(currentShape));
             //redrawShapes(currentShape);
             log.debug("secondory click");
@@ -83,7 +82,7 @@ public class AnchorImageView extends AnchorPane {
         if (currentShape.getArea()>20) {
             log.debug("Area bigger thaan 10");
             shapesOnPane.add(currentShape);
-            //TODO popup za pitanje da li zelis multiple ili single question
+            // popup za pitanje da li zelis multiple ili single question
             ChoiceDialog<String> choiceDialogQuestion = new ChoiceDialog<>("Single Question",
                     "Single Question", "Multiple Question", "Visual Question");
             choiceDialogQuestion.setTitle("Create new question");

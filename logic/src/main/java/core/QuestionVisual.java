@@ -38,7 +38,7 @@ public class QuestionVisual extends Question
                     .put("timer", this.getTimerSpinner().getValue())
                     .put("type", this.getType())
                     .put("pictureSource",getQuestionPictureSource())
-                    .put("answerShape",answerShape.getAnswerShape().save());//TODO ovde ce morati json da se cuva?
+                    .put("answerShape",answerShape.getAnswerShape().save());
         } catch (JSONException e) {
             log.error("Error in save UserInput Question",e);
             return null;
@@ -46,10 +46,10 @@ public class QuestionVisual extends Question
     }
 
     //TODO problemi: prolazak kroz pitanja bez kliktanja na povrsine za igru svakako treba implementirati
-    //TODO problemi: obelezene na poseban nacin non-clickable povrsine koje su potencijalni odgovor na neko pitanje
+    //TODO problemi: obelezene na poseban nacin non-clickable povrsine koje su potencijalni odgovor na neko pitanje - game play
     //TODO problemi: ne moramo mozda da imamo non clickable povrsine zato sto je ovo editor i u editoru ne moramo da krijemo odgovor
     ///TODO problemi: samo necemo imati polje za odgovor ali treba napraviti dobru strukturu da moze posle sa tim da se igra
-    //TODO problemi: U sustini samo u onom delu nakon sto smo napravili pitanje treba taj shape sacuvati kao objekat ili kao json +type u questionvisual koji ima polje answeshape
+    //???? problemi: U sustini samo u onom delu nakon sto smo napravili pitanje treba taj shape sacuvati kao objekat ili kao json +type u questionvisual koji ima polje answeshape
 
 
 }

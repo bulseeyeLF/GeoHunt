@@ -28,7 +28,7 @@ public class LayoutEdit extends LayoutBase {
     @Getter
     private ArrayList<Question> questions;
     @Getter
-    private ArrayList<Shapes> shapes; //TODO ovo moramo zajedno, ne znam kako si planirao da dohvatamo/upisujemo shapes u map fajl
+    private ArrayList<Shapes> shapes;
     private Question selectedQuestion;
     
     public LayoutEdit(OptionMenu menu, String backgroundPath) {
@@ -37,7 +37,7 @@ public class LayoutEdit extends LayoutBase {
         //log.debug("shapes size : " + shapes.size());
         resetScreen();
     }
-        //1. TODO dodaj novo pitanje i selektuj ga, za novi shape koji nacrtas
+        //1. dodaj novo pitanje i selektuj ga, za novi shape koji nacrtas
     public void addQuestion(Shapes shape, String questionType) {
         // ovo mora da se pozove na kraju saveShape-a
         // ovdje mozda moramo da gledamo koje pitanje zelimo da napravimo
@@ -51,7 +51,7 @@ public class LayoutEdit extends LayoutBase {
         }
         else if (questionType.equals("Visual Question")) {
             newQuestion = new QuestionVisual(null);
-            //TODO ovde cuvamo shape kao answer?
+            // ovde cuvamo shape kao answer
             ((QuestionVisual)newQuestion).setAnswerShape(new AnswerShape(shape.save()));
         }
         else {
@@ -65,7 +65,7 @@ public class LayoutEdit extends LayoutBase {
         //this.shapes.add(shape);
         log.debug("Koliko puta se ovo ispisuje :D i kolika je velicina shape-a" + this.shapes.size());
     }
-        //2 .TODO selektuj vec postojece pitanje kad se selektuje objekat
+        //2  selektuj vec postojece pitanje kad se selektuje objekat
     public void setSelectedQuestion(int i) {
         this.selectedQuestion = this.questions.get(i);
         // zivo me interesuje hoce li da radi bez ovoga
