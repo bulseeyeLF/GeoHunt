@@ -8,7 +8,7 @@
     <artifactId>GeoHunt</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>editor</module>
+        <module>app</module>
         <module>ui</module>
         <module>common</module>
         <module>logic</module>

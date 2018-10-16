@@ -1,11 +1,11 @@
-package app;
+package apps.editor;
 
+import apps.App;
 import components.*;
 import core.QuestionMultiple;
 import core.Question;
 import core.QuestionSingle;
 import core.QuestionVisual;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 
-public class EditorApp extends Application {
+public class EditorApp extends App {
 
     private static final Logger log = Logger.getLogger(EditorApp.class);
 
@@ -339,7 +339,7 @@ public class EditorApp extends Application {
             });
             editScreen.setShapes(arrayListShapes);
             log.debug("array list of shapes from map: " + arrayListShapes.get(0));
-            log.debug("shape setted in Editor App");
+            log.debug("shape setted in Editor apps.App");
 
         } catch (JSONException e) {
             log.error(e);
@@ -463,7 +463,7 @@ public class EditorApp extends Application {
             this::saveAndBackToMain
         };
 
-        URL resource = EditorApp.class.getResource("/maps/default.png");
+        URL resource = EditorApp.class.getResource("/maps/default.jpg");
         try {
             defaultPath = Paths.get(resource.toURI()).toString();
         } catch (URISyntaxException e) {
