@@ -74,45 +74,16 @@ public class EditorApp extends App {
 
     @Override
     public void init (){
-        try {
-            super.init();
-        } catch (Exception e) {
-            log.error(e);
-        }
-        initConstants();
-        initActionsAndVariables();
-        initMenus();
-        mainScreenRoot = new Group();
-        editScreenRoot = new Group();
-        initScreens();
-    }
-    
-    @Override
-    public void start(Stage editorStage) {
-        initShortcuts(editorStage);
-        mainScene = new Scene(mainScreenRoot);
-        currentScreen = mainScreen;
-        initScreen(editorStage);
-        editorStage.setResizable(false);
-        editorStage.show();
-        mainScreen.setPrefHeight(editorStage.getHeight());
-        mainScreen.setPrefWidth(editorStage.getWidth());
-        editorStage.setScene(mainScene);
+        super.init();
     }
 
-    /*public void addQuestions() {
-        addScreenRoot.getChildren().clear();
-        addScreen = initAddScreen();
-        //addScreen.setPrefHeight(UTILS.getScreenHeight());
-        //addScreen.setPrefWidth(UTILS.getScreenWidth());
-        addScreenRoot.getChildren().add(addScreen);
-        mainScene.setRoot(addScreenRoot);
-        currentMenu = addMenu;
-    }*/
+    @Override
+    public void start(Stage editorStage) throws Exception {
+        super.start(editorStage);
+    }
 
     public void newMap() {
         currentlyOpenFile = null;
-
         editScreen.resetScreen();
         editScreen.setQuestions(new ArrayList<Question>());
         editScreen.setBackgroundPath(defaultPath);
@@ -127,8 +98,6 @@ public class EditorApp extends App {
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("All Files", "*.map")
         );
-        //fileChooser.setInitialDirectory(mapsFolder);
-
         currentlyOpenFile = fileChooser.showOpenDialog(new Stage());
         if (currentlyOpenFile != null) {
             try {
@@ -174,33 +143,7 @@ public class EditorApp extends App {
             editScreen.setBackgroundPath(file.getAbsolutePath());
         }
     }
-    /*
-    public void addUserInputQuestion() {
-        QuestionSingle newQuestion = null;
-        try {
-            newQuestion = new QuestionSingle(new JSONObject("{\"type\":0}"));
-        } catch (JSONException e) {
-            log.error(e);
-            e.printStackTrace();
-        }
-        addScreen.addQuestion(newQuestion);
-    }
-    
-    public void addMultipleChoiceQuestion() {
-        QuestionMultiple newQuestion = null;
-        try {
-            newQuestion = new QuestionMultiple(new JSONObject("{\"type\":1}"));
-        } catch (JSONException e) {
-            log.error(e);
-            e.printStackTrace();
-        }
-        addScreen.addQuestion(newQuestion);
-    }
-    
-    public void deleteQuestion() {
-        addScreen.deleteQuestion(addScreen.getSelectedQuestion());
-    }*/
-    
+
     private void saveFile(String content, File file){
         try {
             FileWriter fileWriter = new FileWriter(file);
@@ -259,12 +202,6 @@ public class EditorApp extends App {
         }
         currentlyOpenFile = null;
     }
-    /*
-    public void saveAndBackToEdit(){
-        save(false);
-        mainScene.setRoot(editScreenRoot);
-        currentMenu = editMenu;
-    }*/
 
     public void saveAndBackToMain(){
         saveMap();
@@ -277,15 +214,28 @@ public class EditorApp extends App {
         System.exit(0);
     }
 
-    private void initShortcuts(Stage parent) {
+    @Override
+    protected void initShortcuts(Stage parent) {
         parent.addEventHandler(KeyEvent.KEY_PRESSED, event -> currentScreen.getMenu().pressButon(event.getCode()));
     }
+    @Override
+    protected void setUpCurrentScreen(Stage stage) {
+        mainScene = new Scene(mainScreenRoot);
+        currentScreen = mainScreen;
+    }
 
-    private void initScreen(Stage parent) {
-        parent.setWidth(UTILS.getScreenWidth());
-        parent.setHeight(UTILS.getScreenHeight());
+    @Override
+    protected void initScreen(Stage parent) {
+        parent.setWidth(Utils.getInstance().getScreenWidth());
+        parent.setHeight(Utils.getInstance().getScreenHeight());
         parent.setOnCloseRequest(event -> close());
         parent.setTitle("Editor");
+    }
+    @Override
+    protected void setScreenSize(Stage stage) {
+        mainScreen.setPrefHeight(stage.getHeight());
+        mainScreen.setPrefWidth(stage.getWidth());
+        stage.setScene(mainScene);
     }
 
     private void mapLoader(String input, LayoutEdit editScreen) throws IOException{
@@ -347,76 +297,71 @@ public class EditorApp extends App {
         }
     }
 
-    // private QuestionEditPane initAddScreen() {
-    //     QuestionEditPane addScreen = new QuestionEditPane(editScreen.getQuestions());
-    //     addScreen.setRight(this.addMenu);
-    //     this.addMenu.setAlignment(Pos.CENTER);
-    //     return addScreen;
-    // }
-    
-    private  void initConstants(){
+    @Override
+    protected void initConstants() {
+        //TODO constants for EDITOR
         MAIN_MENU_TEXT = new String[]{
-            "New Map",
-            "Edit Map",
-            "Exit"
+                "New Map",
+                "Edit Map",
+                "Exit"
         };
 
         MAIN_MENU_HINT_TEXT = new String[]{
-            "Create a (N)ew map",
-            "(E)dit existing map",
-            "E(X)it"
+                "Create a (N)ew map",
+                "(E)dit existing map",
+                "E(X)it"
         };
-        
+
         MAIN_MENU_TRIGGERS = new KeyCode[]{
-            KeyCode.N,
-            KeyCode.E,
-            KeyCode.X
+                KeyCode.N,
+                KeyCode.E,
+                KeyCode.X
         };
-        
+
         EDIT_MENU_TEXT = new String[]{
-            "Add Question",
-            "Set Global Timer",
-            "Import background",
-            "Save and Back"
+                "Add Question",
+                "Set Global Timer",
+                "Import background",
+                "Save and Back"
         };
 
         EDIT_MENU_HINT_TEXT = new String[]{
-            "(A)dd more one question",
-            "Set the (T)imer",
-            "(I)mport new map file",
-            "Save and Go (B)ack"
+                "(A)dd more one question",
+                "Set the (T)imer",
+                "(I)mport new map file",
+                "Save and Go (B)ack"
         };
-        
+
         EDIT_MENU_TRIGGERS = new KeyCode[]{
-            KeyCode.A,
-            KeyCode.T,
-            KeyCode.I,
-            KeyCode.B
+                KeyCode.A,
+                KeyCode.T,
+                KeyCode.I,
+                KeyCode.B
         };
-        
+
         ADD_MENU_TEXT = new String[]{
-            "Add basic",
-            "Add next-lvl",
-            "Delete",
-            "Save and Back"
+                "Add basic",
+                "Add next-lvl",
+                "Delete",
+                "Save and Back"
         };
-        
+
         ADD_MENU_HINT_TEXT = new String[]{
-            "(A)dd another question",
-            "Add another (M)ulti-choice question",
-            "(D)elete current question",
-            "(S)ave and back"
+                "(A)dd another question",
+                "Add another (M)ulti-choice question",
+                "(D)elete current question",
+                "(S)ave and back"
         };
 
         ADD_MENU_TRIGGERS = new KeyCode[]{
-            KeyCode.A,
-            KeyCode.M,
-            KeyCode.D,
-            KeyCode.S
+                KeyCode.A,
+                KeyCode.M,
+                KeyCode.D,
+                KeyCode.S
         };
     }
-
-    private void initMenus(){
+    @Override
+    protected void initMenus(){
         mainMenu = new OptionMenu(
                 "main",
                 MAIN_MENU_TEXT,
@@ -442,7 +387,8 @@ public class EditorApp extends App {
         );
     }
 
-    private void initActionsAndVariables() {
+    @Override
+    protected void initActionsAndVariables() {
         ADD_MENU_ACTIONS = new Selection[]{
             () -> {}, //this::addUserInputQuestion,
             () -> {}, //this::addMultipleChoiceQuestion,
@@ -474,7 +420,13 @@ public class EditorApp extends App {
         //mapsFolder = new File(EditorApp.class.getResource("/maps/").getFile());
     }
 
-    private void initScreens() {
+    @Override
+    protected void initRoots() {
+        mainScreenRoot = new Group();
+        editScreenRoot = new Group();
+    }
+    @Override
+    protected void initScreens() {
         mainScreen = new LayoutMain(mainMenu);
         mainScreenRoot.getChildren().add(mainScreen);
         editScreen = new LayoutEdit(editMenu, defaultPath);
