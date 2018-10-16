@@ -1,16 +1,18 @@
 package apps;
 
+import components.LayoutBase;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
+import utils.Utils;
 
 public abstract class App extends Application{
 
     private static final Logger log = Logger.getLogger(App.class);
-
-    public static void main(String[] argv) {
-        launch(argv);
-    }
+    protected LayoutBase currentScreen;
+    protected Stage primaryStage;
     @Override
     public void init (){
         try {
@@ -34,9 +36,10 @@ public abstract class App extends Application{
 
     @Override
     public void start(Stage stage) throws Exception {
+        this.primaryStage = stage;
         initShortcuts(stage);
-        setUpCurrentScreen(stage);
-        initScreen(stage);
+        setUpCurrentScreen();
+        initScreen(stage, "");
         stage.setResizable(false);
         stage.show();
         setScreenSize(stage);
@@ -44,9 +47,21 @@ public abstract class App extends Application{
 
     protected abstract void setScreenSize(Stage stage);
 
-    protected abstract void setUpCurrentScreen(Stage stage);
+    protected abstract void setUpCurrentScreen();
 
-    protected abstract void initShortcuts(Stage editorStage);
-    protected abstract void initScreen(Stage editorStage);
+    protected void initShortcuts(Stage parent){
+        parent.addEventHandler(KeyEvent.KEY_PRESSED, event -> currentScreen.getMenu().pressButon(event.getCode()));
+    }
+
+    protected void initScreen(Stage parent, String title){
+        parent.setWidth(Utils.getInstance().getScreenWidth());
+        parent.setHeight(Utils.getInstance().getScreenHeight());
+        parent.setOnCloseRequest(event -> close());
+        parent.setTitle(title);
+    }
+    protected void close() {
+        Platform.exit();
+        System.exit(0);
+    }
 }
 

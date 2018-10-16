@@ -89,7 +89,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        apps.editor.EditorApp
+                                        apps.ChooserApp
                                     </mainClass>
                                 </manifest>
                             </archive>

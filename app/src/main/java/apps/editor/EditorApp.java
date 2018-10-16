@@ -1,17 +1,16 @@
 package apps.editor;
 
 import apps.App;
+import apps.ChooseApp;
 import components.*;
 import core.QuestionMultiple;
 import core.Question;
 import core.QuestionSingle;
 import core.QuestionVisual;
-import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -49,7 +48,6 @@ public class EditorApp extends App {
     private  Selection[] ADD_MENU_ACTIONS;
     private  KeyCode[] ADD_MENU_TRIGGERS;
 
-    static Utils UTILS = Utils.getInstance() ;
     private Scene mainScene;
     private File mapsFolder;
     private String defaultPath ;
@@ -62,15 +60,9 @@ public class EditorApp extends App {
     private LayoutMain mainScreen;
     private LayoutEdit editScreen;
 
-    private LayoutBase currentScreen;
-
     private  OptionMenu mainMenu;
     private  OptionMenu editMenu;
     private  OptionMenu addMenu;
-
-    public static void main(String[] argv) {
-        launch(argv);
-    }
 
     @Override
     public void init (){
@@ -83,6 +75,7 @@ public class EditorApp extends App {
     }
 
     public void newMap() {
+        //poziva se na add map
         currentlyOpenFile = null;
         editScreen.resetScreen();
         editScreen.setQuestions(new ArrayList<Question>());
@@ -93,6 +86,7 @@ public class EditorApp extends App {
     }
 
     public void editMap() {
+        //poziva se na editmap
         fileChooser.setTitle("Open Map");
         fileChooser.getExtensionFilters().clear();
         fileChooser.getExtensionFilters().addAll(
@@ -112,6 +106,7 @@ public class EditorApp extends App {
     }
 
     private void setGlobalTimer() {
+        //na klik dugmeta
         Long currentTimer = editScreen.getTimer() / 1000;
         TextInputDialog dialog = new TextInputDialog(currentTimer.toString());
         dialog.setTitle("Timer");
@@ -133,6 +128,7 @@ public class EditorApp extends App {
     }
     
     private void importMap() {
+        //import novog backgrounda
         fileChooser.setTitle("Import background");
         fileChooser.getExtensionFilters().clear();
         fileChooser.getExtensionFilters().addAll(
@@ -145,6 +141,7 @@ public class EditorApp extends App {
     }
 
     private void saveFile(String content, File file){
+        //sacuvaj
         try {
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.flush();
@@ -208,36 +205,6 @@ public class EditorApp extends App {
         mainScene.setRoot(mainScreenRoot);
         currentScreen = mainScreen;
     }
-
-    private void close() {
-        Platform.exit();
-        System.exit(0);
-    }
-
-    @Override
-    protected void initShortcuts(Stage parent) {
-        parent.addEventHandler(KeyEvent.KEY_PRESSED, event -> currentScreen.getMenu().pressButon(event.getCode()));
-    }
-    @Override
-    protected void setUpCurrentScreen(Stage stage) {
-        mainScene = new Scene(mainScreenRoot);
-        currentScreen = mainScreen;
-    }
-
-    @Override
-    protected void initScreen(Stage parent) {
-        parent.setWidth(Utils.getInstance().getScreenWidth());
-        parent.setHeight(Utils.getInstance().getScreenHeight());
-        parent.setOnCloseRequest(event -> close());
-        parent.setTitle("Editor");
-    }
-    @Override
-    protected void setScreenSize(Stage stage) {
-        mainScreen.setPrefHeight(stage.getHeight());
-        mainScreen.setPrefWidth(stage.getWidth());
-        stage.setScene(mainScene);
-    }
-
     private void mapLoader(String input, LayoutEdit editScreen) throws IOException{
         try {
             BufferedReader br = new BufferedReader(new FileReader(input));
@@ -295,6 +262,29 @@ public class EditorApp extends App {
             log.error(e);
             e.printStackTrace();
         }
+    }
+
+    //init and start methods
+    @Override
+    protected void initShortcuts(Stage parent) {
+       super.initShortcuts(parent);
+    }
+
+    @Override
+    protected void setUpCurrentScreen() {
+        mainScene = new Scene(mainScreenRoot);
+        currentScreen = mainScreen;
+    }
+
+    @Override
+    protected void initScreen(Stage parent, String title) {
+        super.initScreen(parent,"Editor");
+    }
+    @Override
+    protected void setScreenSize(Stage stage) {
+        mainScreen.setPrefHeight(stage.getHeight());
+        mainScreen.setPrefWidth(stage.getWidth());
+        stage.setScene(mainScene);
     }
 
     @Override
@@ -403,7 +393,7 @@ public class EditorApp extends App {
         };
         
         EDIT_MENU_ACTIONS = new Selection[]{
-            () -> {},
+                ()->{},
             this::setGlobalTimer,
             this::importMap,
             this::saveAndBackToMain
@@ -431,5 +421,16 @@ public class EditorApp extends App {
         mainScreenRoot.getChildren().add(mainScreen);
         editScreen = new LayoutEdit(editMenu, defaultPath);
         editScreenRoot.getChildren().add(editScreen);
+    }
+    @Override
+    protected void close (){
+        ChooseApp chooseApp = new ChooseApp();
+        chooseApp.init();
+        try {
+            chooseApp.start(primaryStage);
+        } catch (Exception e) {
+            log.error("Coulndt return to choose menu");
+            e.printStackTrace();
+        }
     }
 }

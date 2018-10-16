@@ -39,7 +39,6 @@ public class QuestionFrame extends BorderPane {
         //singleFrame.setPrefHeight(100);
         visualFrame = new AnswerFrameVisual();
         this.setPadding(new Insets(100, 50, 100, 50));
-
     }
 
     public void setQuestion(Question question) {
