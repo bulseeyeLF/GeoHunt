@@ -27,11 +27,13 @@ public class QuestionMultiple extends Question {
                     if (oneAnswer != null) {
                         answers.add(new AnswerMultiple(
                                 oneAnswer.optString("text", ""),
+                                oneAnswer.optString("points", "0"),
                                 oneAnswer.optBoolean("correct", false)
                         ));
                     } else {
                         answers.add(new AnswerMultiple(
                                 "",
+                                "0",
                                 false
                         ));
                     }
@@ -51,7 +53,7 @@ public class QuestionMultiple extends Question {
 
     public void createEmptyAnswers(){
         for (int i = 0; i < 4; i++) {
-            answers.add(new AnswerMultiple("", false));
+            answers.add(new AnswerMultiple("", "0", false));
         }
     }
 
@@ -63,8 +65,9 @@ public class QuestionMultiple extends Question {
             answers.forEach(a->{
                 try {
                     jsonArray.put(new JSONObject()
-                        .put("text", a.getAnswerText().getText())
-                        .put("correct", a.isCorrect()));
+                            .put("text", a.getAnswerText().getText())
+                            .put("correct", a.isCorrect())
+                    );
                 } catch (JSONException e) {
                     log.error(e);
                     e.printStackTrace();
@@ -75,7 +78,8 @@ public class QuestionMultiple extends Question {
                     .put("timer", this.getTimerSpinner().getValue())
                     .put("type", this.type)
                     .put("answers", jsonArray)
-                    .put("pictureSource",getQuestionPictureSource());
+                    .put("pictureSource",getQuestionPictureSource())
+                    .put("points", answers.get(0).getPointsText().getText());
             log.debug("Save Multiple Question");
             return jsonObject;
         } catch (JSONException e) {

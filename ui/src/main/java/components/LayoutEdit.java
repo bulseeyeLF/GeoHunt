@@ -52,7 +52,7 @@ public class LayoutEdit extends LayoutBase {
         else if (questionType.equals("Visual Question")) {
             newQuestion = new QuestionVisual(null);
             // ovde cuvamo shape kao answer
-            ((QuestionVisual)newQuestion).setAnswerShape(new AnswerShape(shape.save()));
+            ((QuestionVisual)newQuestion).setAnswerShape(new AnswerShape(shape.save(), "0"));
         }
         else {
             newQuestion = null; // oporavak od greske

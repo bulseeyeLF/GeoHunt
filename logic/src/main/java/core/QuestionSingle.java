@@ -15,9 +15,9 @@ public class QuestionSingle extends Question {
     public QuestionSingle(JSONObject jsonQuestion) {
         super(jsonQuestion);
         if (jsonQuestion != null) {
-            answer = new Answer(jsonQuestion.optString("text", ""));
+            answer = new Answer(jsonQuestion.optString("text", ""), jsonQuestion.optString("points", ""));
         } else {
-            answer = new Answer(null);
+            answer = new Answer(null, null);
         }
     }
 
@@ -30,7 +30,8 @@ public class QuestionSingle extends Question {
                     .put("timer", this.getTimerSpinner().getValue())
                     .put("text", answer.getAnswerText().getText())
                     .put("type", this.getType())
-                    .put("pictureSource",getQuestionPictureSource());
+                    .put("pictureSource",getQuestionPictureSource())
+                    .put("points", answer.getPointsText().getText());
         } catch (JSONException e) {
             log.error("Error in save UserInput Question",e);
             return null;

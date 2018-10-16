@@ -12,8 +12,8 @@ public class AnswerMultiple extends Answer {
     @Setter
     private boolean correct;
 
-    AnswerMultiple(String text, boolean correct) {
-        super(text);
+    AnswerMultiple(String text, String points, boolean correct) {
+        super(text, points);
         this.correct = correct;
         log.debug("Multiple choice answer created");
     }

@@ -49,5 +49,5 @@ public abstract class Question {
     }
 
     public abstract JSONObject save();
-    //TODO dodati feature-e : labele za objasnjenja,broj poena koji donosi tacan odgovor na pitanje, pomoc takmicaaru HINT
+    //TODO dodati feature-e : pomoc takmicaaru HINT
 }

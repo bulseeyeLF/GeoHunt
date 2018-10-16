@@ -38,7 +38,7 @@ public class AnswerFrameMultiple extends AnswerFrame {
         buttons.clear();
         for (AnswerMultiple answer : answers) {
             TextField field = answer.getAnswerText();
-            field.setPrefSize(300, 10);
+            field.setPrefSize(200, 10);
             RadioButton button = new RadioButton();
             button.setToggleGroup(validityButtons);
             field.setStyle("-fx-text-inner-color: red;");
@@ -61,7 +61,10 @@ public class AnswerFrameMultiple extends AnswerFrame {
         for (int i = 0; i < answers.size(); i++) {
             vBoxAnswers.getChildren().addAll(new HBox(buttons.get(i),answerFields.get(i)) );
         }
-        this.getChildren().addAll(vBoxAnswers);
+        VBox vBoxPoints = new VBox(new Label ("Points"), answers.get(0).getPointsText());
+        HBox hBox = new HBox(vBoxAnswers, vBoxPoints);
+        hBox.setSpacing(100);
+        this.getChildren().add(hBox);
         return this;
     }
 }

@@ -19,13 +19,13 @@ public class QuestionVisual extends Question
     public QuestionVisual(JSONObject jsonQuestion) {
         super(jsonQuestion);
         if (jsonQuestion != null){
-            answerShape = new AnswerShape(jsonQuestion.optJSONObject("answerShape"));
+            answerShape = new AnswerShape(jsonQuestion.optJSONObject("answerShape"), jsonQuestion.optString("points"));
         }else {
             jsonQuestion = new JSONObject();
             questionField = new TextField(jsonQuestion.optString("questionText", ""));
             timer = jsonQuestion.optLong("timer", 0);
             type = jsonQuestion.optInt("type", 2);
-            answerShape = new AnswerShape(null);
+            answerShape = new AnswerShape(null, null);
         }
     }
 
@@ -38,7 +38,8 @@ public class QuestionVisual extends Question
                     .put("timer", this.getTimerSpinner().getValue())
                     .put("type", this.getType())
                     .put("pictureSource",getQuestionPictureSource())
-                    .put("answerShape",answerShape.getAnswerShape().save());
+                    .put("answerShape",answerShape.getAnswerShape().save())
+                    .put("points", answerShape.getPointsText().getText());
         } catch (JSONException e) {
             log.error("Error in save UserInput Question",e);
             return null;
